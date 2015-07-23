@@ -254,7 +254,7 @@
 
 			// function reload() { remote.getCurrentWindow().webContents.reloadIgnoringCache(); return false; }
 			
-			// function windowDevTools() { remote.getCurrentWindow().openDevTools(); return false; }
+			function windowDevTools() { remote.getCurrentWindow().openDevTools(); return false; }
 			
 			// function webviewDevTools() {
 			// 	document.getElementById(VIEW_ID_PREFIX + app.tab.selectedTab.id).openDevTools();
@@ -263,10 +263,20 @@
 			
 			// function webviewReload() {
 			// 	var webview = document.getElementById(VIEW_ID_PREFIX + app.tab.selectedTab.id);
-			// 	//webview.reload();
-			// 	webview.send('Reload');
+			// 	webview.reload();
+			// 	// webview.send('Reload');
 			// 	return false;
 			// }
+			 
+			$(function() {
+				$(document).on("keydown", function(e) { 
+					if (e.metaKey && e.altKey && e.which === 73) {
+					  	windowDevTools();
+					} else if (e.metaKey && e.which === 82) {
+						// webviewReload();
+					}
+				});
+			});
 
 			function addTab(url) {
 				app.addTab({ url: url });
@@ -279,7 +289,6 @@
 
 			var ipc = require('ipc');
 			ipc.on('openTab', function(url) {
-				console.log('NEED TO OPEN NEW TABBBB: '+url);
 				addTab(url);
 			});
 

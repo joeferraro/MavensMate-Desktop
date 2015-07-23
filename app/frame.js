@@ -5,9 +5,9 @@ var remote = require('remote'),
 
 var TAB_ID_PREFIX = 'tab-',
   VIEW_WRAPPER_ID_PREFIX = 'view-wrapper',
-  VIEW_ID_PREFIX = 'view-',
-  PRELOAD_FILE_PATH = 'file://' + location.href.toString().substring(8, location.href.toString().length - 10) + 'preload.js';
-  console.log(PRELOAD_FILE_PATH)
+  VIEW_ID_PREFIX = 'view-';
+  // PRELOAD_FILE_PATH = path.join(__dirname, 'preload.js');
+  // console.log(PRELOAD_FILE_PATH)
 var app = { tab: { list: [], selectedTab: null } };
 
 function insertDomElement(parent, type, attributes, innerHtml, eventListeners) {
@@ -178,7 +178,7 @@ app.tabsArrayRenderer = function tabsArrayRenderer(changes) {
     var viewNodeAttributes = {
       id: VIEW_ID_PREFIX + tab.id,
       src: tab.url,
-      preload: PRELOAD_FILE_PATH,
+      // preload: PRELOAD_FILE_PATH,
       nodeintegration: null
     };
     viewNodeAttributes.class = tab.active ? 'active' : '';
