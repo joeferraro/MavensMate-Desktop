@@ -28,6 +28,6 @@ deploy:
   api-key: $GITHUB_API_KEY
   file: "mavensmate-app.tar.gz"
   skip_cleanup: true
-  on:
-    tags: true
-    all_branches: true
+  # on:
+  #   tags: true
+  #   all_branches: true
