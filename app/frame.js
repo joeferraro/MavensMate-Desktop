@@ -1,6 +1,5 @@
 var remote = require('remote'),
   ipc = require('ipc'),
-  _  = require('lodash'),
   path = remote.require('path');
 
 var TAB_ID_PREFIX = 'tab-',
