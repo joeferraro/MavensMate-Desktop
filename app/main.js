@@ -15,7 +15,8 @@ var openUrlInNewWindow = function(url) {
     width: 1000, 
     height: 800,
     'min-width': 1000,
-    'min-height': 800
+    'min-height': 800,
+    icon: path.join(__dirname, 'resources', 'icon.png')
   });
   newWindow.loadUrl(url);
   newWindow.show();
@@ -49,7 +50,8 @@ app.on('ready', function() {
     width: 1000, 
     height: 800,
     'min-width': 1000,
-    'min-height': 800
+    'min-height': 800,
+    icon: path.join(__dirname, 'resources', 'icon.png')
   });
 
   if (!Menu.getApplicationMenu()) {
