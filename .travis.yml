@@ -8,6 +8,8 @@ branches:
     - dev
 before_deploy:
   - sudo apt-get install g++ libgnome-keyring-dev
+  - which python
+  - g++ -v
   # - sudo apt-get install libgnome-keyring-dev
   # - sudo apt-get install python-keyring
   # - sudo apt-get install python-gnomekeyring
