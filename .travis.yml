@@ -7,7 +7,7 @@ branches:
   except:
     - dev
 before_deploy:
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+  - sudo apt-get install software-properties-common
   - sudo apt-get update
   - g++ -v
   - sudo apt-get install g++-4.7 libgnome-keyring-dev
