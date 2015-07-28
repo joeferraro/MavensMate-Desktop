@@ -18,10 +18,10 @@ before_deploy:
   - tar -xzvf npm3.tar.gz
   - ls
   - cd mavensmate-app/app
-  - node ../../npm-3.2.0/bin/npm-cli.js install
+  - npm install
   - ls
   # - ../../npm-3.1.3/bin/npm-cli.js install electron-builder --prefix ../../
-  - ../../npm-3.2.0/bin/npm-cli.js install electron-builder -g
+  - npm install electron-builder -g
   - ./node_modules/.bin/electron-rebuild
   - npm run build:linux
   - cd ../dist
