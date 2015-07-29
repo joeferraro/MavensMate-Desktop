@@ -28,9 +28,11 @@ before_deploy:
   - ../../npm-3.2.0/bin/npm-cli.js install electron-packager -g
   - ./node_modules/.bin/electron-rebuild
   - npm run build:linux
-  - cd ../dist/linux
+  - cd ../dist/linux/MavensMate-linux-x64
   - ls
-  - tar -zcvf mavensmate-app.tar.gz -C dist .
+  - cd ..
+  - ls
+  - tar -zcvf mavensmate-app.tar.gz -C MavensMate-linux-x64 .
 deploy:
   provider: releases
   api-key: $GITHUB_API_KEY
