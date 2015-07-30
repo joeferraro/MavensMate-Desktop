@@ -29,7 +29,7 @@ before_deploy:
   - ls
   - cd ..
   - ls
-  - tar -zcvf mavensmate-app.tar.gz -C MavensMate-linux-x64 .
+  - tar -zcvf mavensmate-app-$TRAVIS_TAG-linux-x64.tar.gz -C MavensMate-linux-x64 .
 deploy:
   provider: releases
   api-key: $GITHUB_API_KEY
