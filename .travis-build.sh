@@ -32,6 +32,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     cd ..
     ls
     tar -zcvf mavensmate-app-$TRAVIS_TAG-linux-x64.tar.gz -C MavensMate-linux-x64 .
+    ls
 
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     npm run pack:osx
