@@ -3,7 +3,16 @@
 set -e
 set -x
 
-sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
+if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
+    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+    sudo apt-get update -qq
+    sudo apt-get -qq install g++-4.8
+    g++ -v
+    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
+    g++ -v
+    sudo apt-get install libgnome-keyring-dev
+fi
+
 cd ..
 curl -L "https://github.com/npm/npm/archive/v3.2.0.tar.gz" >> npm3.tar.gz
 tar -xzvf npm3.tar.gz

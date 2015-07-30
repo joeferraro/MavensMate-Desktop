@@ -4,13 +4,13 @@ os:
 language: node_js
 node_js:
   - "0.12"
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-      - libgnome-keyring-dev
+# addons:
+#   apt:
+#     sources:
+#       - ubuntu-toolchain-r-test
+#     packages:
+#       - g++-4.8
+#       - libgnome-keyring-dev
 
 script: ./.travis-build.sh
 
