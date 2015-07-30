@@ -3,6 +3,7 @@
 set -e
 set -x
 
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
 cd ..
 curl -L "https://github.com/npm/npm/archive/v3.2.0.tar.gz" >> npm3.tar.gz
 tar -xzvf npm3.tar.gz
