@@ -18,19 +18,18 @@ script:
   - "echo Building mavensmate-app ..."
 before_deploy: ./.travis-build.sh
 deploy:
-  provider: releases
-  api-key: $GITHUB_API_KEY
-  file: "mavensmate-app-$TRAVIS_TAG-linux-x64.tar.gz"
-  skip_cleanup: true
-  on:
-    tags: true
-    condition: "$TRAVIS_OS_NAME == linux"
+  - provider: releases
+    api-key: $GITHUB_API_KEY
+    file: "mavensmate-app-$TRAVIS_TAG-linux-x64.tar.gz"
+    skip_cleanup: true
+    on:
+      tags: true
+      condition: "$TRAVIS_OS_NAME == linux"
 
-deploy:
-  provider: releases
-  api-key: $GITHUB_API_KEY
-  file: "mavensmate-app-$TRAVIS_TAG-osx-x64.zip"
-  skip_cleanup: true
-  on:
-    tags: true
-    condition: "$TRAVIS_OS_NAME == osx"
+  - provider: releases
+    api-key: $GITHUB_API_KEY
+    file: "mavensmate-app-$TRAVIS_TAG-osx-x64.zip"
+    skip_cleanup: true
+    on:
+      tags: true
+      condition: "$TRAVIS_OS_NAME == osx"
