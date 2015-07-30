@@ -20,7 +20,7 @@
     "install2": "npm install"
   },
   "dependencies": {
-    "mavensmate": "0.0.38-beta8"
+    "mavensmate": "0.0.38-beta10"
   },
   "devDependencies": {
     "electron-rebuild": "latest",
