@@ -12,8 +12,10 @@ node_js:
 #       - g++-4.8
 #       - libgnome-keyring-dev
 
-script: ./.travis-build.sh
-
+# script: ./.travis-build.sh
+script: 
+  - "echo Building mavensmate-app ..."
+before_deploy: ./.travis-build.sh
 deploy:
   provider: releases
   api-key: $GITHUB_API_KEY
