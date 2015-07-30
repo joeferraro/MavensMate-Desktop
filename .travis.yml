@@ -1,35 +1,20 @@
+os: 
+  - linux
+  - osx
 language: node_js
 node_js:
   - "0.12"
-script: 
-  - "echo Building mavensmate-app for Linux ..."
-branches:
-  except:
-    - dev
-before_deploy:
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo apt-get update -qq
-  - sudo apt-get -qq install g++-4.8
-  - g++ -v
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
-  - g++ -v
-  - sudo apt-get install libgnome-keyring-dev
-  - cd ..
-  - curl -L "https://github.com/npm/npm/archive/v3.2.0.tar.gz" >> npm3.tar.gz
-  - tar -xzvf npm3.tar.gz
-  - ls
-  - cd mavensmate-app/app
-  - node ../../npm-3.2.0/bin/npm-cli.js install
-  - ls
-  - ../../npm-3.2.0/bin/npm-cli.js install electron-builder -g
-  - ../../npm-3.2.0/bin/npm-cli.js install electron-packager -g
-  - ./node_modules/.bin/electron-rebuild
-  - npm run build:linux
-  - cd ../dist/linux/MavensMate-linux-x64
-  - ls
-  - cd ..
-  - ls
-  - tar -zcvf mavensmate-app-$TRAVIS_TAG-linux-x64.tar.gz -C MavensMate-linux-x64 .
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-4.9
+      - g++-4.9
+      - libgnome-keyring-dev
+
+script: ./.travis-build.sh
+
 deploy:
   provider: releases
   api-key: $GITHUB_API_KEY
@@ -37,4 +22,13 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-    # all_branches: true
+    condition: "$TRAVIS_OS_NAME = linux"
+
+deploy:
+  provider: releases
+  api-key: $GITHUB_API_KEY
+  file: "mavensmate-app-$TRAVIS_TAG-osx-x64.zip"
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: "$TRAVIS_OS_NAME = osx"
