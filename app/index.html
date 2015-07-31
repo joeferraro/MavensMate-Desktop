@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MavensMate</title>
+		<link rel="stylesheet" href="resources/octicons/octicons.css">
+		<link rel="stylesheet" href="resources/style.css">
+		<script type="text/javascript" src="frame.js"></script>
+	</head>
+	<body>
+		<ul id="tabs" class="list-inline tab-bar inset-panel"></ul>
+		<div id="views"></div>
+			
+		<script type="text/javascript">
+			window.$ = window.jQuery = require('./resources/jquery.min.js');
+
+			// function reload() { remote.getCurrentWindow().webContents.reloadIgnoringCache(); return false; }
+			
+			function windowDevTools() { remote.getCurrentWindow().openDevTools(); return false; }
+			
+			function webviewDevTools() {
+				document.getElementById(VIEW_ID_PREFIX + app.tab.selectedTab.id).openDevTools();
+				return false;
+			}
+			
+			// function webviewReload() {
+			// 	var webview = document.getElementById(VIEW_ID_PREFIX + app.tab.selectedTab.id);
+			// 	webview.reload();
+			// 	// webview.send('Reload');
+			// 	return false;
+			// }
+			 
+			$(function() {
+				$(document).on("keydown", function(e) { 
+					if (e.metaKey && e.altKey && e.which === 73) {
+					  	windowDevTools();
+					} else if (e.metaKey && e.altKey && e.which === 75) {
+					  	webviewDevTools();
+					} else if (e.metaKey && e.which === 82) {
+						// webviewReload();
+					}
+				});
+			});
+
+			function addTab(url) {
+				app.addTab({ url: url });
+			}
+
+			function closeTab(id) {
+				app.closeTab(id);
+				event.stopPropagation();
+			}
+
+			var ipc = require('ipc');
+			ipc.on('openTab', function(url) {
+				addTab(url);
+			});
+
+		</script>
+	</body>
+</html>
