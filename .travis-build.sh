@@ -16,7 +16,7 @@ elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     brew outdated xctool || brew upgrade xctool
     curl http://pkgconfig.freedesktop.org/releases/pkg-config-0.28.tar.gz -o pkgconfig.tgz
     tar -zxf pkgconfig.tgz && cd pkg-config-0.28
-    ./configure && make install
+    ./configure --with-internal-glib && make install
 fi
 
 cd ..
