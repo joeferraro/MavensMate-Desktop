@@ -11,6 +11,14 @@ if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
     g++ -v
     sudo apt-get install libgnome-keyring-dev
+elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
+    touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress;
+    PROD=$(softwareupdate -l |
+      grep "\*.*Command Line" |
+      head -n 1 | awk -F"*" '{print $2}' |
+      sed -e 's/^ *//' |
+      tr -d '\n')
+    softwareupdate -i "$PROD" -v;
 fi
 
 cd ..
