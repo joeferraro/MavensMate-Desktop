@@ -2,9 +2,9 @@ sudo: required
 os: 
   - linux
   - osx
-language: node_js
-node_js:
-  - "0.12"
+# language: node_js
+# node_js:
+#   - "0.12"
 # addons:
 #   apt:
 #     sources:
@@ -12,7 +12,12 @@ node_js:
 #     packages:
 #       - g++-4.8
 #       - libgnome-keyring-dev
-
+install:
+  - rm -rf ~/.nvm
+  - git clone https://github.com/creationix/nvm.git ~/.nvm
+  - source ~/.nvm/nvm.sh
+  - nvm install 0.12
+  - node --version
 # script: ./.travis-build.sh
 script: 
   - "echo Building mavensmate-app ..."
