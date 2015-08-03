@@ -12,6 +12,7 @@ install:
   - set PATH=C:\Program Files\MSBuild\14.0\Bin;%PATH%
   - ps: Install-Product node $env:nodejs_version
   - mkdir C:\projects\npm-cache
+  - mkdir C:\projects\npm3-cache
   - npm config set cache C:\projects\npm-cache --global
   # install modules
   - cd ..
@@ -19,6 +20,7 @@ install:
   - 7z x npm3.zip
   - dir
   - cd mavensmate-app\app
+  - node ..\..\npm-3.2.0\bin\npm-cli.js config set cache C:\projects\npm3-cache --global
   - node ..\..\npm-3.2.0\bin\npm-cli.js install
   - dir
   - ..\..\npm-3.2.0\bin\npm-cli.js install electron-builder -g
