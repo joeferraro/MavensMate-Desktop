@@ -25,6 +25,7 @@ install:
   - npm install --prefix C:\projects\mavensmate-app\app npm@3
   - npm install electron-builder -g
   - npm install electron-packager -g
+  - npm cache clean
   - .\node_modules\.bin\electron-rebuild
   - npm run pack:win
   - dir ..\dist\win
