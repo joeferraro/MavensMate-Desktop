@@ -8,6 +8,8 @@ platform:
   - x64
 
 install:
+  - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+  - set PATH=C:\Program Files\MSBuild\14.0\Bin;%PATH%
   - ps: Install-Product node $env:nodejs_version
   - mkdir C:\projects\npm-cache
   - npm config set cache C:\projects\npm-cache --global
