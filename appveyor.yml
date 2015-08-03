@@ -25,8 +25,10 @@ install:
   - dir
   - ..\..\npm-3.2.0\bin\npm-cli.js install electron-builder -g
   - ..\..\npm-3.2.0\bin\npm-cli.js install electron-packager -g
+  - npm cache clean
+  - node ..\..\npm-3.2.0\bin\npm-cli.js cache clean
   - .\node_modules\.bin\electron-rebuild
-  - npm run pack:win
+  - node ..\..\npm-3.2.0\bin\npm-cli.js run pack:win
   - dir ..\dist\win
   - dir ..\dist\win\win32
   - dir ..\dist\win\win64
