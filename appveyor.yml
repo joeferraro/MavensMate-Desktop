@@ -10,7 +10,8 @@ platform:
 install:
   # - where.exe python
   - ps: Install-Product node $env:nodejs_version
-  - npm -g install npm@2.12.1
+  # - npm -g install npm@2.12.1
+  - npm -g install npm@3
   - set PATH=%APPDATA%\npm;%PATH%
   - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
   - set PATH=C:\Program Files\MSBuild\14.0\Bin;%PATH%
@@ -26,14 +27,14 @@ install:
   - node ..\..\npm-3.2.0\bin\npm-cli.js config set cache C:\projects\npm3-cache --global
   - node ..\..\npm-3.2.0\bin\npm-cli.js install
   - dir
-  - ..\..\npm-3.2.0\bin\npm-cli.js install electron-builder -g
-  - ..\..\npm-3.2.0\bin\npm-cli.js install electron-packager -g
+  - node ..\..\npm-3.2.0\bin\npm-cli.js install electron-builder -g
+  - node ..\..\npm-3.2.0\bin\npm-cli.js install electron-packager -g
   - npm cache clean
   - node ..\..\npm-3.2.0\bin\npm-cli.js cache clean
   # - ..\..\npm-3.2.0\bin\npm-cli.js uninstall nslog
   # - ..\..\npm-3.2.0\bin\npm-cli.js install nslog
   # - cacls C:\projects\mavensmate-app /T /E /C /G Everyone:F
-  - .\node_modules\.bin\electron-rebuild
+  - node .\node_modules\.bin\electron-rebuild
   - node ..\..\npm-3.2.0\bin\npm-cli.js run pack:win
   - dir ..\dist\win
   - dir ..\dist\win\win32
