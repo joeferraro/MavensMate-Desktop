@@ -8,6 +8,7 @@ platform:
   - x64
 
 install:
+  # - where.exe python
   - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
   - set PATH=C:\Program Files\MSBuild\14.0\Bin;%PATH%
   - ps: Install-Product node $env:nodejs_version
@@ -27,6 +28,7 @@ install:
   - ..\..\npm-3.2.0\bin\npm-cli.js install electron-packager -g
   - npm cache clean
   - node ..\..\npm-3.2.0\bin\npm-cli.js cache clean
+  - cacls C:\projects\mavensmate-app /T /E /C /G Everyone:F
   - .\node_modules\.bin\electron-rebuild
   - node ..\..\npm-3.2.0\bin\npm-cli.js run pack:win
   - dir ..\dist\win
