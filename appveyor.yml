@@ -9,6 +9,7 @@ platform:
 
 install:
   - ps: Install-Product node $env:nodejs_version
+  - npm config set cache C:\projects\npm-cache --global
   # install modules
   - cd ..
   - ps: Start-FileDownload 'https://github.com/npm/npm/archive/v3.2.0.zip' -FileName 'npm3.zip'
