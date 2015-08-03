@@ -16,7 +16,7 @@ install:
   - dir
   - cd mavensmate-app\app
   - node ..\..\npm-3.2.0\bin\npm-cli.js install
-  - ls
+  - dir
   - ..\..\npm-3.2.0\bin\npm-cli.js install electron-builder -g
   - ..\..\npm-3.2.0\bin\npm-cli.js install electron-packager -g
   - .\node_modules\.bin\electron-rebuild
