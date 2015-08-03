@@ -12,12 +12,13 @@ if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     g++ -v
     sudo apt-get install libgnome-keyring-dev
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
-    brew update
-    brew outdated xctool || brew upgrade xctool
-    curl http://pkgconfig.freedesktop.org/releases/pkg-config-0.28.tar.gz -o pkgconfig.tgz
-    tar -zxf pkgconfig.tgz && cd pkg-config-0.28
-    ./configure --with-internal-glib && make install
-    cd ..
+    echo osx: nothing to see here
+    # brew update
+    # brew outdated xctool || brew upgrade xctool
+    # curl http://pkgconfig.freedesktop.org/releases/pkg-config-0.28.tar.gz -o pkgconfig.tgz
+    # tar -zxf pkgconfig.tgz && cd pkg-config-0.28
+    # ./configure --with-internal-glib && make install
+    # cd ..
 fi
 
 cd ..
