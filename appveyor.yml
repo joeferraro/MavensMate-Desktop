@@ -14,13 +14,15 @@ install:
   - if exist %ProgramFiles%\nodejs\npm.cmd del %ProgramFiles%\nodejs\npm.cmd
   - npm -g install npm@3
   - set PATH=%APPDATA%\npm;%PATH%
+  - set GYP_MSVS_VERSION=2013
+  - npm config set python C:\Python27\python.exe
   - node --version && npm --version
   - npm config set cache-lock-retries 1000
   - npm config set cache-lock-wait 100000
   - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
   - set PATH=C:\Program Files\MSBuild\14.0\Bin;%PATH%
   - cd app
-  - npm install
+  - npm install --no-bin-links
   - dir
   - dir node_modules
   - if exist C:\projects\mavensmate-app\app\node_modules\npm del C:\projects\mavensmate-app\app\node_modules\npm /F /Q  
