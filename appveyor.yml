@@ -8,7 +8,7 @@ platform:
   - x64
 
 install:
-  # - where.exe python
+  - python -V
   - ps: Install-Product node $env:nodejs_version
   - if exist %ProgramFiles%\nodejs\npm del %ProgramFiles%\nodejs\npm
   - if exist %ProgramFiles%\nodejs\npm.cmd del %ProgramFiles%\nodejs\npm.cmd
