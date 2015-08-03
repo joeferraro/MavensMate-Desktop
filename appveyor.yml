@@ -12,33 +12,18 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - if exist %ProgramFiles%\nodejs\npm del %ProgramFiles%\nodejs\npm
   - if exist %ProgramFiles%\nodejs\npm.cmd del %ProgramFiles%\nodejs\npm.cmd
-  # - npm -g install npm@2.12.1
   - npm -g install npm@3
   - set PATH=%APPDATA%\npm;%PATH%
   - node --version && npm --version
   - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
   - set PATH=C:\Program Files\MSBuild\14.0\Bin;%PATH%
-  - mkdir C:\projects\npm-cache
-  - mkdir C:\projects\npm3-cache
-  - npm config set cache C:\projects\npm-cache --global
-  # install modules
-  - cd ..
-  - ps: Start-FileDownload 'https://github.com/npm/npm/archive/v3.2.0.zip' -FileName 'npm3.zip'
-  - 7z x npm3.zip
+  - cd app
+  - npm install
   - dir
-  - cd mavensmate-app\app
-  - node ..\..\npm-3.2.0\bin\npm-cli.js config set cache C:\projects\npm3-cache --global
-  - node ..\..\npm-3.2.0\bin\npm-cli.js install
-  - dir
-  - node ..\..\npm-3.2.0\bin\npm-cli.js install electron-builder -g
-  - node ..\..\npm-3.2.0\bin\npm-cli.js install electron-packager -g
-  - npm cache clean
-  - node ..\..\npm-3.2.0\bin\npm-cli.js cache clean
-  # - ..\..\npm-3.2.0\bin\npm-cli.js uninstall nslog
-  # - ..\..\npm-3.2.0\bin\npm-cli.js install nslog
-  # - cacls C:\projects\mavensmate-app /T /E /C /G Everyone:F
-  - node .\node_modules\.bin\electron-rebuild
-  - node ..\..\npm-3.2.0\bin\npm-cli.js run pack:win
+  - npm install electron-builder -g
+  - npm install electron-packager -g
+  - .\node_modules\.bin\electron-rebuild
+  - npm run pack:win
   - dir ..\dist\win
   - dir ..\dist\win\win32
   - dir ..\dist\win\win64
