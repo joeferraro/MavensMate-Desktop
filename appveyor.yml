@@ -21,7 +21,7 @@ install:
   - npm install
   - dir
   - dir node_modules
-  - if exist C:\projects\mavensmate-app\app\node_modules\npm del C:\projects\mavensmate-app\app\node_modules\npm
+  - if exist C:\projects\mavensmate-app\app\node_modules\npm del C:\projects\mavensmate-app\app\node_modules\npm /F /Q
   - npm install electron-builder -g
   - npm install electron-packager -g
   - .\node_modules\.bin\electron-rebuild
