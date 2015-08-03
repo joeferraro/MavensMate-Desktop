@@ -1,0 +1,57 @@
+# Test against this version of Node.js
+environment:
+  matrix:
+  - nodejs_version: "0.12"
+
+platform:
+  - x86
+  - x64
+
+install:
+  - ps: Install-Product node $env:nodejs_version
+  # install modules
+  - cd ..
+  - ps: Start-FileDownload 'https://github.com/npm/npm/archive/v3.2.0.zip' -FileName 'npm3.zip'
+  - 7z x npm3.zip
+  - dir
+  - cd mavensmate-app\app
+  - node ..\..\npm-3.2.0\bin\npm-cli.js install
+  - ls
+  - ..\..\npm-3.2.0\bin\npm-cli.js install electron-builder -g
+  - ..\..\npm-3.2.0\bin\npm-cli.js install electron-packager -g
+  - .\node_modules\.bin\electron-rebuild
+  - npm run pack:win
+  - dir ..\dist\win
+  - dir ..\dist\win\win32
+  - dir ..\dist\win\win64
+  - cd ..\dist\win\win64
+  - 7z a tzip MavensMate Setup.exe
+  - dir
+  - cd ..\dist\win\win32
+  - 7z a tzip MavensMate Setup.exe
+  - dir
+  - cd ..\..\..\
+  - dir
+
+# # Don't actually build.
+# build: off
+
+# cache:
+#   - example\cache
+
+deploy:
+   # Deploy to GitHub Releases
+  - provider: GitHub
+    artifact: .\dist\win\win64\MavensMate Setup.zip           
+    draft: false
+    prerelease: true
+    on:
+      branch: master                # release from master branch only
+      appveyor_repo_tag: true       # deploy on tag push only
+  - provider: GitHub
+    artifact: .\dist\win\win64\MavensMate Setup.exe          
+    draft: false
+    prerelease: true
+    on:
+      branch: master                # release from master branch only
+      appveyor_repo_tag: true       # deploy on tag push only

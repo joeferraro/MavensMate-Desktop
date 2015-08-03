@@ -4,6 +4,7 @@ set -e
 set -x
 
 if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
+    echo running linux build
     sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
     sudo apt-get update -qq
     sudo apt-get -qq install g++-4.8
@@ -12,13 +13,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     g++ -v
     sudo apt-get install libgnome-keyring-dev
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
-    echo osx: nothing to see here
-    # brew update
-    # brew outdated xctool || brew upgrade xctool
-    # curl http://pkgconfig.freedesktop.org/releases/pkg-config-0.28.tar.gz -o pkgconfig.tgz
-    # tar -zxf pkgconfig.tgz && cd pkg-config-0.28
-    # ./configure --with-internal-glib && make install
-    # cd ..
+    echo running osx build
 fi
 
 cd ..
@@ -41,6 +36,11 @@ if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     ls
     tar -zcvf mavensmate-app-$TRAVIS_TAG-linux-x64.tar.gz -C MavensMate-linux-x64 .
     ls
+    # npm run pack:win
+    # cd ../dist/win
+    # ls
+    # # zip mavensmate-app-$TRAVIS_TAG-win-ia32.tar.gz MavensMate-win32-ia32 .
+    # # zip mavensmate-app-$TRAVIS_TAG-win-x64.tar.gz MavensMate-win32-x64 .
 
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     npm run pack:osx
