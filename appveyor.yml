@@ -10,8 +10,7 @@ platform:
 install:
   - dir
 
-before_build:
-  - dir
+build: off
 
 before_deploy:
   - python -V
@@ -55,9 +54,6 @@ before_deploy:
   - dir
   - cd ..\..\..\
   - dir
-
-# # Don't actually build.
-# build: off
 
 # cache:
 #   - example\cache
