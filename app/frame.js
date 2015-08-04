@@ -1,6 +1,7 @@
 var remote = require('remote'),
   ipc = require('ipc'),
-  path = remote.require('path');
+  path = remote.require('path'),
+  shell = require('shell');
 
 var TAB_ID_PREFIX = 'tab-',
   VIEW_WRAPPER_ID_PREFIX = 'view-wrapper',
@@ -190,7 +191,11 @@ app.tabsArrayRenderer = function tabsArrayRenderer(changes) {
 
     function webViewNewWindowHandler(e) {
       console.log('webViewNewWindowHandler', e);
-      app.addTab({ id: '' , url: e.url });
+      if (e.url.indexOf('localhost') > 0) {
+        app.addTab({ id: '' , url: e.url });
+      } else {
+        shell.openExternal(e.url);
+      }
     }
 
     //var wrapper = insertDomElement('views', 'div', viewWrapperNodeAttributes);

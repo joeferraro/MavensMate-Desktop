@@ -4,6 +4,7 @@ var path = require('path');
 var Menu = require('menu');
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 var mavensmate = require('mavensmate');
+var shell = require('shell');
 
 // autoUpdater.setFeedUrl('http://mycompany.com/myapp/latest?version=' + app.getVersion());
 
@@ -23,8 +24,12 @@ var openUrlInNewWindow = function(url) {
 };
 
 var openUrlInNewTab = function(url) {
-  mainWindow.webContents.send('openTab', url);
-  mainWindow.show();
+  if (url.indexOf('localhost') >= 0) {
+    mainWindow.webContents.send('openTab', url);
+    mainWindow.show();
+  } else {
+    shell.openExternal(url);
+  }
 };
 
 // Keep a global reference of the window object, if you don't, the window will
