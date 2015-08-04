@@ -31,11 +31,11 @@ before_deploy:
   - cd app
   - npm install
   # - npm install --no-bin-links
-  - dir
-  - dir node_modules
+  # - dir
+  # - dir node_modules
   - if exist C:\projects\mavensmate-app\app\node_modules\npm del C:\projects\mavensmate-app\app\node_modules\npm /F /Q  
   - npm install --prefix C:\projects\mavensmate-app\app npm@3
-  - timeout 5
+  # - timeout 5
   - .\node_modules\.bin\electron-rebuild
   # - node C:\projects\mavensmate-app\app\node_modules\electron-rebuild\lib\cli.js
   - npm install electron-builder -g
@@ -55,6 +55,8 @@ before_deploy:
   - cd ..\..\..\
   - dir
 
+on_finish:
+  - type C:\projects\mavensmate-app\app\node_modules\npm-debug.log
 # cache:
 #   - example\cache
 
