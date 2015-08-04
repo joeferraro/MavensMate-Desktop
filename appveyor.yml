@@ -54,8 +54,13 @@ before_deploy:
 
 on_finish:
   - type C:\projects\mavensmate-app\app\node_modules\npm-debug.log
-# cache:
-#   - example\cache
+
+cache:
+  - C:\nsis
+  - C:\Users\appveyor\AppData\Roaming\npm\node_modules -> C:\projects\mavensmate-app\app\package.json  # global npm modules
+  - C:\Users\appveyor\AppData\Roaming\npm-cache -> C:\projects\mavensmate-app\app\package.json         # npm cache
+  - C:\projects\npm-cache -> C:\projects\mavensmate-app\app\package.json
+  - C:\projects\mavensmate-app\app\node_modules -> C:\projects\mavensmate-app\app\package.json
 
 deploy:
    # Deploy to GitHub Releases
