@@ -34,7 +34,8 @@ before_deploy:
   # - dir
   # - dir node_modules
   - if exist C:\projects\mavensmate-app\app\node_modules\npm del C:\projects\mavensmate-app\app\node_modules\npm /F /Q  
-  - npm install --prefix C:\projects\mavensmate-app\app npm@3
+  - if exist C:\projects\mavensmate-app\app\node_modules\nslog del C:\projects\mavensmate-app\app\node_modules\nslog /F /Q  
+  # - npm install --prefix C:\projects\mavensmate-app\app npm@3
   # - timeout 5
   - .\node_modules\.bin\electron-rebuild
   # - node C:\projects\mavensmate-app\app\node_modules\electron-rebuild\lib\cli.js
