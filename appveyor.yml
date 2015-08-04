@@ -7,6 +7,9 @@ platform:
   # - x86
   - x64
 
+init:
+- ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 install:
   - dir
 
@@ -53,6 +56,7 @@ before_deploy:
   - dir
 
 on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - type C:\projects\mavensmate-app\app\node_modules\npm-debug.log
 
 cache:
