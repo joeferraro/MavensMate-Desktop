@@ -14,9 +14,9 @@ require('crash-reporter').start();
 
 var openUrlInNewWindow = function(url) {
   var newWindow = new BrowserWindow({
-    width: 1000, 
+    width: 1100, 
     height: 800,
-    'min-width': 1000,
+    'min-width': 1100,
     'min-height': 800,
     icon: path.join(__dirname, 'resources', 'icon.png')
   });
@@ -70,9 +70,9 @@ var setup = function(updateCheckResult) {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1000, 
+    width: 1100, 
     height: 800,
-    'min-width': 1000,
+    'min-width': 1100,
     'min-height': 800,
     icon: path.join(__dirname, 'resources', 'icon.png')
   });
