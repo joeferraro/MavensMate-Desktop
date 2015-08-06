@@ -231,3 +231,32 @@ webview {
 webview.active {
 	z-index: 1000;
 }
+
+#update {
+  height:30px;
+  padding:5px;
+  background-color: #3a7dda;
+  display: none;
+  text-align: center;
+}
+
+#update span a {
+  color: #fff;
+  font-weight: 500;
+  text-align: center;
+  line-height: 0.7em;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#update span a:hover {
+  text-decoration: underline;
+}
+
+#update-close {
+  color: #fff;
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  cursor:pointer;
+}

@@ -5,6 +5,7 @@ var Menu = require('menu');
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 var mavensmate = require('mavensmate');
 var shell = require('shell');
+var gitHubReleases = require('./github');
 
 // autoUpdater.setFeedUrl('http://mycompany.com/myapp/latest?version=' + app.getVersion());
 
@@ -42,14 +43,31 @@ var applicationMenu = null;
 app.on('window-all-closed', function() {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  app.quit();
 });
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function() {  
+  // check for update
+  var options = {
+    repo: 'joeferraro/mavensmate-app',
+    currentVersion: app.getVersion()
+  };
+  var updateChecker = new gitHubReleases(options);
+  updateChecker.check()
+    .then(function(updateCheckResult) {
+      setup(updateCheckResult);
+    })
+    .catch(function(err) {
+      console.error(err);
+      setup();
+    });
+});
+
+var setup = function(updateCheckResult) {
+  console.log('update check result: ', updateCheckResult);
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1000, 
@@ -208,12 +226,15 @@ app.on('ready', function() {
     }
     mavensmate
       .startServer({
-        editor: 'sublime',
+        name: 'mavensmate-app',
         port: 56248,
         windowOpener: openUrlInNewTab
       })
       .then(function(server) {
         mavensMateServer = server;
+        if (updateCheckResult && updateCheckResult.needsUpdate) {
+          mainWindow.webContents.send('needsUpdate', updateCheckResult);
+        }
         mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
       })
       .catch(function(err) {
@@ -232,4 +253,4 @@ app.on('ready', function() {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
-});
+}

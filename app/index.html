@@ -7,10 +7,16 @@
 		<script type="text/javascript" src="frame.js"></script>
 	</head>
 	<body>
+		<div id="update">
+			<span><a></a><div id="update-close" class="octicon octicon-x close-icon"></div></span>
+		</div>
 		<ul id="tabs" class="list-inline tab-bar inset-panel"></ul>
 		<div id="views"></div>
 			
 		<script type="text/javascript">
+			var ipc = require('ipc');
+			var shell = require('shell');
+
 			window.$ = window.jQuery = require('./resources/jquery.min.js');
 
 			// function reload() { remote.getCurrentWindow().webContents.reloadIgnoringCache(); return false; }
@@ -39,6 +45,10 @@
 						// webviewReload();
 					}
 				});
+
+				$("#update-close").on("click", function() {
+					$("#update").hide();
+				});
 			});
 
 			function addTab(url) {
@@ -50,11 +60,21 @@
 				event.stopPropagation();
 			}
 
-			var ipc = require('ipc');
+			function addUpdateNotifier(updateInfo) {
+				$("#update span a").html('A new version of MavensMate ('+updateInfo.latestVersion+') is available for download (current '+updateInfo.currentVersion+')');
+				$("#update span a").on('click', function() {
+					shell.openExternal(updateInfo.url);
+				});
+				$("#update").show();
+			}
+
 			ipc.on('openTab', function(url) {
 				addTab(url);
 			});
-
+			ipc.on('needsUpdate', function(updateInfo) {
+				addUpdateNotifier(updateInfo);
+			});
+			
 		</script>
 	</body>
 </html>
