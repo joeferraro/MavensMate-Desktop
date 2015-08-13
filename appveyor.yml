@@ -49,7 +49,7 @@ before_deploy:
   - cd ..\dist\win\win64
   - 7z a -tzip "MavensMate-app-win64-setup.zip" "MavensMate Setup.exe"
   - dir
-  - cd ..\dist\win\win32
+  - cd ..\win32
   - 7z a -tzip "MavensMate-app-win32-setup.zip" "MavensMate Setup.exe"
   - dir
   - cd ..\..\..\
