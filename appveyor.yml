@@ -37,8 +37,8 @@ before_deploy:
   - set PATH=C:\Program Files\MSBuild\14.0\Bin;%PATH%
   - cd app
   - npm install
-  - if exist C:\projects\mavensmate-app\app\node_modules\npm del C:\projects\mavensmate-app\app\node_modules\npm /F /Q  
-  - if exist C:\projects\mavensmate-app\app\node_modules\nslog del C:\projects\mavensmate-app\app\node_modules\nslog /F /Q  
+  - if exist C:\projects\mavensmate-app\app\node_modules\npm rd /s /q C:\projects\mavensmate-app\app\node_modules\npm
+  - if exist C:\projects\mavensmate-app\app\node_modules\nslog rd /s /q C:\projects\mavensmate-app\app\node_modules\nslog
   - .\node_modules\.bin\electron-rebuild
   - npm install electron-builder -g
   - npm install electron-packager -g

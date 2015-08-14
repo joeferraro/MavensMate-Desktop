@@ -1,6 +1,6 @@
 {
   "name": "mavensmate-app",
-  "version": "0.0.1-beta1",
+  "version": "0.0.1-beta2",
   "main": "main.js",
   "scripts": {
     "build": "npm run clean && npm run build:osx && npm run build:win",
@@ -10,7 +10,7 @@
     "clean": "rm -rf ../dist",
     "clean:linux": "rm -rf ../dist/linux",
     "clean:osx": "rm -rf ../dist/osx",
-    "clean:win": "del ..\\dist\\win /F /Q",
+    "clean:win": "if exist ..\\dist\\win rd /s /q ..\\dist\\win",
     "dev": "electron ./app",
     "pack": "npm run pack:osx && npm run pack:win",
     "pack:osx": "npm run build:osx && electron-builder \"../dist/osx/MavensMate-darwin-x64/MavensMate.app\" --platform=osx --out=\"../dist/osx\" --config=../packager.json",
