@@ -57,11 +57,11 @@ before_deploy:
   - dir
 
 artifacts:
-  - path: C:\projects\mavensmate-app\dist\win\win32\mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win32-setup.zip
+  - path: mavensmate-app\dist\win\win32\mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win32-setup.zip
     name: win32
     type: zip
 
-  - path: C:\projects\mavensmate-app\dist\win\win64\mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win64-setup.zip
+  - path: mavensmate-app\dist\win\win64\mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win64-setup.zip
     name: win64
     type: zip
 
