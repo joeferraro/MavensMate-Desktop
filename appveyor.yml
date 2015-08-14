@@ -57,13 +57,11 @@ before_deploy:
   - dir
 
 artifacts:
-  - path: mavensmate-app\dist\win\win32\mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win32-setup.zip
+  - path: mavensmate-app/dist/win/win32/mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win32-setup.zip
     name: win32
-    type: zip
 
-  - path: mavensmate-app\dist\win\win64\mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win64-setup.zip
+  - path: mavensmate-app/dist/win/win64/mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win64-setup.zip
     name: win64
-    type: zip
 
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
@@ -83,7 +81,7 @@ deploy:
       secure: EoSbqljBDKZ9pBkSSRG0MwLt+ooqW0+ZJGThjggCoOaTQzCeLzgnnzZFz/G46q8I
     artifact: win32        
     draft: false
-    prerelease: true
+    prerelease: false
     on:
       branch: master                # release from master branch only
       appveyor_repo_tag: true       # deploy on tag push only
@@ -92,7 +90,7 @@ deploy:
       secure: EoSbqljBDKZ9pBkSSRG0MwLt+ooqW0+ZJGThjggCoOaTQzCeLzgnnzZFz/G46q8I
     artifact: win64       
     draft: false
-    prerelease: true
+    prerelease: false
     on:
       branch: master                # release from master branch only
       appveyor_repo_tag: true       # deploy on tag push only
