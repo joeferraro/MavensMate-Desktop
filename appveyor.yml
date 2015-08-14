@@ -48,10 +48,10 @@ test_script:
   - dir ..\dist\win\win32
   - dir ..\dist\win\win64
   - cd ..\dist\win\win64
-  - 7z a -tzip "mavensmate-app-%VERSION%-win64-setup.zip" "MavensMate Setup.exe"
+  - 7z a -tzip "mavensmate-app-v%VERSION%-win64-setup.zip" "MavensMate Setup.exe"
   - dir
   - cd ..\win32
-  - 7z a -tzip "mavensmate-app-%VERSION%-win32-setup.zip" "MavensMate Setup.exe"
+  - 7z a -tzip "mavensmate-app-v%VERSION%-win32-setup.zip" "MavensMate Setup.exe"
   - dir
   - cd ..\..\..\
   - dir
