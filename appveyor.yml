@@ -70,14 +70,14 @@ cache:
 deploy:
    # Deploy to GitHub Releases
   - provider: GitHub
-    artifact: .\dist\win\win64\MavensMate Setup.zip           
+    artifact: .\dist\win\win64\MavensMate-app-win32-setup.zip           
     draft: false
     prerelease: true
     on:
       branch: master                # release from master branch only
       appveyor_repo_tag: true       # deploy on tag push only
   - provider: GitHub
-    artifact: .\dist\win\win64\MavensMate Setup.exe          
+    artifact: .\dist\win\win64\MavensMate-app-win64-setup.zip       
     draft: false
     prerelease: true
     on:
