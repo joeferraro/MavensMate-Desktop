@@ -25,6 +25,7 @@ before_deploy:
   - if exist %ProgramFiles%\nodejs\npm del %ProgramFiles%\nodejs\npm
   - if exist %ProgramFiles%\nodejs\npm.cmd del %ProgramFiles%\nodejs\npm.cmd
   - npm -g install npm@3
+  - npm -g install node-gyp
   - set PATH=%APPDATA%\npm;%PATH%
   - set GYP_MSVS_VERSION=2013
   - npm config set python C:\Python27\python.exe
