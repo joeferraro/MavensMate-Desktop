@@ -47,10 +47,10 @@ before_deploy:
   - dir ..\dist\win\win32
   - dir ..\dist\win\win64
   - cd ..\dist\win\win64
-  - 7z a -tzip "MavensMate-app-win64-setup.zip" "MavensMate Setup.exe"
+  - 7z a -tzip "mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win64-setup.zip" "MavensMate Setup.exe"
   - dir
   - cd ..\win32
-  - 7z a -tzip "MavensMate-app-win32-setup.zip" "MavensMate Setup.exe"
+  - 7z a -tzip "mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win32-setup.zip" "MavensMate Setup.exe"
   - dir
   - cd ..\..\..\
   - dir
@@ -69,16 +69,18 @@ cache:
 deploy:
    # Deploy to GitHub Releases
   - provider: GitHub
-    auth_token: $(GITHUB_TOKEN)
-    artifact: .\dist\win\win64\MavensMate-app-win32-setup.zip           
+    auth_token: 
+      secure: $(GITHUB_TOKEN)
+    artifact: .\dist\win\win64\MavensMate-app-$(APPVEYOR_REPO_TAG_NAME)-win32-setup.zip           
     draft: false
     prerelease: true
     on:
       branch: master                # release from master branch only
       appveyor_repo_tag: true       # deploy on tag push only
   - provider: GitHub
-    auth_token: $(GITHUB_TOKEN)
-    artifact: .\dist\win\win64\MavensMate-app-win64-setup.zip       
+    auth_token: 
+      secure: $(GITHUB_TOKEN)
+    artifact: .\dist\win\win64\MavensMate-app-$(APPVEYOR_REPO_TAG_NAME)-win64-setup.zip       
     draft: false
     prerelease: true
     on:
