@@ -60,10 +60,10 @@ before_deploy:
   - ECHO deploying
 
 artifacts:
-  - path: mavensmate-app\dist\win\win32\mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win32-setup.zip
+  - path: dist\win\win32\*.zip
     name: win32
 
-  - path: mavensmate-app\dist\win\win64\mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win64-setup.zip
+  - path: dist\win\win64\*.zip
     name: win64
 
 on_finish:
