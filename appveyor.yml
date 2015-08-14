@@ -57,14 +57,13 @@ before_deploy:
   - dir
 
 artifacts:
-  - path: .\dist\win\win64\MavensMate-app-$(APPVEYOR_REPO_TAG_NAME)-win32-setup.zip
+  - path: 'C:\projects\mavensmate-app\dist\win\win32\*.zip'
     name: win32
     type: zip
 
-  - path: .\dist\win\win64\MavensMate-app-$(APPVEYOR_REPO_TAG_NAME)-win64-setup.zip
+  - path: 'C:\projects\mavensmate-app\dist\win\win64\*.zip'
     name: win64
     type: zip
-
 
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
