@@ -70,7 +70,7 @@ deploy:
    # Deploy to GitHub Releases
   - provider: GitHub
     auth_token: 
-      secure: $(GITHUB_TOKEN)
+      secure: EoSbqljBDKZ9pBkSSRG0MwLt+ooqW0+ZJGThjggCoOaTQzCeLzgnnzZFz/G46q8I
     artifact: .\dist\win\win64\MavensMate-app-$(APPVEYOR_REPO_TAG_NAME)-win32-setup.zip           
     draft: false
     prerelease: true
@@ -79,7 +79,7 @@ deploy:
       appveyor_repo_tag: true       # deploy on tag push only
   - provider: GitHub
     auth_token: 
-      secure: $(GITHUB_TOKEN)
+      secure: EoSbqljBDKZ9pBkSSRG0MwLt+ooqW0+ZJGThjggCoOaTQzCeLzgnnzZFz/G46q8I
     artifact: .\dist\win\win64\MavensMate-app-$(APPVEYOR_REPO_TAG_NAME)-win64-setup.zip       
     draft: false
     prerelease: true
