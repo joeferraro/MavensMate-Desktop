@@ -16,6 +16,7 @@ install:
 build: off
 
 before_deploy:
+  - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME:~1%
   - python -V
   - ps: Install-Product node $env:nodejs_version
   - ps: $exePath = "$($env:USERPROFILE)\nsis-2.46-setup.exe"
@@ -47,13 +48,23 @@ before_deploy:
   - dir ..\dist\win\win32
   - dir ..\dist\win\win64
   - cd ..\dist\win\win64
-  - 7z a -tzip "mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win64-setup.zip" "MavensMate Setup.exe"
+  - 7z a -tzip "mavensmate-app-%VERSION%-win64-setup.zip" "MavensMate Setup.exe"
   - dir
   - cd ..\win32
-  - 7z a -tzip "mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win32-setup.zip" "MavensMate Setup.exe"
+  - 7z a -tzip "mavensmate-app-%VERSION%-win32-setup.zip" "MavensMate Setup.exe"
   - dir
   - cd ..\..\..\
   - dir
+
+artifacts:
+  - path: .\dist\win\win64\MavensMate-app-$(APPVEYOR_REPO_TAG_NAME)-win32-setup.zip
+    name: win32
+    type: zip
+
+  - path: .\dist\win\win64\MavensMate-app-$(APPVEYOR_REPO_TAG_NAME)-win64-setup.zip
+    name: win64
+    type: zip
+
 
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
@@ -71,7 +82,7 @@ deploy:
   - provider: GitHub
     auth_token: 
       secure: EoSbqljBDKZ9pBkSSRG0MwLt+ooqW0+ZJGThjggCoOaTQzCeLzgnnzZFz/G46q8I
-    artifact: .\dist\win\win64\MavensMate-app-$(APPVEYOR_REPO_TAG_NAME)-win32-setup.zip           
+    artifact: win32        
     draft: false
     prerelease: true
     on:
@@ -80,7 +91,7 @@ deploy:
   - provider: GitHub
     auth_token: 
       secure: EoSbqljBDKZ9pBkSSRG0MwLt+ooqW0+ZJGThjggCoOaTQzCeLzgnnzZFz/G46q8I
-    artifact: .\dist\win\win64\MavensMate-app-$(APPVEYOR_REPO_TAG_NAME)-win64-setup.zip       
+    artifact: win64       
     draft: false
     prerelease: true
     on:
