@@ -15,7 +15,7 @@ install:
 
 build: off
 
-before_deploy:
+test_script: 
   - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME:~1%
   - python -V
   - ps: Install-Product node $env:nodejs_version
@@ -56,11 +56,14 @@ before_deploy:
   - cd ..\..\..\
   - dir
 
+before_deploy:
+  - ECHO deploying
+
 artifacts:
-  - path: mavensmate-app/dist/win/win32/mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win32-setup.zip
+  - path: mavensmate-app\dist\win\win32\mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win32-setup.zip
     name: win32
 
-  - path: mavensmate-app/dist/win/win64/mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win64-setup.zip
+  - path: mavensmate-app\dist\win\win64\mavensmate-app-$(APPVEYOR_REPO_TAG_NAME)-win64-setup.zip
     name: win64
 
 on_finish:
