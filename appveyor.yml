@@ -29,7 +29,7 @@ before_deploy:
   - set PATH=%APPDATA%\npm;%PATH%
   - set GYP_MSVS_VERSION=2013
   - npm config set python C:\Python27\python.exe
-  - mkdir C:\projects\npm-cache
+  - if not exist C:\projects\npm-cache mkdir C:\projects\npm-cache
   - npm config set cache C:\projects\npm-cache --global
   - npm config set cache-lock-retries 1000
   - npm config set cache-lock-wait 100000
