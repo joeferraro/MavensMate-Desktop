@@ -7,31 +7,11 @@ var mavensmate = require('mavensmate');
 var shell = require('shell');
 var gitHubReleases = require('./github');
 
+// TODO: (issue #8)
 // autoUpdater.setFeedUrl('http://mycompany.com/myapp/latest?version=' + app.getVersion());
 
 // Report crashes to our server.
 require('crash-reporter').start();
-
-var openUrlInNewWindow = function(url) {
-  var newWindow = new BrowserWindow({
-    width: 1100, 
-    height: 800,
-    'min-width': 1100,
-    'min-height': 800,
-    icon: path.join(__dirname, 'resources', 'icon.png')
-  });
-  newWindow.loadUrl(url);
-  newWindow.show();
-};
-
-var openUrlInNewTab = function(url) {
-  if (url.indexOf('localhost') >= 0) {
-    mainWindow.webContents.send('openTab', url);
-    mainWindow.show();
-  } else {
-    shell.openExternal(url);
-  }
-};
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is GCed.
@@ -39,44 +19,8 @@ var mainWindow = null;
 var mavensMateServer = null;
 var applicationMenu = null;
 
-// Quit when all windows are closed.
-app.on('window-all-closed', function() {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  app.quit();
-});
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-app.on('ready', function() {  
-  // check for update
-  var options = {
-    repo: 'joeferraro/mavensmate-app',
-    currentVersion: app.getVersion()
-  };
-  var updateChecker = new gitHubReleases(options);
-  updateChecker.check()
-    .then(function(updateCheckResult) {
-      setup(updateCheckResult);
-    })
-    .catch(function(err) {
-      console.error(err);
-      setup();
-    });
-});
-
-var setup = function(updateCheckResult) {
-  console.log('update check result: ', updateCheckResult);
-
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
-    width: 1100, 
-    height: 800,
-    'min-width': 1100,
-    'min-height': 800,
-    icon: path.join(__dirname, 'resources', 'icon.png')
-  });
-
+// attaches menu to application (edit, view, window, help, etc)
+var attachAppMenu = function() {
   if (!Menu.getApplicationMenu()) {
     var template;
     if (process.platform == 'darwin') {
@@ -216,31 +160,53 @@ var setup = function(updateCheckResult) {
     var menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
   }
+};
+
+// attaches the main window
+var attachMainWindow = function(updateCheckResult, restartServer) {
+  console.log('attaching main application window');
+  console.log('update check result: ', updateCheckResult);
+
+  // Create the browser window.
+  mainWindow = new BrowserWindow({
+    width: 1100, 
+    height: 800,
+    'min-width': 1100,
+    'min-height': 800,
+    icon: path.join(__dirname, 'resources', 'icon.png')
+  });
 
   // and load the index.html of the app.
   mainWindow.loadUrl('file://' + __dirname + '/index.html');
 
   mainWindow.webContents.on('did-finish-load', function() {
-    if (mavensMateServer && mavensMateServer.stop) { // happens when app is restarted
+    if (mavensMateServer && restartServer && mavensMateServer.stop) { // happens when app is restarted
       mavensMateServer.stop();
+      mavensMateServer = null;
     }
-    mavensmate
-      .startServer({
-        name: 'mavensmate-app',
-        port: 56248,
-        windowOpener: openUrlInNewTab
-      })
-      .then(function(server) {
-        mavensMateServer = server;
-        if (updateCheckResult && updateCheckResult.needsUpdate) {
-          mainWindow.webContents.send('needsUpdate', updateCheckResult);
-        }
-        mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
-      })
-      .catch(function(err) {
-        console.error(err);
-        mainWindow.loadUrl('http://localhost:56248/app/error');
-      });
+    if (!mavensMateServer) {
+      // either app just opened or was reloaded
+      mavensmate
+        .startServer({
+          name: 'mavensmate-app',
+          port: 56248,
+          windowOpener: openUrlInNewTab
+        })
+        .then(function(server) {
+          mavensMateServer = server;
+          if (updateCheckResult && updateCheckResult.needsUpdate) {
+            mainWindow.webContents.send('needsUpdate', updateCheckResult);
+          }
+          mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
+        })
+        .catch(function(err) {
+          console.error(err);
+          mainWindow.loadUrl('http://localhost:56248/app/error');
+        });
+    } else {
+      // app window was closed, now it's being opened again
+      mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
+    }
   });
 
   // Open the devtools.
@@ -253,4 +219,65 @@ var setup = function(updateCheckResult) {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+};
+
+// unused?
+var openUrlInNewWindow = function(url) {
+  var newWindow = new BrowserWindow({
+    width: 1100, 
+    height: 800,
+    'min-width': 1100,
+    'min-height': 800,
+    icon: path.join(__dirname, 'resources', 'icon.png')
+  });
+  newWindow.loadUrl(url);
+  newWindow.show();
+};
+
+// adds tab to the main window (typically called from the core via windowOpener function passed to client)
+var openUrlInNewTab = function(url) {
+  if (!mainWindow) {
+    attachMainWindow(null, false);
+  }
+  if (url.indexOf('localhost') >= 0) {
+    mainWindow.webContents.send('openTab', url);
+    mainWindow.show();
+  } else {
+    shell.openExternal(url);
+  }
+};
+
+// Quit when all windows are closed on platforms other than OSX, as per platform guidelines
+app.on('window-all-closed', function() {
+  // On OS X it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// will check for updates against github releases and pass the result to setup
+app.on('ready', function() {  
+  // check for update
+  var options = {
+    repo: 'joeferraro/mavensmate-app',
+    currentVersion: app.getVersion()
+  };
+  var updateChecker = new gitHubReleases(options);
+  updateChecker.check()
+    .then(function(updateCheckResult) {
+      setup(updateCheckResult);
+    })
+    .catch(function(err) {
+      console.error(err);
+      setup();
+    });
+});
+
+// attaches the app menu and instantiates and attaches the app's main window 
+var setup = function(updateCheckResult) {
+  attachAppMenu();
+  attachMainWindow(updateCheckResult);
 }
