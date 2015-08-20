@@ -61,7 +61,7 @@
 			}
 
 			function addUpdateNotifier(updateInfo) {
-				$("#update span a").html('A new version of MavensMate ('+updateInfo.latestVersion+') is available for download (current '+updateInfo.currentVersion+')');
+				$("#update span a").html('A new version of MavensMate ('+updateInfo.latestVersion+') is available for download (current: '+updateInfo.currentVersion+')');
 				$("#update span a").on('click', function() {
 					shell.openExternal(updateInfo.url);
 				});

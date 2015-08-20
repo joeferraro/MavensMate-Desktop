@@ -96,8 +96,8 @@ GitHubUpdateNotifier.prototype.check = function() {
           var latestVersion = semver.clean(latest);
           resolve({
             needsUpdate: true,
-            currentVersion: currentVersion,
-            latestVersion: latestVersion,
+            currentVersion: 'v'+currentVersion,
+            latestVersion: 'v'+latestVersion,
             url: 'https://github.com/'+self.repo+'/releases/latest'
           });
         }
