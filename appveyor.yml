@@ -37,7 +37,7 @@ test_script:
   - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
   - set PATH=C:\Program Files\MSBuild\14.0\Bin;%PATH%
   - cd app
-  - npm install
+  - npm install --msvs_version=2013
   - if exist C:\projects\mavensmate-app\app\node_modules\nslog rd /s /q C:\projects\mavensmate-app\app\node_modules\nslog
   - .\node_modules\.bin\electron-rebuild
   - npm install electron-builder -g
