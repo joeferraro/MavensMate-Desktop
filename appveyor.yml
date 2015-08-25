@@ -57,7 +57,7 @@ before_deploy:
   - ECHO deploying
 
 artifacts:
-  - path: dist\win\win%platform%\*.zip
+  - path: dist\win\win-%platform%\*.zip
     name: setupzip
 
 # on_finish:
