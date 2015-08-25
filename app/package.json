@@ -1,6 +1,6 @@
 {
   "name": "mavensmate-app",
-  "version": "0.0.1-beta6",
+  "version": "0.0.1-beta7",
   "main": "main.js",
   "scripts": {
     "build": "npm run clean && npm run build:osx && npm run build:win",
@@ -15,8 +15,8 @@
     "dev": "electron ./app",
     "pack": "npm run pack:osx && npm run pack:win",
     "pack:osx": "npm run build:osx && electron-builder \"../dist/osx/MavensMate-darwin-x64/MavensMate.app\" --platform=osx --out=\"../dist/osx\" --config=../packager.json",
-    "pack:win-x64": "npm run build:win-x64 && mkdir ..\\dist\\win\\x64 && electron-builder \"..\\dist\\win\\MavensMate-win32-x64\" --platform=win --out=\"..\\dist\\win\\x64\" --config=..\\packager.json",
-    "pack:win-x86": "npm run build:win-x86 && mkdir ..\\dist\\win\\x86 && electron-builder \"..\\dist\\win\\MavensMate-win32-ia32\" --platform=win --out=\"..\\dist\\win\\x86\" --config=../packager.json",
+    "pack:win-x64": "npm run build:win-x64 && mkdir ..\\dist\\win\\win-x64 && electron-builder \"..\\dist\\win\\MavensMate-win32-x64\" --platform=win --out=\"..\\dist\\win\\win-x64\" --config=..\\packager.json",
+    "pack:win-x86": "npm run build:win-x86 && mkdir ..\\dist\\win\\win-x86 && electron-builder \"..\\dist\\win\\MavensMate-win32-ia32\" --platform=win --out=\"..\\dist\\win\\win-x86\" --config=../packager.json",
     "reset": "npm run clean && rm -rf ./node_modules"
   },
   "dependencies": {

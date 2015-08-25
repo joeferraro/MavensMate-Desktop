@@ -46,8 +46,8 @@ test_script:
   - npm install electron-packager -g
   - npm run pack:win-%platform%
   - dir ..\dist\win
-  - dir ..\dist\win\win%platform%
-  - cd ..\dist\win\win%platform%
+  - dir ..\dist\win\win-%platform%
+  - cd ..\dist\win\win-%platform%
   - 7z a -tzip "mavensmate-app-v%VERSION%-win-%platform%-setup.zip" "MavensMate Setup.exe"
   - dir
   - cd ..\..\..\
