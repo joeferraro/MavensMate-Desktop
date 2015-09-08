@@ -120,6 +120,42 @@ var attachAppMenu = function() {
           ]
         },
         {
+          label: 'Advanced',
+          submenu: [
+            {
+              label: 'Toggle Core Developer Tools',
+              accelerator: (function() {
+                if (process.platform === 'darwin')
+                  return 'Alt+Command+K';
+                else
+                  return 'Ctrl+Shift+K';
+              })(),
+              click: function(item, focusedWindow) {
+                if (focusedWindow) {
+                  console.log(item);
+                  console.log(focusedWindow);
+                  // focusedWindow.toggleDevTools();
+                  focusedWindow.webContents.send('webviewDevTools');
+                }
+              }
+            },
+            {
+              label: 'Toggle Mavensmate-App Developer Tools',
+              accelerator: (function() {
+                if (process.platform === 'darwin')
+                  return 'Alt+Command+I';
+                else
+                  return 'Ctrl+Shift+I';
+              })(),
+              click: function(item, focusedWindow) {
+                if (focusedWindow) {
+                  focusedWindow.toggleDevTools();
+                }
+              }
+            }
+          ]
+        },
+        {
           label: 'Help',
           submenu: [
             {

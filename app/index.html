@@ -42,7 +42,11 @@
 					} else if (e.metaKey && e.altKey && e.which === 75) {
 					  	webviewDevTools();
 					} else if (e.metaKey && e.which === 82) {
+						// reload, not working ...
 						// webviewReload();
+					} else if (e.metaKey && e.which === 87) {
+						e.preventDefault();
+						closeTab(app.tab.selectedTab.id);
 					}
 				});
 
@@ -73,6 +77,9 @@
 			});
 			ipc.on('needsUpdate', function(updateInfo) {
 				addUpdateNotifier(updateInfo);
+			});
+			ipc.on('webviewDevTools', function() {
+				webviewDevTools();
 			});
 			
 		</script>
