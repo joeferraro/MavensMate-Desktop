@@ -125,6 +125,13 @@ var attachAppMenu = function() {
             {
               label: 'Learn More',
               click: function() { require('shell').openExternal('http://mavensmate.com') }
+            },
+            {
+              label: 'Submit an Issue',
+              click: function() { require('shell').openExternal('https://github.com/joeferraro/MavensMate/issues') }
+            },
+            {
+              label: 'mavensmate-app v'+require('./package.json').version
             }
           ]
         }
