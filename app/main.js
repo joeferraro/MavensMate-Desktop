@@ -264,18 +264,18 @@ var attachMainWindow = function(updateCheckResult, restartServer) {
   });
 };
 
-// unused?
-var openUrlInNewWindow = function(url) {
-  var newWindow = new BrowserWindow({
-    width: 1100, 
-    height: 800,
-    'min-width': 1100,
-    'min-height': 800,
-    icon: path.join(__dirname, 'resources', 'icon.png')
-  });
-  newWindow.loadUrl(url);
-  newWindow.show();
-};
+// // unused?
+// var openUrlInNewWindow = function(url) {
+//   var newWindow = new BrowserWindow({
+//     width: 1100, 
+//     height: 800,
+//     'min-width': 1100,
+//     'min-height': 800,
+//     icon: path.join(__dirname, 'resources', 'icon.png')
+//   });
+//   newWindow.loadUrl(url);
+//   newWindow.show();
+// };
 
 // adds tab to the main window (typically called from the core via windowOpener function passed to client)
 var openUrlInNewTab = function(url) {
@@ -283,9 +283,11 @@ var openUrlInNewTab = function(url) {
     attachMainWindow(null, false);
   }
   if (url.indexOf('localhost') >= 0) {
+    // opens mavensmate ui in mavensmate-app chrome
     mainWindow.webContents.send('openTab', url);
     mainWindow.show();
   } else {
+    // open external url in local browser
     shell.openExternal(url);
   }
 };

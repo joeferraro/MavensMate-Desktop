@@ -1,13 +1,12 @@
 var remote = require('remote'),
   ipc = require('ipc'),
   path = remote.require('path'),
-  shell = require('shell');
+  shell = require('shell'),
+  $ = require('jquery');
 
 var TAB_ID_PREFIX = 'tab-',
-  VIEW_WRAPPER_ID_PREFIX = 'view-wrapper',
+  VIEW_WRAPPER_ID_PREFIX = 'view-wrapper-',
   VIEW_ID_PREFIX = 'view-';
-  // PRELOAD_FILE_PATH = path.join(__dirname, 'preload.js');
-  // console.log(PRELOAD_FILE_PATH)
 var app = { tab: { list: [], selectedTab: null } };
 
 function insertDomElement(parent, type, attributes, innerHtml, eventListeners) {
@@ -82,11 +81,13 @@ app.closeView = function closeView(id) {
 };
 
 app.viewStartedLoading = function viewStartedLoading(event) {
-  //console.log(event.type, event.srcElement.id, event.srcElement.getId());
+  // console.log('viewStartedLoading');
+  // console.log(event.type, event.srcElement.id, event.srcElement.getId());
 };
 
 app.viewFinishedLoading = function viewFinishedLoading(event) {
-  //console.log(event.type, event.srcElement.id, event.srcElement.getId());
+  // console.log('viewFinishedLoading');
+  // console.log(event.type, event.srcElement.id, event.srcElement.getId());
 };
 
 app.viewClosing = function viewClosing(event) {
@@ -178,19 +179,30 @@ app.tabsArrayRenderer = function tabsArrayRenderer(changes) {
     var viewNodeAttributes = {
       id: VIEW_ID_PREFIX + tab.id,
       src: tab.url,
-      // preload: PRELOAD_FILE_PATH,
       nodeintegration: null
     };
     viewNodeAttributes.class = tab.active ? 'active' : '';
 
-    function webViewFinishedLoading(evt) {
-      var newWebView2 = document.getElementById(viewNodeAttributes.id);
-      insertDomElement('tabs', 'li', tabNodeAttributes, ' <div class="title">'+newWebView2.getTitle().replace('MavensMate |', '')+'</div> <div class="octicon octicon-x close-icon" onclick="closeTab(\'' + tab.id + '\')"></div>');
-      app.viewFinishedLoading(evt);
+    function webViewFinishedLoading(evt) {      
+      var tabTitle = document.getElementById(viewNodeAttributes.id).getTitle().replace('MavensMate |', '');
+      $('li#tab-'+tab.id+' div.title').html(tabTitle);
+
+      // fade out loading webview
+      $('#'+VIEW_ID_PREFIX + tab.id + '-loading').fadeOut( 200, function() {
+        // remove loading webview from DOM
+        removeDomElement(viewWrapperNodeAttributes.id, VIEW_ID_PREFIX + tab.id + '-loading');
+
+        // notify app view finished loading
+        app.viewFinishedLoading(evt);
+      });
+    }
+
+    function webViewStartedLoading(evt) {
+      // console.log('web view started loading ...');
+      // console.log(evt);      
     }
 
     function webViewNewWindowHandler(e) {
-      console.log('webViewNewWindowHandler', e);
       if (e.url.indexOf('localhost') > 0) {
         app.addTab({ id: '' , url: e.url });
       } else {
@@ -198,9 +210,23 @@ app.tabsArrayRenderer = function tabsArrayRenderer(changes) {
       }
     }
 
-    //var wrapper = insertDomElement('views', 'div', viewWrapperNodeAttributes);
-    var newWebView = insertDomElement('views', 'webview', viewNodeAttributes, null, [
-      { eventName: 'did-start-loading', fn:  app.viewStartedLoading },
+    insertDomElement(
+      'tabs', 
+      'li', 
+      tabNodeAttributes, 
+      ' <div class="title">Loading...</div> <div class="octicon octicon-x close-icon" onclick="closeTab(\'' + tab.id + '\')"></div>'
+    );
+
+    var wrapper = insertDomElement('views', 'div', viewWrapperNodeAttributes);
+    var loadingWebView = insertDomElement(viewWrapperNodeAttributes.id, 'webview', {
+        id: VIEW_ID_PREFIX + tab.id + '-loading',
+        src: 'file://' + __dirname + '/loading.html',
+        class: 'webViewLoading'
+      }, null, [
+      
+    ]);
+    var newWebView = insertDomElement(viewWrapperNodeAttributes.id, 'webview', viewNodeAttributes, null, [
+      { eventName: 'did-start-loading', fn:  webViewStartedLoading },
       { eventName: 'did-finish-load', fn:  webViewFinishedLoading },
       { eventName: 'close', fn:  app.viewClosing },
       { eventName: 'crashed', fn:  app.viewCrashed },
