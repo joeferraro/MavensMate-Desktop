@@ -206,9 +206,8 @@ var attachAppMenu = function() {
 };
 
 // attaches the main window
-var attachMainWindow = function(updateCheckResult, restartServer) {
+var attachMainWindow = function(restartServer) {
   console.log('attaching main application window');
-  console.log('update check result: ', updateCheckResult);
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -237,10 +236,8 @@ var attachMainWindow = function(updateCheckResult, restartServer) {
         })
         .then(function(server) {
           mavensMateServer = server;
-          if (updateCheckResult && updateCheckResult.needsUpdate) {
-            mainWindow.webContents.send('needsUpdate', updateCheckResult);
-          }
           mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
+          checkForUpdates();
         })
         .catch(function(err) {
           console.error(err);
@@ -305,7 +302,12 @@ app.on('window-all-closed', function() {
 // initialization and is ready to create browser windows.
 // will check for updates against github releases and pass the result to setup
 app.on('ready', function() {  
-  // check for update
+  attachAppMenu();
+  attachMainWindow();
+});
+
+var checkForUpdates = function() {
+  console.log('checking for updates ...');
   var options = {
     repo: 'joeferraro/mavensmate-app',
     currentVersion: app.getVersion()
@@ -313,16 +315,12 @@ app.on('ready', function() {
   var updateChecker = new gitHubReleases(options);
   updateChecker.check()
     .then(function(updateCheckResult) {
-      setup(updateCheckResult);
+      console.log('update check result: ', updateCheckResult);
+      if (updateCheckResult && updateCheckResult.needsUpdate) {
+        mainWindow.webContents.send('needsUpdate', updateCheckResult);
+      }
     })
     .catch(function(err) {
       console.error(err);
-      setup();
     });
-});
-
-// attaches the app menu and instantiates and attaches the app's main window 
-var setup = function(updateCheckResult) {
-  attachAppMenu();
-  attachMainWindow(updateCheckResult);
-}
+};
