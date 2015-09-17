@@ -11,6 +11,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     g++ -v
     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
     g++ -v
+    sudo apt-get install gnome-keyring
     sudo apt-get install libgnome-keyring-dev
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     echo running osx build
