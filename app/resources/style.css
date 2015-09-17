@@ -144,6 +144,7 @@ body {
   margin: 0 1em;
   text-overflow: clip;
   -webkit-mask: linear-gradient(to left, rgba(0, 0, 0, 0), #000000 1em) no-repeat;
+  cursor: default;
 }
 .tab-bar .tab .title {
   overflow: hidden;
