@@ -16,9 +16,10 @@ install:
 build: off
 
 test_script: 
-  - ECHO running test script
-  - ECHO %APPVEYOR_REPO_TAG_NAME%
-  - if "%APPVEYOR_REPO_TAG_NAME%" == "" exit 0
+  - dir
+
+before_deploy:
+  - ECHO deploying
   - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME:~1%
   - python -V
   - ps: Install-Product node $env:nodejs_version $env:platform
@@ -55,9 +56,6 @@ test_script:
   - dir
   - cd ..\..\..\
   - dir
-
-before_deploy:
-  - ECHO deploying
 
 artifacts:
   - path: dist\win\win-$(platform)\*.zip
