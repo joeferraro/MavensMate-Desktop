@@ -16,10 +16,6 @@ install:
 build: off
 
 test_script: 
-  - dir
-
-before_deploy:
-  - ECHO deploying
   - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME:~1%
   - python -V
   - ps: Install-Product node $env:nodejs_version $env:platform
@@ -56,6 +52,9 @@ before_deploy:
   - dir
   - cd ..\..\..\
   - dir
+
+before_deploy:
+  - ECHO deploying
 
 artifacts:
   - path: dist\win\win-$(platform)\*.zip
