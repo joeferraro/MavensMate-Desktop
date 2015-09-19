@@ -22,6 +22,8 @@ curl -L "https://github.com/npm/npm/archive/v3.2.0.tar.gz" >> npm3.tar.gz
 tar -xzvf npm3.tar.gz
 ls
 cd mavensmate-app/app
+node ../../npm-3.2.0/bin/npm-cli.js install -g node-gyp-install
+node-gyp-install
 node ../../npm-3.2.0/bin/npm-cli.js install
 ls
 ../../npm-3.2.0/bin/npm-cli.js install electron-builder -g
