@@ -11,12 +11,12 @@ platform:
 # - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 install:
+  - if "%APPVEYOR_REPO_TAG_NAME%" == "" exit 0
   - dir
 
 build: off
 
 test_script: 
-  - if not defined APPVEYOR_REPO_TAG_NAME exit 0
   - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME:~1%
   - python -V
   - ps: Install-Product node $env:nodejs_version $env:platform
