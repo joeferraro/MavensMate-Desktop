@@ -26,7 +26,7 @@
     "semver": "^5.0.1"
   },
   "devDependencies": {
-    "electron-prebuilt": "0.30.4",
+    "electron-prebuilt": "0.33.0",
     "electron-rebuild": "1.0.0"
   }
 }
