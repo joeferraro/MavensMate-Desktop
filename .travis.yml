@@ -20,12 +20,12 @@ install:
   - node --version
 # script: ./.travis-build.sh
 script: 
-  - "echo Building mavensmate-app ..."
+  - "echo Building MavensMate-app ..."
 before_deploy: ./.travis-build.sh
 deploy:
   - provider: releases
     api-key: $GITHUB_API_KEY
-    file: ${HOME}/build/${TRAVIS_REPO_SLUG}/dist/linux/mavensmate-app-$TRAVIS_TAG-linux-x64.tar.gz
+    file: ${HOME}/build/${TRAVIS_REPO_SLUG}/dist/linux/MavensMate-app-$TRAVIS_TAG-linux-x64.tar.gz
     skip_cleanup: true
     on:
       tags: true
@@ -33,7 +33,7 @@ deploy:
 
   - provider: releases
     api-key: $GITHUB_API_KEY
-    file: ${HOME}/build/${TRAVIS_REPO_SLUG}/dist/osx/mavensmate-app-$TRAVIS_TAG-osx-x64.zip
+    file: ${HOME}/build/${TRAVIS_REPO_SLUG}/dist/osx/MavensMate-app-$TRAVIS_TAG-osx-x64.zip
     skip_cleanup: true
     on:
       tags: true

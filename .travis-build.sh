@@ -21,7 +21,7 @@ cd ..
 curl -L "https://github.com/npm/npm/archive/v3.2.0.tar.gz" >> npm3.tar.gz
 tar -xzvf npm3.tar.gz
 ls
-cd mavensmate-app/app
+cd MavensMate-app/app
 node ../../npm-3.2.0/bin/npm-cli.js install -g node-gyp-install
 node-gyp-install
 node ../../npm-3.2.0/bin/npm-cli.js install
@@ -37,18 +37,18 @@ if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     ls
     cd ..
     ls
-    tar -zcvf mavensmate-app-$TRAVIS_TAG-linux-x64.tar.gz -C MavensMate-linux-x64 .
+    tar -zcvf MavensMate-app-$TRAVIS_TAG-linux-x64.tar.gz -C MavensMate-linux-x64 .
     ls
     # npm run pack:win
     # cd ../dist/win
     # ls
-    # # zip mavensmate-app-$TRAVIS_TAG-win-ia32.tar.gz MavensMate-win32-ia32 .
-    # # zip mavensmate-app-$TRAVIS_TAG-win-x64.tar.gz MavensMate-win32-x64 .
+    # # zip MavensMate-app-$TRAVIS_TAG-win-ia32.tar.gz MavensMate-win32-ia32 .
+    # # zip MavensMate-app-$TRAVIS_TAG-win-x64.tar.gz MavensMate-win32-x64 .
 
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     npm run pack:osx
     cd ../dist/osx
     ls
-    zip mavensmate-app-$TRAVIS_TAG-osx-x64.zip MavensMate.dmg
+    zip MavensMate-app-$TRAVIS_TAG-osx-x64.zip MavensMate.dmg
     ls
 fi

@@ -40,7 +40,7 @@ test_script:
   - set PATH=C:\Program Files\MSBuild\14.0\Bin;%PATH%
   - cd app
   - npm install
-  - if exist C:\projects\mavensmate-app\app\node_modules\nslog rd /s /q C:\projects\mavensmate-app\app\node_modules\nslog
+  - if exist C:\projects\MavensMate-app\app\node_modules\nslog rd /s /q C:\projects\MavensMate-app\app\node_modules\nslog
   - .\node_modules\.bin\electron-rebuild
   - npm install electron-builder -g
   - npm install electron-packager -g
@@ -48,7 +48,7 @@ test_script:
   - dir ..\dist\win
   - dir ..\dist\win\win-%platform%
   - cd ..\dist\win\win-%platform%
-  - 7z a -tzip "mavensmate-app-v%VERSION%-win-%platform%-setup.zip" "MavensMate Setup.exe"
+  - 7z a -tzip "MavensMate-app-v%VERSION%-win-%platform%-setup.zip" "MavensMate Setup.exe"
   - dir
   - cd ..\..\..\
   - dir
@@ -62,14 +62,14 @@ artifacts:
 
 # on_finish:
 #   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-#   - type C:\projects\mavensmate-app\app\node_modules\npm-debug.log
+#   - type C:\projects\MavensMate-app\app\node_modules\npm-debug.log
 
 cache:
   - C:\nsis
-  - C:\Users\appveyor\AppData\Roaming\npm\node_modules -> C:\projects\mavensmate-app\app\package.json  # global npm modules
-  - C:\Users\appveyor\AppData\Roaming\npm-cache -> C:\projects\mavensmate-app\app\package.json         # npm cache
-  - C:\projects\npm-cache -> C:\projects\mavensmate-app\app\package.json
-  - C:\projects\mavensmate-app\app\node_modules -> C:\projects\mavensmate-app\app\package.json
+  - C:\Users\appveyor\AppData\Roaming\npm\node_modules -> C:\projects\MavensMate-app\app\package.json  # global npm modules
+  - C:\Users\appveyor\AppData\Roaming\npm-cache -> C:\projects\MavensMate-app\app\package.json         # npm cache
+  - C:\projects\npm-cache -> C:\projects\MavensMate-app\app\package.json
+  - C:\projects\MavensMate-app\app\node_modules -> C:\projects\MavensMate-app\app\package.json
 
 deploy:
    # Deploy to GitHub Releases
