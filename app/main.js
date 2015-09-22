@@ -29,6 +29,12 @@ var attachAppMenu = function() {
           label: 'MavensMate',
           submenu: [
             {
+              label: 'MavensMate-app v'+require('./package.json').version
+            },
+            {
+              type: 'separator'
+            },
+            {
               label: 'Services',
               submenu: []
             },
@@ -159,15 +165,15 @@ var attachAppMenu = function() {
           label: 'Help',
           submenu: [
             {
+              label: 'MavensMate-app v'+require('./package.json').version
+            },
+            {
               label: 'Learn More',
               click: function() { require('shell').openExternal('http://mavensmate.com') }
             },
             {
-              label: 'Submit an Issue',
+              label: 'Submit a GitHub Issue',
               click: function() { require('shell').openExternal('https://github.com/joeferraro/MavensMate/issues') }
-            },
-            {
-              label: 'mavensmate-app v'+require('./package.json').version
             }
           ]
         }
