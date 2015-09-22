@@ -16,7 +16,7 @@ install:
   - rm -rf ~/.nvm
   - git clone https://github.com/creationix/nvm.git ~/.nvm
   - source ~/.nvm/nvm.sh
-  - nvm install iojs-v3.1.0
+  - nvm install 0.12
   - node --version
 # script: ./.travis-build.sh
 script: 
