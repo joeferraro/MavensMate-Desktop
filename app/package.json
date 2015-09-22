@@ -4,10 +4,10 @@
   "main": "main.js",
   "scripts": {
     "build": "npm run clean && npm run build:osx && npm run build:win",
-    "build:linux": "npm run clean:linux && electron-packager ./ \"MavensMate\" --prune --out=../dist/linux --platform=linux --arch=x64 --version=0.33.0 --icon=../assets/icon.png",
-    "build:osx": "npm run clean:osx && electron-packager ./ \"MavensMate\" --prune --out=../dist/osx --platform=darwin --arch=x64 --version=0.33.0 --icon=../assets/icon.icns",
-    "build:win-x64": "npm run clean:win && electron-packager ./ \"MavensMate\" --prune --out=..\\dist\\win --platform=win32 --arch=x64 --version=0.33.0 --icon=..\\assets\\icon.ico",
-    "build:win-x86": "npm run clean:win && electron-packager ./ \"MavensMate\" --prune --out=..\\dist\\win --platform=win32 --arch=ia32 --version=0.33.0 --icon=..\\assets\\icon.ico",
+    "build:linux": "npm run clean:linux && electron-packager ./ \"MavensMate\" --prune --out=../dist/linux --platform=linux --arch=x64 --version=0.30.4 --icon=../assets/icon.png",
+    "build:osx": "npm run clean:osx && electron-packager ./ \"MavensMate\" --prune --out=../dist/osx --platform=darwin --arch=x64 --version=0.30.4 --icon=../assets/icon.icns",
+    "build:win-x64": "npm run clean:win && electron-packager ./ \"MavensMate\" --prune --out=..\\dist\\win --platform=win32 --arch=x64 --version=0.30.4 --icon=..\\assets\\icon.ico",
+    "build:win-x86": "npm run clean:win && electron-packager ./ \"MavensMate\" --prune --out=..\\dist\\win --platform=win32 --arch=ia32 --version=0.30.4 --icon=..\\assets\\icon.ico",
     "clean": "rm -rf ../dist",
     "clean:linux": "rm -rf ../dist/linux",
     "clean:osx": "rm -rf ../dist/osx",
@@ -26,7 +26,7 @@
     "semver": "^5.0.1"
   },
   "devDependencies": {
-    "electron-prebuilt": "0.33.0",
+    "electron-prebuilt": "0.30.4",
     "electron-rebuild": "1.0.0"
   }
 }
