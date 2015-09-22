@@ -108,6 +108,15 @@ var attachAppMenu = function() {
           label: 'Window',
           submenu: [
             {
+              label: 'New Window',
+              accelerator: 'Command+N',
+              click: function() {
+                if (!mainWindow) {
+                  attachMainWindow(false, 'http://localhost:56248/app/home/index');
+                }
+              }
+            },
+            {
               label: 'Minimize',
               accelerator: 'Command+M',
               selector: 'performMiniaturize:'
@@ -213,7 +222,7 @@ var attachAppMenu = function() {
 };
 
 // attaches the main window
-var attachMainWindow = function(restartServer) {
+var attachMainWindow = function(restartServer, url) {
   return new Promise(function(resolve, reject) {
     try {
       console.log('attaching main application window');
@@ -258,6 +267,9 @@ var attachMainWindow = function(restartServer) {
             });
         } else {
           // app window was closed, now it's being opened again
+          if (url) {
+            mainWindow.webContents.send('openTab', url);
+          }
           resolve();
         }
       });
