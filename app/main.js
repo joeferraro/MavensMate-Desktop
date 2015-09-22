@@ -1,11 +1,13 @@
-var app = require('app');  // Module to control application life.
-var autoUpdater = require('auto-updater');
-var path = require('path');
-var Menu = require('menu');
-var BrowserWindow = require('browser-window');  // Module to create native browser window.
-var mavensmate = require('mavensmate');
-var shell = require('shell');
-var gitHubReleases = require('./github');
+var Promise         = require('bluebird');
+var path            = require('path');
+var app             = require('app');
+var autoUpdater     = require('auto-updater');
+var Menu            = require('menu');
+var BrowserWindow   = require('browser-window'); 
+var shell           = require('shell');
+var mavensmate      = require('mavensmate');
+var ipc             = require('ipc');
+var GitHubReleases  = require('./github');
 
 // TODO: (issue #8)
 // autoUpdater.setFeedUrl('http://mycompany.com/myapp/latest?version=' + app.getVersion());
@@ -17,7 +19,6 @@ require('crash-reporter').start();
 // be closed automatically when the JavaScript object is GCed.
 var mainWindow = null;
 var mavensMateServer = null;
-var applicationMenu = null;
 
 // attaches menu to application (edit, view, window, help, etc)
 var attachAppMenu = function() {
@@ -213,87 +214,117 @@ var attachAppMenu = function() {
 
 // attaches the main window
 var attachMainWindow = function(restartServer) {
-  console.log('attaching main application window');
+  return new Promise(function(resolve, reject) {
+    try {
+      console.log('attaching main application window');
 
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
-    width: 1100, 
-    height: 800,
-    'min-width': 1100,
-    'min-height': 800,
-    icon: path.join(__dirname, 'resources', 'icon.png')
-  });
+      // Create the browser window.
+      mainWindow = new BrowserWindow({
+        width: 1100, 
+        height: 800,
+        'min-width': 1100,
+        'min-height': 800,
+        icon: path.join(__dirname, 'resources', 'icon.png')
+      });
 
-  // and load the index.html of the app.
-  mainWindow.loadUrl('file://' + __dirname + '/index.html');
+      // and load the index.html of the app.
+      mainWindow.loadUrl('file://' + __dirname + '/index.html');
 
-  mainWindow.webContents.on('did-finish-load', function() {
-    if (mavensMateServer && restartServer && mavensMateServer.stop) { // happens when app is restarted
-      mavensMateServer.stop();
-      mavensMateServer = null;
+      mainWindow.webContents.on('did-finish-load', function() {
+        if (mavensMateServer && restartServer && mavensMateServer.stop) { // happens when app is restarted
+          mavensMateServer.stop();
+          mavensMateServer = null;
+        }
+        if (!mavensMateServer) {
+          // we start the mm server, bc app was just started or was reloaded (typically during dev)
+          mavensmate
+            .startServer({
+              name: 'mavensmate-app',
+              port: 56248,
+              windowOpener: openUrlInNewTab
+            })
+            .then(function(server) {
+              mavensMateServer = server;
+              mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
+              return checkForUpdates()
+            })
+            .then(function() {
+              resolve();
+            })
+            .catch(function(err) {
+              console.error(err);
+              mainWindow.loadUrl('http://localhost:56248/app/error');
+              resolve();
+            });
+        } else {
+          // app window was closed, now it's being opened again
+          resolve();
+        }
+      });
+
+      // Open the devtools.
+      // mainWindow.openDevTools();
+
+      // Emitted when the window is closed.
+      mainWindow.on('closed', function() {
+        // Dereference the window object, usually you would store windows
+        // in an array if your app supports multi windows, this is the time
+        // when you should delete the corresponding element.
+        mainWindow = null;
+      });
+    } catch(e) {
+      reject(e);
     }
-    if (!mavensMateServer) {
-      // either app just opened or was reloaded
-      mavensmate
-        .startServer({
-          name: 'mavensmate-app',
-          port: 56248,
-          windowOpener: openUrlInNewTab
-        })
-        .then(function(server) {
-          mavensMateServer = server;
-          mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
-          checkForUpdates();
-        })
-        .catch(function(err) {
-          console.error(err);
-          mainWindow.loadUrl('http://localhost:56248/app/error');
-        });
-    } else {
-      // app window was closed, now it's being opened again
-      mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
-    }
-  });
-
-  // Open the devtools.
-  // mainWindow.openDevTools();
-
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function() {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null;
   });
 };
-
-// // unused?
-// var openUrlInNewWindow = function(url) {
-//   var newWindow = new BrowserWindow({
-//     width: 1100, 
-//     height: 800,
-//     'min-width': 1100,
-//     'min-height': 800,
-//     icon: path.join(__dirname, 'resources', 'icon.png')
-//   });
-//   newWindow.loadUrl(url);
-//   newWindow.show();
-// };
 
 // adds tab to the main window (typically called from the core via windowOpener function passed to client)
 var openUrlInNewTab = function(url) {
-  if (!mainWindow) {
-    attachMainWindow(null, false);
-  }
-  if (url.indexOf('localhost') >= 0) {
-    // opens mavensmate ui in mavensmate-app chrome
-    mainWindow.webContents.send('openTab', url);
-    mainWindow.show();
-  } else {
-    // open external url in local browser
-    shell.openExternal(url);
-  }
+  var waitFor = !mainWindow ? attachMainWindow() : Promise.resolve();
+
+  waitFor
+    .then(function() {
+      if (url.indexOf('localhost') >= 0) {
+        // opens mavensmate ui in mavensmate-app chrome
+        mainWindow.webContents.send('openTab', url);
+        mainWindow.show();
+      } else {
+        // open external url in local browser
+        shell.openExternal(url);
+      }
+    })
+    .catch(function(err) {
+      console.error('COuld not open url in new tab ...', err);
+    });
 };
+
+var checkForUpdates = function() {
+  return new Promise(function(resolve, reject) {
+    console.log('checking for updates ...');
+    var options = {
+      repo: 'joeferraro/mavensmate-app',
+      currentVersion: app.getVersion()
+    };
+    var updateChecker = new GitHubReleases(options);
+    updateChecker.check()
+      .then(function(updateCheckResult) {
+        console.log('update check result: ', updateCheckResult);
+        if (updateCheckResult && updateCheckResult.needsUpdate) {
+          mainWindow.webContents.send('needsUpdate', updateCheckResult);
+        }
+        resolve();
+      })
+      .catch(function(err) {
+        console.error(err);
+        reject(err);
+      });
+  });
+};
+
+// when the last tab is closed, we close the entire browser window
+ipc.on('last-tab-closed', function() {
+  mainWindow.close();
+});
 
 // Quit when all windows are closed on platforms other than OSX, as per platform guidelines
 app.on('window-all-closed', function() {
@@ -309,24 +340,8 @@ app.on('window-all-closed', function() {
 // will check for updates against github releases and pass the result to setup
 app.on('ready', function() {  
   attachAppMenu();
-  attachMainWindow();
-});
-
-var checkForUpdates = function() {
-  console.log('checking for updates ...');
-  var options = {
-    repo: 'joeferraro/mavensmate-app',
-    currentVersion: app.getVersion()
-  };
-  var updateChecker = new gitHubReleases(options);
-  updateChecker.check()
-    .then(function(updateCheckResult) {
-      console.log('update check result: ', updateCheckResult);
-      if (updateCheckResult && updateCheckResult.needsUpdate) {
-        mainWindow.webContents.send('needsUpdate', updateCheckResult);
-      }
-    })
+  attachMainWindow()
     .catch(function(err) {
-      console.error(err);
+      console.error('Error attaching main window...', err);
     });
-};
+});

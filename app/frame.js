@@ -61,15 +61,22 @@ app.selectTab = function selectTab(id) {
 };
 
 app.closeTab = function closeTab(id) {
-  if (app.tab.list.length === 1) return;
   for (var i = 0; i < app.tab.list.length; i++) {
     if (app.tab.list[i].id === id) {
       var removedTab = app.tab.list.splice(i, 1);
-      if (app.tab.selectedTab.id === id) {
-        app.selectTab(app.tab.list[i-1].id);        
+      // if there is more than 1 tab remaining, select the closest tab
+      if (app.tab.list.length > 0) {
+        if (app.tab.selectedTab.id === id) {
+          app.selectTab(app.tab.list[i-1].id);        
+        }
       }
       break;
     }
+  }
+
+  // if this is the last tab, close the main window
+  if (app.tab.list.length === 0) {
+    ipc.send('last-tab-closed');
   }
 };
 
@@ -150,7 +157,7 @@ app.tabsArrayRenderer = function tabsArrayRenderer(changes) {
             // remove tab
             removeDomElement('tabs', TAB_ID_PREFIX + change.removed[j].id)
             // remove view
-            removeDomElement('views', VIEW_ID_PREFIX + change.removed[j].id)
+            removeDomElement('views', VIEW_WRAPPER_ID_PREFIX + change.removed[j].id)
           }
         }
         for (var j = 0; j < addIndices.length; j++) {
