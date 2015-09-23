@@ -4,6 +4,8 @@
 
 We packaged the local [MavensMate](https://github.com/joeferraro/MavensMate) server into a nifty, cross-platform application called MavensMate-app. Why did we do it? Quite simply, to make it easier to install and run MavensMate.
 
+[![Build Status](https://travis-ci.org/joeferraro/MavensMate-app.svg)](https://travis-ci.org/joeferraro/MavensMate-app)
+
 ## Installation
 
 Download and run from the [releases page](https://github.com/joeferraro/mavensmate-app/releases)
