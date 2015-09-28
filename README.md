@@ -6,6 +6,8 @@ We packaged the local [MavensMate](https://github.com/joeferraro/MavensMate) ser
 
 [![Build Status](https://travis-ci.org/joeferraro/MavensMate-app.svg)](https://travis-ci.org/joeferraro/MavensMate-app)
 
+<img width="1100" alt="9_27_15__11_46_pm" src="https://cloud.githubusercontent.com/assets/54157/10146854/e8e3695c-65f8-11e5-8a41-d1b3f77b7a14.png">
+
 ## Installation
 
 Download and run from the [releases page](https://github.com/joeferraro/mavensmate-app/releases)
