@@ -2,7 +2,7 @@
 
 ## What is MavensMate-app?
 
-We packaged the local [MavensMate](https://github.com/joeferraro/MavensMate) server into a nifty, cross-platform application called MavensMate-app. Why did we do it? Quite simply, to make it easier to install and run MavensMate.
+We packaged the local [MavensMate](https://github.com/joeferraro/MavensMate) server into a nifty, cross-platform application called MavensMate-app. Why did we do it? Quite simply, to make it easier to install and run MavensMate. All MavensMate plugins (Sublime Text, Atom, etc.) now require MavensMate-app to be installed and running in order to function properly.
 
 [![Build Status](https://travis-ci.org/joeferraro/MavensMate-app.svg)](https://travis-ci.org/joeferraro/MavensMate-app)
 
