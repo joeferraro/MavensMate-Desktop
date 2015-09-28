@@ -1,6 +1,6 @@
 {
   "name": "mavensmate-app",
-  "version": "0.0.3-beta1",
+  "version": "0.0.3-beta2",
   "main": "main.js",
   "scripts": {
     "build": "npm run clean && npm run build:osx && npm run build:win",
@@ -22,7 +22,7 @@
   "dependencies": {
     "bluebird": "^2.9.34",
     "jquery": "2.1.4",
-    "mavensmate": "0.0.40-beta2",
+    "mavensmate": "0.0.40-beta3",
     "semver": "^5.0.1"
   },
   "devDependencies": {
