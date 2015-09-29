@@ -36,23 +36,24 @@
 				return false;
 			}
 			
-			// function webviewReload() {
-			// 	var webview = document.getElementById(VIEW_ID_PREFIX + app.tab.selectedTab.id);
-			// 	webview.reload();
-			// 	// webview.send('Reload');
-			// 	return false;
-			// }
+			function webviewReload() {
+				var webview = document.getElementById(VIEW_ID_PREFIX + app.tab.selectedTab.id);
+				webview.reload();
+			}
 			 
 			$(function() {
 				$(document).on("keydown", function(e) { 
 					if (e.metaKey && e.altKey && e.which === 73) {
-					  	windowDevTools();
+					  // cmd + option + k to open electron dev tools
+					  windowDevTools();
 					} else if (e.metaKey && e.altKey && e.which === 75) {
-					  	webviewDevTools();
+						// cmd + option + i to open core dev tools
+					  webviewDevTools();
 					} else if (e.metaKey && e.which === 82) {
-						// reload, not working ...
-						// webviewReload();
+						// ctrl + r to reload page
+						webviewReload();
 					} else if (e.metaKey && e.which === 87) {
+						// ctrl + w to close tab
 						e.preventDefault();
 						closeTab(app.tab.selectedTab.id);
 					}
