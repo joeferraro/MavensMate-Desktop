@@ -13,7 +13,7 @@ var GitHubReleases  = require('./github');
 // autoUpdater.setFeedUrl('http://mycompany.com/myapp/latest?version=' + app.getVersion());
 
 // Report crashes to our server.
-require('crash-reporter').start();
+// require('crash-reporter').start();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is GCed.
@@ -255,14 +255,14 @@ var attachMainWindow = function(restartServer, url) {
             .then(function(server) {
               mavensMateServer = server;
               mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
-              return checkForUpdates()
+              return checkForUpdates();
             })
             .then(function() {
               resolve();
             })
             .catch(function(err) {
               console.error(err);
-              mainWindow.loadUrl('http://localhost:56248/app/error');
+              mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
               resolve();
             });
         } else {
