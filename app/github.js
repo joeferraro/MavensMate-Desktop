@@ -43,7 +43,21 @@ GitHubUpdateNotifier.prototype._getLatestTag = function(cb) {
       });
     };
 
-    https.request(options, callback).end();
+    var req = https.request(options, callback);
+    req.on('socket', function(socket) {
+      socket.setTimeout(5000);  
+      socket.on('timeout', function() {
+        console.log('timed out reaching github');
+        req.abort();
+      });
+    });
+    req.on('error', function(err) {
+      // if (err.code === "ECONNRESET") {
+      //     console.log("Timeout occurs");
+      // }
+      console.log('error reaching github', err);
+    });
+    req.end();
   });
 }
 
