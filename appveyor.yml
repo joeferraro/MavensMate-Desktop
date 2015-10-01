@@ -42,7 +42,7 @@ test_script:
   - npm install
   - if exist C:\projects\MavensMate-app\app\node_modules\nslog rd /s /q C:\projects\MavensMate-app\app\node_modules\nslog
   - .\node_modules\.bin\electron-rebuild
-  - npm install electron-builder -g
+  - npm install joeferraro/electron-builder -g
   - npm install electron-packager -g
   - npm run pack:win-%platform%
   - dir ..\dist\win
