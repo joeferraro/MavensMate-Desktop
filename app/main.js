@@ -205,11 +205,54 @@ var attachAppMenu = function() {
           ]
         },
         {
+          label: 'Advanced',
+          submenu: [
+            {
+              label: 'Toggle Core Developer Tools',
+              accelerator: (function() {
+                if (process.platform === 'darwin')
+                  return 'Alt+Command+K';
+                else
+                  return 'Ctrl+Shift+K';
+              })(),
+              click: function(item, focusedWindow) {
+                if (focusedWindow) {
+                  console.log(item);
+                  console.log(focusedWindow);
+                  // focusedWindow.toggleDevTools();
+                  focusedWindow.webContents.send('webviewDevTools');
+                }
+              }
+            },
+            {
+              label: 'Toggle Mavensmate-App Developer Tools',
+              accelerator: (function() {
+                if (process.platform === 'darwin')
+                  return 'Alt+Command+I';
+                else
+                  return 'Ctrl+Shift+I';
+              })(),
+              click: function(item, focusedWindow) {
+                if (focusedWindow) {
+                  focusedWindow.toggleDevTools();
+                }
+              }
+            }
+          ]
+        },
+        {
           label: 'Help',
           submenu: [
             {
+              label: 'MavensMate-app v'+require('./package.json').version
+            },
+            {
               label: 'Learn More',
               click: function() { require('shell').openExternal('http://mavensmate.com') }
+            },
+            {
+              label: 'Submit a GitHub Issue',
+              click: function() { require('shell').openExternal('https://github.com/joeferraro/MavensMate/issues') }
             }
           ]
         }
