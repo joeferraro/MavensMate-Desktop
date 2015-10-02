@@ -56,7 +56,8 @@ elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     npm run build:osx
     # TODO: sign ../dist/osx/MavensMate-darwin-x64/MavensMate.app
     certtool y | grep Developer\ ID
-    codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate-app-build.keychain --sign "Developer ID Application: Joseph Ferraro ($APPLE_TEAM_ID)" ../dist/osx/MavensMate-darwin-x64/MavensMate.app
+    sudo security unlock-keychain -p travis mavensmate.keychain
+    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "Developer ID Application: Joseph Ferraro ($APPLE_TEAM_ID)" ../dist/osx/MavensMate-darwin-x64/MavensMate.app
     codesign --verify -vvvv ../dist/osx/MavensMate-darwin-x64/MavensMate.app
     npm run pack-only:osx
     cd ../dist/osx
