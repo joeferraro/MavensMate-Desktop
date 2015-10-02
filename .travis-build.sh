@@ -15,6 +15,13 @@ if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     sudo apt-get install libgnome-keyring-dev
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     echo running osx build
+    brew update && brew upgrade xctool || true
+    # decrypt certs
+    openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/certs/app.cer.enc -d -a -out scripts/certs/app.cer
+    openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/certs/installer.cer.enc -d -a -out scripts/certs/installer.cer
+    openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/certs/dist.p12.enc -d -a -out scripts/certs/dist.p12
+    # add to keychain
+    ./scripts/add-key.sh
 fi
 
 cd ..
@@ -46,7 +53,11 @@ if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     # # zip MavensMate-app-$TRAVIS_TAG-win-x64.tar.gz MavensMate-win32-x64 .
 
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
-    npm run pack:osx
+    npm run build:osx
+    # TODO: sign ../dist/osx/MavensMate-darwin-x64/MavensMate.app
+    codesign --deep --force --verbose --sign "Developer ID Application: Joseph Ferraro ($APPLE_TEAM_ID)" ../dist/osx/MavensMate-darwin-x64/MavensMate.app
+    codesign --verify -vvvv ../dist/osx/MavensMate-darwin-x64/MavensMate.app
+    npm run pack-only:osx
     cd ../dist/osx
     ls
     zip MavensMate-app-$TRAVIS_TAG-osx-x64.zip MavensMate.dmg

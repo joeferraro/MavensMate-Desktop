@@ -1,40 +1,34 @@
 sudo: required
-os: 
-  - linux
-  - osx
-# language: node_js
-# node_js:
-#   - "0.12"
-# addons:
-#   apt:
-#     sources:
-#       - ubuntu-toolchain-r-test
-#     packages:
-#       - g++-4.8
-#       - libgnome-keyring-dev
+os:
+- linux
+- osx
 install:
-  - rm -rf ~/.nvm
-  - git clone https://github.com/creationix/nvm.git ~/.nvm
-  - source ~/.nvm/nvm.sh
-  - nvm install 0.12
-  - node --version
-# script: ./.travis-build.sh
-script: 
-  - "echo Building MavensMate-app ..."
+- rm -rf ~/.nvm
+- git clone https://github.com/creationix/nvm.git ~/.nvm
+- source ~/.nvm/nvm.sh
+- nvm install 0.12
+- node --version
+script:
+- echo Building MavensMate-app ...
 before_deploy: ./.travis-build.sh
 deploy:
-  - provider: releases
-    api-key: $GITHUB_API_KEY
-    file: ${HOME}/build/${TRAVIS_REPO_SLUG}/dist/linux/MavensMate-app-$TRAVIS_TAG-linux-x64.tar.gz
-    skip_cleanup: true
-    on:
-      tags: true
-      condition: "$TRAVIS_OS_NAME == linux"
-
-  - provider: releases
-    api-key: $GITHUB_API_KEY
-    file: ${HOME}/build/${TRAVIS_REPO_SLUG}/dist/osx/MavensMate-app-$TRAVIS_TAG-osx-x64.zip
-    skip_cleanup: true
-    on:
-      tags: true
-      condition: "$TRAVIS_OS_NAME == osx"
+- provider: releases
+  api-key: $GITHUB_API_KEY
+  file: ${HOME}/build/${TRAVIS_REPO_SLUG}/dist/linux/MavensMate-app-$TRAVIS_TAG-linux-x64.tar.gz
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: $TRAVIS_OS_NAME == linux
+- provider: releases
+  api-key: $GITHUB_API_KEY
+  file: ${HOME}/build/${TRAVIS_REPO_SLUG}/dist/osx/MavensMate-app-$TRAVIS_TAG-osx-x64.zip
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: $TRAVIS_OS_NAME == osx
+env:
+  global:
+  - secure: nR7pgQhUL3dCYAhadbVQXRCKao2f8EUPYqekGiaORwhrbyLGTetgQikl3MVj+jB/HeJGmHKmp66eUUKEcy+hDgdNAMRs3mXKvzU1btx08pfEphwngCzdx8hB2BGhEg0VWswZb8M+Qsc6Hcn0I8zu25993S8/O72cu6LqaJeKz1+YEz9JB8IvlgLGE5jU3jnu2BN3VdZYhryNKucS/zNprkFGF4HsDX7/0eKrY4CPyQlbkG//gUwlY0fd8CFpFTrA20Rx3cry6iIw3hQrM1csn66yZ1gRABPt9Sm+O9JLNMa9QCCeIF9zXTrfBEKfMB6pvVS3Fyc7IWZS6NIN9hLdOexC1r8b8lXPMBKMu1Mq/dyFLH6Xh8MxROsM3LiL3AUHO21gDdxwzKjDI0FOm//LPz5PardaLkSN0naCQifB+Gm1Wrk38lALvpJ2opuF4ip+d0KwLyAMy/z7SAnD0zUEFyxS0/HthcJDrvrPfoCuU5a9ZBXzvjZPy5E7FmIzFLFE3YEOx4n26uy5Sa5CPzAvJhqO9K2euBZhGcVD5GhAm6GDAvyYTnNsosAkUK+GemlWiGDiKxJAxLyP3psdLdJQ8iMCUuHOj9bBZhExGXOIr7ZFhzSWQAU+iiOv8VHL1S9GmkOeaM03VYayyF/RxT5rrdaMefPasuj78kPy4MOu5IA=
+  - secure: G/e5v4COJi8vSxnzSqm7fWD6SAm3HOnFAWqwO1rubHo/xezqG+wIIfmbMATPJz/vdBmNIG4HQcphFEIHdeVukVKJ2/uhIkGUmoK6kh9ivHUBqc7khnNVA++bvkd1/sQIaQqHHJIcSED97h7gbL5v+CTQxj0EdfxBG8BNm+0M6sRGv9iB3+NoVpSHIjAHElU0lpCQ0hCQTe91+f6UrpsQ0lDqeSVhHQYdzXN/Zw7itK7eyRhWZXGY1RCtrYpNuYLi4J2lfS2sEMPhL4fgPtPuApIdmuUFdMl2IXeer/9/XB8Ccc0+Rdx71sAZr8aPVzDVTijjCkv9T8m2YO7DGkJZR6JQeFyoBrbOGDqgXD7JojT5ueGgP2ckh444KQ6tykVVrjnefIZowwFN+kG6Qu5bMooihozO6a1SQ03rqddg9FFXd4M11XJrlVvuEMiqWZSmoYDBEVI4JcpNq5AecLcWs0IPWCJs+gWek68CIkFHOP8k+GAzRgce/lm42AK8zdF/FiEhSdObVoJUiC8C7jVS4y+1AVCBec+jsFrsD4YnxTx4c2tD2zmdSxOL75ib0BUwnb11LN/Z0JiDSuD37P/hP36+lTRsE3u80mIuXNBw2d60lFZWhb4uIvM9sxHim+24ut0i27zFMfXhDuYnfw2DZ0ugf7vjHP/MFaJrTgHkqUg=
+  - secure: xOcngugXkJPtGW8+K1otXgCXpvYa6C/ZGXlnaNcF2alwJKtbsZM8qHnq+uN6L/mpo8T0ZITKZL9SdVyJRNKyU6lQeFMLFm0Vsqt1Qjf5WCHRxNAmMsecRer+i1UtbUHq1TsA8SDXTsB9J+2tW162kdW6SSwyd+InU1AfKXVO5+mi5nyQn4VwmrxM4w744Gd3ff7kZ8n/QKWQc8mrCteQVVZfUZ6xRKCXqBO3Cy/VCR5DhgW9yOLp4KybWvqmfm+sLF4MasUHAOvWA8tR/MqHaxCZY8slMWsdbbnBaHX9nVIk8prilW1/B8gCTpMmgkJ6N4Ggtl5rtZLMsAr/99Y8g30xF2/IE8WG74993WH08prhPogzfFBCkhbIRoa+g6xhusTyI19cIGIVEXUSg5lk3CU8fRlTAWzGQCiq9K5/IuaSrfOPJUVBjloVhO29bgnCPKrscgIhBig2vxjpr3HVpBTvNUVqiCBqXMnFTeXwc6iabGmdOQX1YBTFwIZnhN616UljJPG48zC6dNvUAV+qUJlZpfgg7eXgLhMhvFlRT0UhdA774Fo26OTWAm6RmgP+8iauZqdB8LvBlmCc5EZnb3LkzUoZQ5eTPkir3ZROPOHdB28wuqb49dGansHBHe7mGAYmQFqXjeKgESF3cq09TtagWfdu3wztfbkedmackAo=
+  - secure: Gp8EwxakIq65+KLsLuKpSgSaX33pcdPpR89yWpn0+lP6C0BUrvSVZyZQWQ+DCZ1xDnuGn0RE6UPM8gteA5ytaSSKspMmPf6zwvoUQ9nJDv+CoDAkDzeTjfO8Zo/tDO5Zcq0DDhsQTkCQ/BAJt+TwAxAMMTqYX7tIkXDrYNGBCYdTyT2oOmar6xjzXbuSJQRwrpqO+Z8OWYWEPE5dDeV0dOEi777BhCnp5VZuKlJEHKwcRGTEYGjmFOV0hj6qXi62vy/typCaRq178UQOfA+xG06HuxAoER4q9a6x+L66D2crUERAYvz1SaIxLiB1yDnyMe1A+BngEGHJ44opXFC8S1F1p5sU0WMptp5SmU8Os8DEPQncLEkOQxSojU5Evo0r2JTG12VyJg7eJCydeugw9a+SUxHVPmdJNr3M5N930H4CGcxeOPceKtSu/YEf+e4U6+7klXoiGc1dGMZkRXWaLyMekrV5Bw7JeMSVms6gE/pQevfDTlHflcKh5/Tk3CV6alzPqPwa5bpfaAxruWyUp5JWE2zo13+KG5UpMujnT2pCQCC+Ww7CYr9538i5aOG+j1o6DPKnGzxkjzvOU1DeajFn+DjvUigluB+S8sZFU/RBhwK24D4/TO1AC1o2QLzAXDWj6es4qQjaypJbSPTHOkVoOX5X63ZEDC0/dgBEYcg=
