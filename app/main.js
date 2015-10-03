@@ -272,10 +272,10 @@ var attachMainWindow = function(restartServer, url) {
 
       // Create the browser window.
       mainWindow = new BrowserWindow({
-        width: 1100, 
-        height: 800,
-        'min-width': 1100,
-        'min-height': 800,
+        width: 1000, 
+        height: 750,
+        'min-width': 850,
+        'min-height': 670,
         icon: path.join(__dirname, 'resources', 'icon.png')
       });
 
