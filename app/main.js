@@ -1,14 +1,13 @@
 var Promise         = require('bluebird');
+var os              = require('os');
 var path            = require('path');
 var app             = require('app');
-var autoUpdater     = require('auto-updater');
 var Menu            = require('menu');
 var BrowserWindow   = require('browser-window'); 
 var shell           = require('shell');
 var mavensmate      = require('mavensmate');
 var ipc             = require('ipc');
 var GitHubReleases  = require('./github');
-
 // TODO: (issue #8)
 // autoUpdater.setFeedUrl('http://mycompany.com/myapp/latest?version=' + app.getVersion());
 
