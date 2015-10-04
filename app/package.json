@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "bluebird": "2.9.34",
+    "electron-gh-releases": "^1.0.1",
     "jquery": "2.1.4",
     "mavensmate": "0.0.43-beta4",
     "semver": "5.0.1"
