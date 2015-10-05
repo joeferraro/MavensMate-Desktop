@@ -81,12 +81,27 @@
 				$("#update").show();
 			}
 
+			function addUpdateNotifierOsx(updateInfo) {
+				$("#update span a").html('A new version of MavensMate ('+updateInfo.releaseName+') is available (current: '+updateInfo.currentVersion+'). <a href="#" onClick="downloadAndInstall()">Click here to download and install</a>.');
+				$("#update").show();
+			}
+
+			function downloadAndInstall() {
+				ipc.send('download-and-install-update');
+			}
+
 			ipc.on('openTab', function(url) {
 				addTab(url);
 			});
+
 			ipc.on('needsUpdate', function(updateInfo) {
 				addUpdateNotifier(updateInfo);
 			});
+
+			ipc.on('needsUpdateOsx', function(updateInfo) {
+				addUpdateNotifierOsx(updateInfo);
+			});
+
 			ipc.on('webviewDevTools', function() {
 				webviewDevTools();
 			});

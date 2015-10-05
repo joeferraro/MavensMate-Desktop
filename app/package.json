@@ -1,6 +1,6 @@
 {
   "name": "mavensmate-app",
-  "version": "0.0.9-beta4",
+  "version": "0.0.9-beta5",
   "main": "main.js",
   "scripts": {
     "build": "npm run clean && npm run build:osx && npm run build:win",
@@ -22,9 +22,9 @@
   },
   "dependencies": {
     "bluebird": "2.9.34",
-    "electron-gh-releases": "^1.0.1",
+    "electron-gh-releases": "joeferraro/electron-gh-releases",
     "jquery": "2.1.4",
-    "mavensmate": "0.0.43-beta4",
+    "mavensmate": "0.0.43-beta7",
     "semver": "5.0.1"
   },
   "devDependencies": {

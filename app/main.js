@@ -8,6 +8,12 @@ var shell           = require('shell');
 var mavensmate      = require('mavensmate');
 var ipc             = require('ipc');
 var GitHubReleases  = require('./github');
+var winston         = require('winston');
+
+var config;
+var logger;
+var quitAndUpdateFunction;
+
 // TODO: (issue #8)
 // autoUpdater.setFeedUrl('http://mycompany.com/myapp/latest?version=' + app.getVersion());
 
@@ -294,8 +300,11 @@ var attachMainWindow = function(restartServer, url) {
               port: 56248,
               windowOpener: openUrlInNewTab
             })
-            .then(function(server) {
-              mavensMateServer = server;
+            .then(function(res) {
+              mavensMateServer = res.server;
+              config = res.config;
+              logger = res.logger;
+              logger.debug('Starting MavensMate-app');
               mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
               return checkForUpdates();
             })
@@ -354,51 +363,61 @@ var openUrlInNewTab = function(url) {
 
 var checkForUpdates = function() {
   return new Promise(function(resolve, reject) {
-    console.log('OSX: checking for updates ...');
-    console.log(app.getVersion());
+    logger.debug('OSX: checking for updates ...');
+    logger.debug(app.getVersion());
     if (os.platform() === 'darwin') {
       var gh_releases = require('electron-gh-releases');
 
       var options = {
         repo: 'joeferraro/MavensMate-app',
-        //currentVersion: app.getVersion()
-        currentVersion: 'v0.0.1' // for testing only
+        currentVersion: app.getVersion()
       }
 
-      var update = new gh_releases(options, function (auto_updater) {
+      var update = new gh_releases(options, function (autoUpdater) {
         // Auto updater event listener
-        auto_updater.on('update-downloaded', function (e, rNotes, rName, rDate, uUrl, quitAndUpdate) {
-          // Install the update
-          // quitAndUpdate()
-          console.log('osx update downloaded!!!');
-          console.log(e);
-          console.log(rNotes);
-          console.log(rDate);
-          console.log(uUrl);
-          console.log(quitAndUpdate);
+        autoUpdater.on('update-downloaded', function (e, rNotes, rName, rDate, uUrl, quitAndUpdate) {
+          logger.debug('osx update downloaded...');
+          logger.debug(e);
+          logger.debug(rNotes);
+          logger.debug(rDate);
+          logger.debug(uUrl);
+          logger.debug(quitAndUpdate);
+          quitAndUpdateFunction = quitAndUpdate;
+          var msg = {
+            currentVersion: app.getVersion(),
+            releaseNotes: rNotes,
+            releaseName: rName,
+            releaseDate: rDate
+          };
+          mainWindow.webContents.send('needsUpdateOsx', msg);
         });
 
-        auto_updater.on('checking-for-update', function(e) {
-          console.log('checking-for-update', e);
+        autoUpdater.on('error', function(e, msg) {
+          logger.error('autoUpdater error', e, msg);
         });
 
-        auto_updater.on('update-available', function(e) {
-          console.log('update-available', e);
+        autoUpdater.on('checking-for-update', function(msg) {
+          logger.debug('checking-for-update', msg);
         });
 
-        auto_updater.on('update-not-available', function(e) {
-          console.log('update-not-available', e);
+        autoUpdater.on('update-available', function(msg) {
+          logger.debug('update-available', msg);
+        });
+
+        autoUpdater.on('update-not-available', function(msg) {
+          logger.debug('update-not-available', msg);
         });
       });
 
       // Check for updates
       update.check(function (err, status) {
         if (!err && status) {
-          update.download()
+          logger.debug('update available, downloading...');
+          update.download();
         } else {
-          console.log('osx could not check for updates')
-          console.log(err);
-          console.log(status);
+          logger.error('osx could not check for updates');
+          logger.error(err);
+          logger.error(status);
         }
       });
     } else {
@@ -409,7 +428,7 @@ var checkForUpdates = function() {
       var updateChecker = new GitHubReleases(options);
       updateChecker.check()
         .then(function(updateCheckResult) {
-          console.log('update check result: ', updateCheckResult);
+          logger.debug('update check result: ', updateCheckResult);
           if (updateCheckResult && updateCheckResult.needsUpdate) {
             mainWindow.webContents.send('needsUpdate', updateCheckResult);
           }
@@ -422,6 +441,10 @@ var checkForUpdates = function() {
     }
   });
 };
+
+ipc.on('download-and-install-update', function() {
+  quitAndUpdateFunction();
+});
 
 // when the last tab is closed, we close the entire browser window
 ipc.on('last-tab-closed', function() {
