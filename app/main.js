@@ -8,6 +8,9 @@ var shell           = require('shell');
 var mavensmate      = require('mavensmate');
 var ipc             = require('ipc');
 var GitHubReleases  = require('./github');
+var Menu            = require('menu');
+var Tray            = require('tray');
+var config, logger;
 
 // TODO: (issue #8)
 // autoUpdater.setFeedUrl('http://mycompany.com/myapp/latest?version=' + app.getVersion());
@@ -19,6 +22,78 @@ var GitHubReleases  = require('./github');
 // be closed automatically when the JavaScript object is GCed.
 var mainWindow = null;
 var mavensMateServer = null;
+
+// attaches icon to tray and menu to show the app, open settings, show version, etc.
+var attachTrayMenu = function() {
+  app.dock.hide();
+  var appIcon = new Tray(path.join(__dirname, 'resources', 'status-bar-osx.png'));
+  var contextMenu = Menu.buildFromTemplate([
+    { 
+      label: 'Show', 
+      click: function() { 
+        if (!mainWindow) {
+          attachMainWindow(false, 'http://localhost:56248/app/home/index');
+        }
+      } 
+    },
+    { 
+      label: 'Settings', 
+      click: function() { 
+        openUrlInNewTab('http://localhost:56248/app/settings/index');
+      } 
+    },
+    { 
+      label: 'Submit Issue',
+      click: function() { require('shell').openExternal('https://github.com/joeferraro/MavensMate/issues'); }  
+    },
+    {
+      label: 'Developer',
+      submenu: [
+        {
+          label: 'Toggle Core Developer Tools',
+          accelerator: (function() {
+            if (process.platform === 'darwin')
+              return 'Alt+Command+K';
+            else
+              return 'Ctrl+Shift+K';
+          })(),
+          click: function(item, focusedWindow) {
+            if (focusedWindow) {
+              console.log(item);
+              console.log(focusedWindow);
+              // focusedWindow.toggleDevTools();
+              focusedWindow.webContents.send('webviewDevTools');
+            }
+          }
+        },
+        {
+          label: 'Toggle Mavensmate-App Developer Tools',
+          accelerator: (function() {
+            if (process.platform === 'darwin')
+              return 'Alt+Command+I';
+            else
+              return 'Ctrl+Shift+I';
+          })(),
+          click: function(item, focusedWindow) {
+            if (focusedWindow) {
+              focusedWindow.toggleDevTools();
+            }
+          }
+        }
+      ]
+    },
+    { 
+      label: 'Help - v'+app.getVersion(),
+      click: function() { require('shell').openExternal('https://github.com/joeferraro/MavensMate'); }  
+    },
+    { 
+      label: 'Quit',
+      click: function() { app.quit(); }  
+    }
+  ]);
+  appIcon.setToolTip('This is my application.');
+  appIcon.setContextMenu(contextMenu);
+};
 
 // attaches menu to application (edit, view, window, help, etc)
 var attachAppMenu = function() {
@@ -295,8 +370,15 @@ var attachMainWindow = function(restartServer, url) {
               port: 56248,
               windowOpener: openUrlInNewTab
             })
-            .then(function(server) {
-              mavensMateServer = server;
+            .then(function(res) {
+              mavensMateServer = res.server;
+              config = res.config;
+              logger = res.logger;
+              if (config.get('mm_hide_dock_icon')) {
+                attachTrayMenu();
+              } else {
+                attachAppMenu();
+              }
               mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
               return checkForUpdates();
             })
@@ -381,20 +463,8 @@ ipc.on('last-tab-closed', function() {
   mainWindow.close();
 });
 
-// Quit when all windows are closed on platforms other than OSX, as per platform guidelines
-app.on('window-all-closed', function() {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// will check for updates against github releases and pass the result to setup
+// when app is ready, show window and attach necessary menus
 app.on('ready', function() {  
-  attachAppMenu();
   attachMainWindow()
     .catch(function(err) {
       console.error('Error attaching main window...', err);
