@@ -10,7 +10,10 @@ var ipc             = require('ipc');
 var GitHubReleases  = require('./github');
 var Menu            = require('menu');
 var Tray            = require('tray');
+var os              = require('os');
 var config, logger;
+
+app.setAppUserModelId('MavensMate-app');
 
 // TODO: (issue #8)
 // autoUpdater.setFeedUrl('http://mycompany.com/myapp/latest?version=' + app.getVersion());
@@ -25,8 +28,15 @@ var mavensMateServer = null;
 
 // attaches icon to tray and menu to show the app, open settings, show version, etc.
 var attachTrayMenu = function() {
-  app.dock.hide();
-  var appIcon = new Tray(path.join(__dirname, 'resources', 'status-bar-osx.png'));
+  var appIcon;
+  if (os.platform() === 'win32') {
+    app.setSkipTaskbar();
+    appIcon = new Tray(path.join(__dirname, 'resources', 'system-tray-windows.ico'));   
+  } else if (os.platform() === 'darwin') {
+    app.dock.hide();
+    appIcon = new Tray(path.join(__dirname, 'resources', 'status-bar-osx.png'));   
+  }
+
   var contextMenu = Menu.buildFromTemplate([
     { 
       label: 'Show', 
@@ -61,7 +71,6 @@ var attachTrayMenu = function() {
             if (focusedWindow) {
               console.log(item);
               console.log(focusedWindow);
-              // focusedWindow.toggleDevTools();
               focusedWindow.webContents.send('webviewDevTools');
             }
           }
@@ -91,7 +100,7 @@ var attachTrayMenu = function() {
       click: function() { app.quit(); }  
     }
   ]);
-  appIcon.setToolTip('This is my application.');
+  appIcon.setToolTip('MavensMate-app');
   appIcon.setContextMenu(contextMenu);
 };
 
