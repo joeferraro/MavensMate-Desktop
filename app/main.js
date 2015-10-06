@@ -178,6 +178,10 @@ var attachAppMenu = function() {
               label: 'MavensMate-app v'+require('./package.json').version
             },
             {
+              label: 'Check for Updates',
+              click: function() { require('shell').openExternal('https://github.com/joeferraro/MavensMate-app/releases') }
+            },
+            {
               label: 'Learn More',
               click: function() { require('shell').openExternal('http://mavensmate.com') }
             },
@@ -245,6 +249,10 @@ var attachAppMenu = function() {
           submenu: [
             {
               label: 'MavensMate-app v'+require('./package.json').version
+            },
+            {
+              label: 'Check for Updates',
+              click: function() { require('shell').openExternal('https://github.com/joeferraro/MavensMate-app/releases') }
             },
             {
               label: 'Learn More',
