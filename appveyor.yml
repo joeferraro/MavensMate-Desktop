@@ -13,6 +13,8 @@ platform:
 install:
   - dir
 
+skip_no_tags: true
+
 build: off
 
 test_script: 
