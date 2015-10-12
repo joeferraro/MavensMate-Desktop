@@ -7,7 +7,10 @@ By participating, you are expected to uphold this code. Please report unacceptab
 
 ### Submitting Issues
 
-Before submitting an issue to this project, you must be sure that the issue is specific to MavensMate-app, in other words, it's not a text editor specific issue. Please also **search first** before submitting a new issue.
+Before submitting an issue to this project, you must be sure that the issue is specific to MavensMate-app, in other words, it's not a text editor specific issue. 
+
+- If this is a text-editor specific issue, please submit the issue on that GitHub project (e.g. [the MavensMate for Sublime Text project](https://github.com/joeferraro/MavensMate-SublimeText))
+- Please also **search first** before submitting a new issue.
 
 When submitting a new issue, you must specify the following:
 
