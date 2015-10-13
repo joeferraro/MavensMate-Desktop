@@ -13,7 +13,7 @@ platform:
 install:
   - dir
 
-# skip_no_tags: true
+skip_non_tags: true
 
 build: off
 
