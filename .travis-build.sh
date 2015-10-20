@@ -64,8 +64,8 @@ elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     ls ../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks
 
     sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/MavensMate Helper.app/"
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/Electron Helper NP.app"
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/Electron Helper EH.app"
+    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/MavensMate Helper NP.app"
+    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/MavensMate Helper EH.app"
     sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/Squirrel.framework/Squirrel"
     sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/Squirrel.framework"
     sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/ReactiveCocoa.framework/ReactiveCocoa"
