@@ -61,6 +61,8 @@ elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     APP_KEY="Developer ID Application: Joseph Ferraro ($APPLE_TEAM_ID)"
     INSTALLER_KEY="Developer ID Installer: Joseph Ferraro ($APPLE_TEAM_ID)"
 
+    ls ../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks
+
     sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/MavensMate Helper.app/"
     sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/Electron Helper NP.app"
     sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/Electron Helper EH.app"
