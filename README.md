@@ -4,7 +4,12 @@
 
 We packaged the local [MavensMate](https://github.com/joeferraro/MavensMate) server into a nifty, cross-platform application called MavensMate-app. Why did we do it? Quite simply, to make it easier to install and run MavensMate. All MavensMate plugins (Sublime Text, Atom, etc.) now require MavensMate-app to be installed and running in order to function properly.
 
+##### OSX / Linux
 [![Build Status](https://travis-ci.org/joeferraro/MavensMate-app.svg)](https://travis-ci.org/joeferraro/MavensMate-app)
+
+##### Windows
+[![Build status](https://ci.appveyor.com/api/projects/status/u0i8yx97wuwylp88?svg=true)](https://ci.appveyor.com/project/joeferraro/mavensmate-app)
+
 
 <img width="1100" alt="9_27_15__11_46_pm" src="https://cloud.githubusercontent.com/assets/54157/10146854/e8e3695c-65f8-11e5-8a41-d1b3f77b7a14.png">
 
