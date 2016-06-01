@@ -23,7 +23,7 @@
   "dependencies": {
     "bluebird": "2.9.34",
     "jquery": "2.1.4",
-    "mavensmate": "0.0.44-beta5",
+    "mavensmate": "0.0.44-beta8",
     "semver": "5.0.1"
   },
   "devDependencies": {
