@@ -27,7 +27,6 @@ test_script:
   - set PATH=C:\nsis;%PATH%
   - if exist %ProgramFiles%\nodejs\npm del %ProgramFiles%\nodejs\npm
   - if exist %ProgramFiles%\nodejs\npm.cmd del %ProgramFiles%\nodejs\npm.cmd
-  - npm -g install npm@3.2.0
   - set PATH=%APPDATA%\npm;%PATH%
   - if %platform% == x64 set GYP_MSVS_VERSION=2013
   - if %platform% == x86 set GYP_MSVS_VERSION=2013
@@ -43,7 +42,7 @@ test_script:
   - cd app
   - npm install
   - if exist C:\projects\MavensMate-app\app\node_modules\nslog rd /s /q C:\projects\MavensMate-app\app\node_modules\nslog
-  - .\node_modules\.bin\electron-rebuild
+  - .\node_modules\.bin\electron-rebuild -w sqlite3 -p
   - npm install joeferraro/electron-builder -g
   - npm install electron-packager -g
   - npm run pack:win-%platform%
