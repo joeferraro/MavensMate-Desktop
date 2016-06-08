@@ -17,12 +17,12 @@ skip_non_tags: true
 
 build: off
 
-test_script: 
+test_script:
   - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME:~1%
   - python -V
   - ps: Install-Product node $env:nodejs_version $env:platform
   - ps: $exePath = "$($env:USERPROFILE)\nsis-2.46-setup.exe"
-  - ps: (New-Object Net.WebClient).DownloadFile('http://ufpr.dl.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe', $exePath)
+  - ps: (New-Object Net.WebClient).DownloadFile('https://mavens.com/public/mavensmate/nsis-2.46-setup.exe', $exePath)
   - ps: cmd /c start /wait $exePath /S /D=C:\nsis
   - set PATH=C:\nsis;%PATH%
   - if exist %ProgramFiles%\nodejs\npm del %ProgramFiles%\nodejs\npm
@@ -76,9 +76,9 @@ cache:
 deploy:
    # Deploy to GitHub Releases
   - provider: GitHub
-    auth_token: 
+    auth_token:
       secure: EoSbqljBDKZ9pBkSSRG0MwLt+ooqW0+ZJGThjggCoOaTQzCeLzgnnzZFz/G46q8I
-    artifact: setupzip        
+    artifact: setupzip
     draft: false
     prerelease: false
     on:
