@@ -29,7 +29,7 @@ npm install -g node-gyp-install
 node-gyp-install
 npm install
 ls
-npm install electron-builder -g
+npm install joeferraro/electron-builder -g
 npm install electron-packager -g
 ./node_modules/.bin/electron-rebuild
 
