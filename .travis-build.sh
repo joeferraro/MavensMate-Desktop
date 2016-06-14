@@ -6,13 +6,13 @@ set -x
 if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     echo running linux build
     sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-    sudo apt-get update -qq
-    sudo apt-get -qq install g++-4.8
+    sudo apt-get -y update -qq
+    sudo apt-get -y -qq install g++-4.8
     g++ -v
     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
     g++ -v
-    sudo apt-get install gnome-keyring
-    sudo apt-get install libgnome-keyring-dev
+    sudo apt-get -y install gnome-keyring
+    sudo apt-get -y install libgnome-keyring-dev
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     echo running osx build
     # brew update && brew upgrade xctool || true
