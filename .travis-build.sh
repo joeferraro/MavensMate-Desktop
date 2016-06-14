@@ -24,6 +24,10 @@ elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     ./scripts/add-key.sh
 fi
 
+# next two lines required for proper build
+npm install -g node-gyp-install
+node-gyp-install
+
 node -v
 npm -v
 
@@ -35,10 +39,10 @@ ls
 
 #if OS is linux or is not set
 if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
-    npm run build
+    npm run pack
 
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
-    npm run build
+    npm run pack
 fi
 
 ls dist
