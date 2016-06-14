@@ -3,16 +3,12 @@ var app             = electron.app;
 
 var Promise         = require('bluebird');
 var path            = require('path');
-// var autoUpdater     = require('auto-updater');
 var Menu            = electron.Menu;
 var BrowserWindow   = electron.BrowserWindow;
 var shell           = electron.shell;
 var mavensmate      = require('mavensmate');
 var ipc             = electron.ipcMain;
-var GitHubReleases  = require('./github');
-
-// TODO: (issue #8)
-// autoUpdater.setFeedUrl('http://mycompany.com/myapp/latest?version=' + app.getVersion());
+var AppUpdater      = require('./app-updater');
 
 // Report crashes to our server.
 // require('crash-reporter').start();
@@ -309,9 +305,7 @@ var attachMainWindow = function(restartServer, url) {
               mavensMateServer = server;
               console.log('sending openTab to mainwindow ...');
               mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
-              return checkForUpdates();
-            })
-            .then(function() {
+              new AppUpdater(mainWindow);
               resolve();
             })
             .catch(function(err) {

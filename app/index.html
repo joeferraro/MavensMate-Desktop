@@ -74,10 +74,10 @@
 				event.stopPropagation();
 			}
 
-			function addUpdateNotifier(updateInfo) {
-				$("#update span a").html('A new version of MavensMate ('+updateInfo.latestVersion+') is available for download (current: '+updateInfo.currentVersion+')');
+			function addUpdateNotifier(message, url) {
+				$("#update span a").html(message);
 				$("#update span a").on('click', function() {
-					shell.openExternal(updateInfo.url);
+					shell.openExternal(url);
 				});
 				$("#update").show();
 			}
@@ -85,8 +85,8 @@
 			ipc.on('openTab', function(evt, url) {
 				openTab(url);
 			});
-			ipc.on('needsUpdate', function(evt, updateInfo) {
-				addUpdateNotifier(updateInfo);
+			ipc.on('needsUpdate', function(evt, message, url) {
+				addUpdateNotifier(message, url);
 			});
 			ipc.on('webviewDevTools', function() {
 				webviewDevTools();

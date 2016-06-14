@@ -2,24 +2,8 @@
   "name": "mavensmate-app",
   "version": "0.0.11-beta3",
   "main": "main.js",
-  "scripts": {
-    "build": "npm run clean && npm run build:osx && npm run build:win",
-    "build:linux": "npm run clean:linux && electron-packager ./ \"MavensMate\" --prune --out=../dist/linux --platform=linux --arch=x64 --version=1.2.2 --icon=../assets/icon.png",
-    "build:osx": "npm run clean:osx && electron-packager ./ \"MavensMate\" --prune --out=../dist/osx --platform=darwin --arch=x64 --version=1.2.2 --icon=../assets/icon.icns --ignore=node_modules/.bin",
-    "build:win-x64": "npm run clean:win && electron-packager ./ \"MavensMate\" --prune --out=..\\dist\\win --platform=win32 --arch=x64 --version=1.2.2 --icon=..\\assets\\icon.ico",
-    "build:win-x86": "npm run clean:win && electron-packager ./ \"MavensMate\" --prune --out=..\\dist\\win --platform=win32 --arch=ia32 --version=1.2.2 --icon=..\\assets\\icon.ico",
-    "clean": "rm -rf ../dist",
-    "clean:linux": "rm -rf ../dist/linux",
-    "clean:osx": "rm -rf ../dist/osx",
-    "clean:win": "if exist ..\\dist\\win rd /s /q ..\\dist\\win",
-    "dev": "electron ./app",
-    "pack": "npm run pack:osx && npm run pack:win",
-    "pack-only:osx": "electron-builder \"../dist/osx/MavensMate-darwin-x64/MavensMate.app\" --platform=osx --out=\"../dist/osx\" --config=../packager.json",
-    "pack:osx": "npm run build:osx && electron-builder \"../dist/osx/MavensMate-darwin-x64/MavensMate.app\" --platform=osx --out=\"../dist/osx\" --config=../packager.json",
-    "pack:win-x64": "npm run build:win-x64 && mkdir ..\\dist\\win\\win-x64 && electron-builder \"..\\dist\\win\\MavensMate-win32-x64\" --platform=win --out=\"..\\dist\\win\\win-x64\" --config=..\\packager.json",
-    "pack:win-x86": "npm run build:win-x86 && mkdir ..\\dist\\win\\win-x86 && electron-builder \"..\\dist\\win\\MavensMate-win32-ia32\" --platform=win --out=\"..\\dist\\win\\win-x86\" --config=../packager.json",
-    "reset": "npm run clean && rm -rf ./node_modules"
-  },
+  "description": "MavensMate desktop app",
+  "author": "Joseph Ferraro <@joeferraro>",
   "dependencies": {
     "bluebird": "2.9.34",
     "jquery": "2.1.4",
@@ -27,10 +11,5 @@
     "mavensmate": "0.0.46",
     "semver": "5.0.1",
     "watchjs": "0.0.0"
-  },
-  "devDependencies": {
-    "electron-prebuilt": "1.2.2",
-    "electron-packager": "7.0.3",
-    "electron-rebuild": "1.1.5"
   }
 }
