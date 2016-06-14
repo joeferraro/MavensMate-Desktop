@@ -15,7 +15,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     sudo apt-get install libgnome-keyring-dev
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     echo running osx build
-    brew update && brew upgrade xctool || true
+    # brew update && brew upgrade xctool || true
     # decrypt certs
     openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/certs/app.cer.enc -d -a -out scripts/certs/app.cer
     openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/certs/installer.cer.enc -d -a -out scripts/certs/installer.cer
@@ -23,6 +23,9 @@ elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     # add to keychain
     ./scripts/add-key.sh
 fi
+
+node -v
+npm -v
 
 npm install
 cd app
