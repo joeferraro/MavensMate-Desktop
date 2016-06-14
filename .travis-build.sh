@@ -39,10 +39,10 @@ ls
 
 #if OS is linux or is not set
 if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
-    npm run pack
+    npm run dist
 
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
-    npm run pack
+    npm run dist
 fi
 
 ls dist

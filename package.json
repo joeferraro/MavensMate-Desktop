@@ -1,7 +1,6 @@
 {
   "scripts": {
     "postinstall": "install-app-deps",
-    "pack": "build --target dir",
     "dist": "build"
   },
   "build": {
