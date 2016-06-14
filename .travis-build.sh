@@ -16,13 +16,6 @@ if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     sudo apt-get -y install --no-install-recommends -y icnsutils graphicsmagick xz-utils
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     echo running osx build
-    # brew update && brew upgrade xctool || true
-    # decrypt certs
-    openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/certs/app.cer.enc -d -a -out scripts/certs/app.cer
-    openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/certs/installer.cer.enc -d -a -out scripts/certs/installer.cer
-    openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/certs/dist.p12.enc -d -a -out scripts/certs/dist.p12
-    # add to keychain
-    ./scripts/add-key.sh
 fi
 
 # next two lines required for proper build
