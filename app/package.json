@@ -1,6 +1,6 @@
 {
   "name": "mavensmate-app",
-  "version": "0.0.11-beta3",
+  "version": "0.0.11-beta1",
   "main": "main.js",
   "description": "MavensMate desktop app",
   "author": "Joseph Ferraro <@joeferraro>",
