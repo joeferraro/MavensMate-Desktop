@@ -4,10 +4,10 @@
   "main": "main.js",
   "scripts": {
     "build": "npm run clean && npm run build:osx && npm run build:win",
-    "build:linux": "npm run clean:linux && electron-packager ./ \"MavensMate\" --prune --out=../dist/linux --platform=linux --arch=x64 --version=0.36.0 --icon=../assets/icon.png",
-    "build:osx": "npm run clean:osx && electron-packager ./ \"MavensMate\" --prune --out=../dist/osx --platform=darwin --arch=x64 --version=0.36.0 --icon=../assets/icon.icns",
-    "build:win-x64": "npm run clean:win && electron-packager ./ \"MavensMate\" --prune --out=..\\dist\\win --platform=win32 --arch=x64 --version=0.36.0 --icon=..\\assets\\icon.ico",
-    "build:win-x86": "npm run clean:win && electron-packager ./ \"MavensMate\" --prune --out=..\\dist\\win --platform=win32 --arch=ia32 --version=0.36.0 --icon=..\\assets\\icon.ico",
+    "build:linux": "npm run clean:linux && electron-packager ./ \"MavensMate\" --prune --out=../dist/linux --platform=linux --arch=x64 --version=1.2.2 --icon=../assets/icon.png",
+    "build:osx": "npm run clean:osx && electron-packager ./ \"MavensMate\" --prune --out=../dist/osx --platform=darwin --arch=x64 --version=1.2.2 --icon=../assets/icon.icns --ignore=node_modules/.bin",
+    "build:win-x64": "npm run clean:win && electron-packager ./ \"MavensMate\" --prune --out=..\\dist\\win --platform=win32 --arch=x64 --version=1.2.2 --icon=..\\assets\\icon.ico",
+    "build:win-x86": "npm run clean:win && electron-packager ./ \"MavensMate\" --prune --out=..\\dist\\win --platform=win32 --arch=ia32 --version=1.2.2 --icon=..\\assets\\icon.ico",
     "clean": "rm -rf ../dist",
     "clean:linux": "rm -rf ../dist/linux",
     "clean:osx": "rm -rf ../dist/osx",
@@ -23,11 +23,14 @@
   "dependencies": {
     "bluebird": "2.9.34",
     "jquery": "2.1.4",
-    "mavensmate": "0.0.44-beta9",
-    "semver": "5.0.1"
+    "lodash": "^4.13.1",
+    "mavensmate": "0.0.46",
+    "semver": "5.0.1",
+    "watchjs": "0.0.0"
   },
   "devDependencies": {
-    "electron-prebuilt": "0.36.0",
+    "electron-prebuilt": "1.2.2",
+    "electron-packager": "7.0.3",
     "electron-rebuild": "1.1.5"
   }
 }

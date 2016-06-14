@@ -1,12 +1,14 @@
+var electron        = require('electron');
+var app             = electron.app;
+
 var Promise         = require('bluebird');
 var path            = require('path');
-var app             = require('app');
-var autoUpdater     = require('auto-updater');
-var Menu            = require('menu');
-var BrowserWindow   = require('browser-window'); 
-var shell           = require('shell');
+// var autoUpdater     = require('auto-updater');
+var Menu            = electron.Menu;
+var BrowserWindow   = electron.BrowserWindow;
+var shell           = electron.shell;
 var mavensmate      = require('mavensmate');
-var ipc             = require('ipc');
+var ipc             = electron.ipcMain;
 var GitHubReleases  = require('./github');
 
 // TODO: (issue #8)
@@ -280,15 +282,15 @@ var attachMainWindow = function(restartServer, url) {
 
       // Create the browser window.
       mainWindow = new BrowserWindow({
-        width: 1000, 
+        width: 1000,
         height: 750,
-        'min-width': 850,
-        'min-height': 670,
+        minWidth: 850,
+        minHeight: 670,
         icon: path.join(__dirname, 'resources', 'icon.png')
       });
 
       // and load the index.html of the app.
-      mainWindow.loadUrl('file://' + __dirname + '/index.html');
+      mainWindow.loadURL('file://' + __dirname + '/index.html');
 
       mainWindow.webContents.on('did-finish-load', function() {
         if (mavensMateServer && restartServer && mavensMateServer.stop) { // happens when app is restarted
@@ -305,6 +307,7 @@ var attachMainWindow = function(restartServer, url) {
             })
             .then(function(server) {
               mavensMateServer = server;
+              console.log('sending openTab to mainwindow ...');
               mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
               return checkForUpdates();
             })
@@ -401,7 +404,7 @@ app.on('window-all-closed', function() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // will check for updates against github releases and pass the result to setup
-app.on('ready', function() {  
+app.on('ready', function() {
   attachAppMenu();
   attachMainWindow()
     .catch(function(err) {

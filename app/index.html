@@ -13,36 +13,36 @@
 		</div>
 		<!-- "browser" tabs -->
 		<ul id="tabs" class="list-inline tab-bar inset-panel">
-			
+
 		</ul>
 		<!-- "browser" tab view -->
 		<div id="views">
-			
+
 		</div>
-		
-			
+
+
 		<script type="text/javascript">
-			var ipc = require('ipc');
-			var shell = require('shell');
+			var ipc = require('electron').ipcRenderer;
+			var shell = require('electron').shell;
 
 			window.$ = window.jQuery = require('./resources/jquery.min.js');
 
 			// function reload() { remote.getCurrentWindow().webContents.reloadIgnoringCache(); return false; }
-			
+
 			function windowDevTools() { remote.getCurrentWindow().openDevTools(); return false; }
-			
+
 			function webviewDevTools() {
 				document.getElementById(VIEW_ID_PREFIX + app.tab.selectedTab.id).openDevTools();
 				return false;
 			}
-			
+
 			function webviewReload() {
 				var webview = document.getElementById(VIEW_ID_PREFIX + app.tab.selectedTab.id);
 				webview.reload();
 			}
-			 
+
 			$(function() {
-				$(document).on("keydown", function(e) { 
+				$(document).on("keydown", function(e) {
 					if (e.metaKey && e.altKey && e.which === 73) {
 					  // cmd + option + k to open electron dev tools
 					  windowDevTools();
@@ -64,7 +64,8 @@
 				});
 			});
 
-			function addTab(url) {
+			function openTab(url) {
+				console.log('from the ui, adding url: ', url);
 				app.addTab({ url: url });
 			}
 
@@ -81,16 +82,16 @@
 				$("#update").show();
 			}
 
-			ipc.on('openTab', function(url) {
-				addTab(url);
+			ipc.on('openTab', function(evt, url) {
+				openTab(url);
 			});
-			ipc.on('needsUpdate', function(updateInfo) {
+			ipc.on('needsUpdate', function(evt, updateInfo) {
 				addUpdateNotifier(updateInfo);
 			});
 			ipc.on('webviewDevTools', function() {
 				webviewDevTools();
 			});
-			
+
 		</script>
 	</body>
 </html>

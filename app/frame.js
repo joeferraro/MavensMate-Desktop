@@ -1,8 +1,14 @@
-var remote = require('remote'),
-  ipc = require('ipc'),
+var remote = require('electron').remote,
+  ipc = require('electron').ipcRenderer,
   path = remote.require('path'),
-  shell = require('shell'),
+  shell = require('electron').shell,
+  lodash = require('lodash'),
   $ = require('jquery');
+
+var WatchJS = require('watchjs')
+var watch = WatchJS.watch;
+var unwatch = WatchJS.unwatch;
+var callWatchers = WatchJS.callWatchers;
 
 var TAB_ID_PREFIX = 'tab-',
   VIEW_WRAPPER_ID_PREFIX = 'view-wrapper-',
@@ -38,12 +44,27 @@ function removeDomElement(parentId, nodeId) {
 }
 
 app.addTab = function addTab(config) {
+  console.log('adding tab', config);
   var id = config.id || app.getTabId();
   var newTab = { id: id, title: config.title, url: config.url, active: false };
-
-  Object.observe(newTab, app.tabRenderer);
+  watch(newTab, 'active', function(prop, action, newvalue, oldvalue) {
+    console.log('tab active property changed');
+    var tabNode = document.getElementById(TAB_ID_PREFIX + this.id);
+    var viewWrapperNode = document.getElementById(VIEW_ID_PREFIX + this.id);
+    if (tabNode) {
+      if (this.active)
+        tabNode.classList.add('active');
+      else
+        tabNode.classList.remove('active');
+    }
+    if (viewWrapperNode) {
+      if (this.active)
+        viewWrapperNode.classList.add('active');
+      else
+        viewWrapperNode.classList.remove('active');
+    }
+  });
   app.tab.list.push(newTab);
-
   app.selectTab(id);
 };
 
@@ -64,10 +85,16 @@ app.closeTab = function closeTab(id) {
   for (var i = 0; i < app.tab.list.length; i++) {
     if (app.tab.list[i].id === id) {
       var removedTab = app.tab.list.splice(i, 1);
+
+      // remove tab
+      removeDomElement('tabs', TAB_ID_PREFIX + id)
+      // remove view
+      removeDomElement('views', VIEW_WRAPPER_ID_PREFIX + id)
+
       // if there is more than 1 tab remaining, select the closest tab
       if (app.tab.list.length > 0) {
         if (app.tab.selectedTab.id === id) {
-          app.selectTab(app.tab.list[i-1].id);        
+          app.selectTab(app.tab.list[i-1].id);
         }
       }
       break;
@@ -93,7 +120,7 @@ app.viewStartedLoading = function viewStartedLoading(event) {
 };
 
 app.viewFinishedLoading = function viewFinishedLoading(event) {
-  // console.log('viewFinishedLoading');
+  console.log('viewFinishedLoading');
   // console.log(event.type, event.srcElement.id, event.srcElement.getId());
 };
 
@@ -129,8 +156,7 @@ app.getTabId = function(length) {
   return string;
 };
 
-ipc.on('toggleDevTools', function(msg) {
-  //console.log('toggleDevTools on active webview');
+ipc.on('toggleDevTools', function(evt, msg) {
   if (!app.tab.selectedTab)
     return;
 
@@ -141,129 +167,86 @@ ipc.on('toggleDevTools', function(msg) {
     webview.openDevTools();
 });
 
-app.tabsArrayRenderer = function tabsArrayRenderer(changes) {
-  var addIndices = [];  
-  for (var i = 0; i < changes.length; i++) {
-    var change = changes[i];
-    if (change.object == app.tab.list && change.type == 'splice') {
-      if (change.removed.length > 0) {
-        var removedCount = change.removed.length;
-        for (var j = 0; j < removedCount; j++) {
-          var removeIndex = change.index + j;
-          var removeAddIndex = addIndices.indexOf(removeIndex);
-          if (removeAddIndex >= 0) // to be added
-            addIndices.splice(removeAddIndex, 1);
-          else {// already exists
-            // remove tab
-            removeDomElement('tabs', TAB_ID_PREFIX + change.removed[j].id)
-            // remove view
-            removeDomElement('views', VIEW_WRAPPER_ID_PREFIX + change.removed[j].id)
-          }
+watch(app.tab, 'list', function(prop, action, newValue, oldValue) {
+  console.log('app.tab.list changed!!');
+  console.log(prop);
+  console.log(action);
+  console.log(newValue);
+  console.log(oldValue);
+
+ if (action === 'push') {
+    _.each(newValue, function(tab) {
+      console.log('tab is: ', tab);
+      var tabNodeAttributes = {
+        id: TAB_ID_PREFIX + tab.id,
+        onclick: 'app.selectTab(\'' + tab.id + '\')'
+      };
+      tabNodeAttributes.class = tab.active ? 'tab active' : 'tab';
+      var viewWrapperNodeAttributes = {
+        id: VIEW_WRAPPER_ID_PREFIX + tab.id,
+      };
+      //viewWrapperNodeAttributes.class = tab.selected ? 'view-wrapper selected' : 'view-wrapper';
+      var viewNodeAttributes = {
+        id: VIEW_ID_PREFIX + tab.id,
+        src: tab.url,
+        nodeintegration: null
+      };
+      viewNodeAttributes.class = tab.active ? 'active' : '';
+
+      function webViewFinishedLoading(evt) {
+        console.log('web view finished loading!');
+
+        var tabTitle = document.getElementById(viewNodeAttributes.id).getTitle().replace('MavensMate |', '');
+        $('li#tab-'+tab.id+' div.title').html(tabTitle);
+
+        // fade out loading webview
+        $('#'+VIEW_ID_PREFIX + tab.id + '-loading').fadeOut( 200, function() {
+          // remove loading webview from DOM
+          removeDomElement(viewWrapperNodeAttributes.id, VIEW_ID_PREFIX + tab.id + '-loading');
+
+          // notify app view finished loading
+          app.viewFinishedLoading(evt);
+        });
+      }
+
+      function webViewStartedLoading(evt) {
+        console.log('web view started loading ...');
+        // console.log(evt);
+      }
+
+      function webViewNewWindowHandler(e) {
+        if (e.url.indexOf('localhost') > 0) {
+          app.addTab({ id: '' , url: e.url });
+        } else {
+          shell.openExternal(e.url);
         }
-        for (var j = 0; j < addIndices.length; j++) {
-          if (addIndices[j] > change.index)
-            addIndices[j] -= removedCount;
-        }
       }
-      if (change.addedCount > 0) {
-        for (var j = 0; j < change.addedCount; j++)
-          addIndices.push(change.index + j);
-      }
-    }
+
+      insertDomElement(
+        'tabs',
+        'li',
+        tabNodeAttributes,
+        ' <div class="title">Loading...</div> <div class="octicon octicon-x close-icon" onclick="closeTab(\'' + tab.id + '\')"></div>'
+      );
+
+      var wrapper = insertDomElement('views', 'div', viewWrapperNodeAttributes);
+      var loadingWebView = insertDomElement(viewWrapperNodeAttributes.id, 'webview', {
+          id: VIEW_ID_PREFIX + tab.id + '-loading',
+          src: 'file://' + __dirname + '/loading.html',
+          class: 'webViewLoading'
+        }, null, [
+
+      ]);
+      var newWebView = insertDomElement(viewWrapperNodeAttributes.id, 'webview', viewNodeAttributes, null, [
+        { eventName: 'did-start-loading', fn:  webViewStartedLoading },
+        { eventName: 'did-finish-load', fn:  webViewFinishedLoading },
+        { eventName: 'close', fn:  app.viewClosing },
+        { eventName: 'crashed', fn:  app.viewCrashed },
+        { eventName: 'destroyed', fn:  app.viewDestroyed },
+        { eventName: 'console-message', fn:  app.viewConsoleMessage },
+        { eventName: 'new-window', fn:  webViewNewWindowHandler }
+      ]);
+    });
   }
-  // add remaining additions to DOM
-  for (var i = 0; i < addIndices.length; i++) {
-    var tab = app.tab.list[addIndices[i]];
-    var tabNodeAttributes = {
-      id: TAB_ID_PREFIX + tab.id,
-      onclick: 'app.selectTab(\'' + tab.id + '\')'
-    };
-    tabNodeAttributes.class = tab.active ? 'tab active' : 'tab';
-    var viewWrapperNodeAttributes = {
-      id: VIEW_WRAPPER_ID_PREFIX + tab.id,
-    };
-    //viewWrapperNodeAttributes.class = tab.selected ? 'view-wrapper selected' : 'view-wrapper';
-    var viewNodeAttributes = {
-      id: VIEW_ID_PREFIX + tab.id,
-      src: tab.url,
-      nodeintegration: null
-    };
-    viewNodeAttributes.class = tab.active ? 'active' : '';
 
-    function webViewFinishedLoading(evt) {      
-      var tabTitle = document.getElementById(viewNodeAttributes.id).getTitle().replace('MavensMate |', '');
-      $('li#tab-'+tab.id+' div.title').html(tabTitle);
-
-      // fade out loading webview
-      $('#'+VIEW_ID_PREFIX + tab.id + '-loading').fadeOut( 200, function() {
-        // remove loading webview from DOM
-        removeDomElement(viewWrapperNodeAttributes.id, VIEW_ID_PREFIX + tab.id + '-loading');
-
-        // notify app view finished loading
-        app.viewFinishedLoading(evt);
-      });
-    }
-
-    function webViewStartedLoading(evt) {
-      // console.log('web view started loading ...');
-      // console.log(evt);      
-    }
-
-    function webViewNewWindowHandler(e) {
-      if (e.url.indexOf('localhost') > 0) {
-        app.addTab({ id: '' , url: e.url });
-      } else {
-        shell.openExternal(e.url);
-      }
-    }
-
-    insertDomElement(
-      'tabs', 
-      'li', 
-      tabNodeAttributes, 
-      ' <div class="title">Loading...</div> <div class="octicon octicon-x close-icon" onclick="closeTab(\'' + tab.id + '\')"></div>'
-    );
-
-    var wrapper = insertDomElement('views', 'div', viewWrapperNodeAttributes);
-    var loadingWebView = insertDomElement(viewWrapperNodeAttributes.id, 'webview', {
-        id: VIEW_ID_PREFIX + tab.id + '-loading',
-        src: 'file://' + __dirname + '/loading.html',
-        class: 'webViewLoading'
-      }, null, [
-      
-    ]);
-    var newWebView = insertDomElement(viewWrapperNodeAttributes.id, 'webview', viewNodeAttributes, null, [
-      { eventName: 'did-start-loading', fn:  webViewStartedLoading },
-      { eventName: 'did-finish-load', fn:  webViewFinishedLoading },
-      { eventName: 'close', fn:  app.viewClosing },
-      { eventName: 'crashed', fn:  app.viewCrashed },
-      { eventName: 'destroyed', fn:  app.viewDestroyed },
-      { eventName: 'console-message', fn:  app.viewConsoleMessage },
-      { eventName: 'new-window', fn:  webViewNewWindowHandler }
-    ]);
-
-  }
-};
-Array.observe(app.tab.list, app.tabsArrayRenderer);
-app.tabRenderer = function tabRenderer(changes) {
-  for (var i = 0; i < changes.length; i++) {
-    var change = changes[i];
-    var tab = change.object;
-    var tabNode = document.getElementById(TAB_ID_PREFIX + tab.id);
-    var viewWrapperNode = document.getElementById(VIEW_ID_PREFIX + tab.id);
-    if (change.type === 'update' && change.name === 'active') {
-      if (tabNode) {
-        if (tab[change.name])
-          tabNode.classList.add('active');
-        else
-          tabNode.classList.remove('active');
-      }
-      if (viewWrapperNode) {
-        if (tab[change.name])
-          viewWrapperNode.classList.add('active');
-        else
-          viewWrapperNode.classList.remove('active');
-      }
-    }
-  }
-};
+});
