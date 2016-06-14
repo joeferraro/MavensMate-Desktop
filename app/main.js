@@ -181,15 +181,15 @@ var attachAppMenu = function() {
             },
             {
               label: 'Check for Updates',
-              click: function() { require('shell').openExternal('https://github.com/joeferraro/MavensMate-app/releases') }
+              click: function() { require('electron').shell.openExternal('https://github.com/joeferraro/MavensMate-app/releases') }
             },
             {
               label: 'Learn More',
-              click: function() { require('shell').openExternal('http://mavensmate.com') }
+              click: function() { require('electron').shell.openExternal('http://mavensmate.com') }
             },
             {
               label: 'Submit a GitHub Issue',
-              click: function() { require('shell').openExternal('https://github.com/joeferraro/MavensMate/issues') }
+              click: function() { require('electron').shell.openExternal('https://github.com/joeferraro/MavensMate/issues') }
             }
           ]
         }
@@ -254,15 +254,15 @@ var attachAppMenu = function() {
             },
             {
               label: 'Check for Updates',
-              click: function() { require('shell').openExternal('https://github.com/joeferraro/MavensMate-app/releases') }
+              click: function() { require('electron').shell.openExternal('https://github.com/joeferraro/MavensMate-app/releases') }
             },
             {
               label: 'Learn More',
-              click: function() { require('shell').openExternal('http://mavensmate.com') }
+              click: function() { require('electron').shell.openExternal('http://mavensmate.com') }
             },
             {
               label: 'Submit a GitHub Issue',
-              click: function() { require('shell').openExternal('https://github.com/joeferraro/MavensMate/issues') }
+              click: function() { require('electron').shell.openExternal('https://github.com/joeferraro/MavensMate/issues') }
             }
           ]
         }
