@@ -13,6 +13,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     g++ -v
     sudo apt-get -y install gnome-keyring
     sudo apt-get -y install libgnome-keyring-dev
+    sudo apt-get -y install --no-install-recommends -y icnsutils graphicsmagick xz-utils
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     echo running osx build
     # brew update && brew upgrade xctool || true
