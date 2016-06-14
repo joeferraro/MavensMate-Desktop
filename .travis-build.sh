@@ -24,64 +24,18 @@ elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     ./scripts/add-key.sh
 fi
 
-cd app
-npm install -g node-gyp-install
-node-gyp-install
 npm install
+cd app
+npm install
+cd ..
 ls
-npm install joeferraro/electron-builder -g
-npm install electron-packager -g
-./node_modules/.bin/electron-rebuild
 
 #if OS is linux or is not set
 if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
-    npm run build:linux
-    cd ../dist/linux/MavensMate-linux-x64
-    ls
-    cd ..
-    ls
-    tar -zcvf MavensMate-app-$TRAVIS_TAG-linux-x64.tar.gz -C MavensMate-linux-x64 .
-    ls
-    # npm run pack:win
-    # cd ../dist/win
-    # ls
-    # # zip MavensMate-app-$TRAVIS_TAG-win-ia32.tar.gz MavensMate-win32-ia32 .
-    # # zip MavensMate-app-$TRAVIS_TAG-win-x64.tar.gz MavensMate-win32-x64 .
+    npm run build
 
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
-    npm run build:osx
-    # TODO: sign ../dist/osx/MavensMate-darwin-x64/MavensMate.app
-    certtool y | grep Developer\ ID
-    sudo security unlock-keychain -p travis mavensmate.keychain
-
-    APP_KEY="Developer ID Application: Joseph Ferraro ($APPLE_TEAM_ID)"
-    INSTALLER_KEY="Developer ID Installer: Joseph Ferraro ($APPLE_TEAM_ID)"
-
-    ls ../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks
-
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/MavensMate Helper.app/"
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/MavensMate Helper NP.app"
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/MavensMate Helper EH.app"
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/Squirrel.framework/Squirrel"
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/Squirrel.framework"
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/ReactiveCocoa.framework/ReactiveCocoa"
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/ReactiveCocoa.framework"
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/Mantle.framework/Mantle"
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/Mantle.framework"
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/Electron Framework.framework/Libraries/libnode.dylib"
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/Electron Framework.framework/Electron Framework"
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app/Contents/Frameworks/Electron Framework.framework"
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate-darwin-x64/MavensMate.app"
-    sudo codesign --verify -vvvv ../dist/osx/MavensMate-darwin-x64/MavensMate.app
-
-    npm run pack-only:osx
-
-    sudo codesign --deep --force --verbose --keychain ~/Library/Keychains/mavensmate.keychain --sign "$APP_KEY" "../dist/osx/MavensMate.dmg"
-
-    sudo codesign --verify -vvvv ../dist/osx/MavensMate.dmg
-
-    cd ../dist/osx
-    ls
-    zip MavensMate-app-$TRAVIS_TAG-osx-x64.zip MavensMate.dmg
-    ls
+    npm run build
 fi
+
+ls dist

@@ -1,4 +1,3 @@
-
 {
   "scripts": {
     "postinstall": "install-app-deps",
@@ -10,7 +9,7 @@
     "app-category-type": "public.app-category.developer-tools",
     "asar": true,
     "productName": "MavensMate",
-    "linux":{},
+    "linux": {},
     "osx": {
       "remoteReleases": "https://github.com/joeferraro/MavensMate-app",
       "contents": [
@@ -33,6 +32,7 @@
   },
   "devDependencies": {
     "electron-prebuilt": "1.2.2",
-    "electron-builder": "next"
+    "electron-builder": "next",
+    "electron-rebuild": "^1.1.5"
   }
 }

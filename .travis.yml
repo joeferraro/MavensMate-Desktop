@@ -1,13 +1,10 @@
 sudo: required
+dist: trusty
+node_js:
+  - '4'
 os:
 - linux
 - osx
-install:
-- rm -rf ~/.nvm
-- git clone https://github.com/creationix/nvm.git ~/.nvm
-- source ~/.nvm/nvm.sh
-- nvm install 6
-- node --version
 script:
 - echo Building MavensMate-app ...
 before_deploy: ./.travis-build.sh
@@ -21,7 +18,7 @@ deploy:
     condition: $TRAVIS_OS_NAME == linux
 - provider: releases
   api-key: $GITHUB_API_KEY
-  file: ${HOME}/build/${TRAVIS_REPO_SLUG}/dist/osx/MavensMate-app-$TRAVIS_TAG-osx-x64.zip
+  file: ${HOME}/build/${TRAVIS_REPO_SLUG}/dist/osx/MavensMate-app-$TRAVIS_TAG-mac.zip
   skip_cleanup: true
   on:
     tags: true
