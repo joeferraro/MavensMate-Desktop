@@ -31,6 +31,8 @@ npm install
 cd ..
 ls
 
+security find-identity -v -p codesigning
+
 #if OS is linux or is not set
 if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     npm run dist
