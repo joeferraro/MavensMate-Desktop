@@ -4,7 +4,7 @@
     "dist": "build"
   },
   "build": {
-    "app-bundle-id": "org.mavens.mavensmate",
+    "app-bundle-id": "com.mavens.mavensmate",
     "app-category-type": "public.app-category.developer-tools",
     "asar": true,
     "productName": "MavensMate",
