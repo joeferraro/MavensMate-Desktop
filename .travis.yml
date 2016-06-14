@@ -8,24 +8,4 @@ os:
 - osx
 script:
 - echo Building MavensMate-app ...
-before_deploy: ./.travis-build.sh
-deploy:
-- provider: releases
-  api-key: $GITHUB_API_KEY
-  file: ${HOME}/build/${TRAVIS_REPO_SLUG}/dist/linux/MavensMate-app-$TRAVIS_TAG-linux-x64.tar.gz
-  skip_cleanup: true
-  on:
-    tags: true
-    condition: $TRAVIS_OS_NAME == linux
-- provider: releases
-  api-key: $GITHUB_API_KEY
-  file: ${HOME}/build/${TRAVIS_REPO_SLUG}/dist/osx/MavensMate-app-$TRAVIS_TAG-mac.zip
-  skip_cleanup: true
-  on:
-    tags: true
-    condition: $TRAVIS_OS_NAME == osx
-env:
-  global:
-  - secure: UgJr7tduwFW18PC+LHxFWYJiSIZrvoYn2/0uPB2lXeBI/pgsw7lEbp9cOcN9vC0C5cdDK1uJo4vfRXwDFnJWoUO3XBdolT2Kq5huBZ+bG0OMmG3F+3vlqvTJonVVoQjPU3mtsBQ3yZICHNBuJyh46aj0m3JZmyIXAupZBSyVyQbL50Wi4bgVtg3h50CuXeHmoMjyOvhkPEfKwFa4EY4uTIbrsAg3ftU34/15NUNC3qsaO1TlsdeZG9Jzp6hJpN03MhUvDHE/ErWZAlViBfRXXTBu8Rb1fX+skEm4kNE9tIFZfMCkew2JQRYbDWWLszRa/uW+IYDo3TSwfjRUSwFebetOCI/tRripsshQ1P+Kggp8p1N5TRDwG0bXDo8QvzY8Ix6KtZ9rwqy9Rsb1tla6mdfJa1cGrAkkSeXDlXvFK0NmpTLkIYEJG6dn14Q62WDC3rCoJE2NkGP1IoR1SJLOEZryxDN7kT3HOTvgJC9JSzx0pSdDJ77KRgdQA+4mb+IFqLTA+JRDT9Nrl9xZERd7pWd5oePZiVF7GDw2gpV1AeVbRJDhM6j5NLYa9jUn5u79ZM1iLtdK09qvVaVKEyyyGvhUN75kZXu5727r+IL4oKV/rJOebcK+kv9ZV1qUyDPG2JbsruM/X7HPeIadizgBQv5FjoEA9tuMllEljTEmt4g=
-  - secure: aMuPYz9nlYcSsZOvxTlJ10eqmcp1BzjidIGFpJmjgBK2a0puZcK6pwBCJEDGz6eQMJKy3MeTu29KjmuuvJ0jdvtoml/QXMTw+StkZzlcwV2yLOvVIFKG6+KAApHbsNU4WYAbZBA3tstiAub5HyRFykr1KWFs+GH4yGkqMc/m1GJ4OnDWW9ekvuf4xMpknmaC48DLc4RbVFQ60zud/8IrkZ5jiAw8OppDrFzCXybP7PhqUfcDhU/cdxQbP2BZi8abT1cMs0xK/eMv0sINdRMsPJQoVR7VXLi/joEZUbX6VyqiW/CDncihbwaGeHPXD5romlrDdboRdCI//JGjHVGIDZoua1LsAeykgAG11M9Lnn3/+Ig897BbjZmPk+DuxVRfqN+pc3lb63WdGlhf4jvY9JDb6idsNQ0SzZGLFBN55Y6H3CzvgnlgNGcXDWAzulHNtwR181b6AIafTtB37gs8x2PudiBFCGGzg/iHVnK2jA66sL6/Lo6Gk7Bp6+g94SRy31TiQ5TkGe6IgJCRuZG0p/K9nIG62vIRWwlOUCY0pJMVK/9EUxixymM3Xhkc32JZcN2+kHKc7wiJNscX+j+9qCNKHbOABy3Oe7JQrpDDa5QbmyEULkVyZA3GDSFpl79wHJDBqXelF4f0OSJdZo9GQb2sNOMvxNO0zYsLxy1hxwo=
-  - secure: NQb6pqrUgO68KYHSrzI7dW1W8Unq/JEM0ycI6iViBxaTQQoThqtaB1G6Qaha++Gf1iEAtJTqKINh0XhK79R/K2cklIjwb3HAszrMiIWMWoAsh/5mrcAY19qFqYVbYXrhvQrueKKLnhaFOTSpNI/972ODiK36SGDWFSsLgL3y0VMbSL1eHexIP47IK8scdcIyIJEHsp0DiH3HtKOA7kaaSHDSVuu9YDg24AYNJe9EUFYvefGLRoF5m+327ykw4Xzx4fvxM02WSg7fn78CgvEPjgvGjui+G7MJmlcPUfSMdv2RLd72d+t53lYp2RvLVV5c1aU33gPRSUUlnMVKB4BpfCtTP3O1Qeq9DTE2ewOE8PMH6fYjXRj75HwmBdVP7dRp6yygYC4wLsYEF9tVIhlHjxR5QhD6rEfbm7Bu6Myea4p6hrEhU8Ra7JqvIogW6Uvqhe7jvMXmA1XK+zODFDD0y+16T+BDuQ77FWZIKgC7n+Qc8vvRUtYYtPXi1E5hcOoI8fmxDDZsLEp5pwRH/o7gbzWoXDbGqf9J5d+MnJPLf+9NHd2yteF3fiNclvlqhBfu4pYYF+W4VxyisltpPyAv4vkIXBps2AYByJyjsGzy38LZlcfkXMJyvWxtbC+ABDtp4umbvmOaXKEEBg653dmbXJJz32naHEJAsShtk9WNGuM=
+- ./.travis-build.sh
