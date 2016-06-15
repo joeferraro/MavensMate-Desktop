@@ -6,6 +6,11 @@ node_js:
 os:
 - linux
 - osx
+cache:
+  directories:
+    - node_modules
+    - app/node_modules
+    - $HOME/.electron
 script:
 - echo Building MavensMate-app ...
 - ./.travis-build.sh
