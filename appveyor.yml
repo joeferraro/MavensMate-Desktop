@@ -16,8 +16,6 @@ platform:
 install:
   - dir
 
-skip_non_tags: true
-
 build: off
 
 test_script:
