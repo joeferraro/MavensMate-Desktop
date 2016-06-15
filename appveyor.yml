@@ -10,71 +10,23 @@ platform:
   - x86
   - x64
 
-# init:
-# - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+cache:
+  - node_modules
+  - app\node_modules
+  - '%APPDATA%\npm-cache'
+  - '%USERPROFILE%\.electron'
+
+init:
+  - git config --global core.autocrlf input
 
 install:
-  - dir
-  - ps: Install-Product node $env:nodejs_version
-  - npm install -g npm
-  - ps: $env:path = $env:appdata + "\npm;" + $env:path
-
-build: off
-
-test_script:
-  - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME:~1%
-  - python -V
   - ps: Install-Product node $env:nodejs_version $env:platform
-  - ps: $exePath = "$($env:USERPROFILE)\nsis-2.46-setup.exe"
-  - ps: (New-Object Net.WebClient).DownloadFile('https://mavens.com/public/mavensmate/nsis-2.46-setup.exe', $exePath)
-  - ps: cmd /c start /wait $exePath /S /D=C:\nsis
-  - set PATH=C:\nsis;%PATH%
-  - if exist %ProgramFiles%\nodejs\npm del %ProgramFiles%\nodejs\npm
-  - if exist %ProgramFiles%\nodejs\npm.cmd del %ProgramFiles%\nodejs\npm.cmd
-  - set PATH=%APPDATA%\npm;%PATH%
-  - if %platform% == x64 set GYP_MSVS_VERSION=2013
-  - if %platform% == x86 set GYP_MSVS_VERSION=2013
-  - if %platform% == x64 npm config set python C:\Python27-x64\python.exe
-  - if %platform% == x86 npm config set python C:\Python27\python.exe
-  - if not exist C:\projects\npm-cache mkdir C:\projects\npm-cache
-  - npm config set cache C:\projects\npm-cache --global
-  - npm config set cache-lock-retries 1000
-  - npm config set cache-lock-wait 100000
-  - node --version && npm --version
-  - if %platform% == x64 set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
-  - set PATH=C:\Program Files\MSBuild\14.0\Bin;%PATH%
+  - git reset --hard HEAD
+  - npm install npm -g
   - npm install
-  - cd app
-  - npm install
-  - cd ..
+  - npm prune
+
+build_script:
+  - node --version
+  - npm --version
   - npm run dist
-
-# before_deploy:
-#   - ECHO deploying
-
-# artifacts:
-#   - path: dist\win\win-$(platform)\*.zip
-#     name: setupzip
-
-# on_finish:
-#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-#   - type C:\projects\MavensMate-app\app\node_modules\npm-debug.log
-
-cache:
-  - C:\nsis
-  - C:\Users\appveyor\AppData\Roaming\npm\node_modules -> C:\projects\MavensMate-app\app\package.json  # global npm modules
-  - C:\Users\appveyor\AppData\Roaming\npm-cache -> C:\projects\MavensMate-app\app\package.json         # npm cache
-  - C:\projects\npm-cache -> C:\projects\MavensMate-app\app\package.json
-  - C:\projects\MavensMate-app\app\node_modules -> C:\projects\MavensMate-app\app\package.json
-
-# deploy:
-#    # Deploy to GitHub Releases
-#   - provider: GitHub
-#     auth_token:
-#       secure: EoSbqljBDKZ9pBkSSRG0MwLt+ooqW0+ZJGThjggCoOaTQzCeLzgnnzZFz/G46q8I
-#     artifact: setupzip
-#     draft: false
-#     prerelease: false
-#     on:
-#       branch: master                # release from master branch only
-#       appveyor_repo_tag: true       # deploy on tag push only
