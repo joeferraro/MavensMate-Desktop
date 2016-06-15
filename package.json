@@ -24,9 +24,6 @@
           "type": "file"
         }
       ]
-    },
-    "win": {
-      "remoteReleases": "https://mavensmate-app-auto-updater.herokuapp.com/download/latest"
     }
   },
   "devDependencies": {
