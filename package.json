@@ -1,16 +1,17 @@
 {
   "scripts": {
     "postinstall": "install-app-deps",
-    "dist": "build"
+    "dist": "build",
+    "release": "build"
   },
   "build": {
     "app-bundle-id": "com.mavens.mavensmate",
+    "appId": "com.mavens.mavensmate",
     "app-category-type": "public.app-category.developer-tools",
     "asar": true,
     "productName": "MavensMate",
     "linux": {},
     "osx": {
-      "remoteReleases": "https://github.com/joeferraro/MavensMate-app",
       "contents": [
         {
           "x": 410,
@@ -26,7 +27,7 @@
       ]
     },
     "win": {
-      "remoteReleases": "https://github.com/joeferraro/MavensMate-app"
+      "remoteReleases": "https://mavensmate-app-auto-updater.herokuapp.com/download/latest"
     }
   },
   "devDependencies": {
