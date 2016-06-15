@@ -5,7 +5,6 @@
     "release": "build"
   },
   "build": {
-    "app-bundle-id": "com.mavens.mavensmate",
     "appId": "com.mavens.mavensmate",
     "app-category-type": "public.app-category.developer-tools",
     "asar": true,
