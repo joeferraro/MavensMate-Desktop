@@ -6,6 +6,7 @@
   "author": "Joseph Ferraro <jferraro@mavens.com> (https://github.com/joeferraro)",
   "dependencies": {
     "bluebird": "2.9.34",
+    "electron-squirrel-startup": "^1.0.0",
     "jquery": "2.1.4",
     "lodash": "^4.13.1",
     "mavensmate": "0.0.46",

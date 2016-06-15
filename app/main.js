@@ -1,6 +1,9 @@
+'use strict';
+
+if (require('electron-squirrel-startup')) return;
+
 var electron        = require('electron');
 var app             = electron.app;
-
 var Promise         = require('bluebird');
 var path            = require('path');
 var Menu            = electron.Menu;
@@ -9,12 +12,6 @@ var shell           = electron.shell;
 var mavensmate      = require('mavensmate');
 var ipc             = electron.ipcMain;
 var AppUpdater      = require('./app-updater');
-
-// Report crashes to our server.
-// require('crash-reporter').start();
-
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is GCed.
 var mainWindow = null;
 var mavensMateServer = null;
 
