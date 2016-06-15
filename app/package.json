@@ -3,7 +3,7 @@
   "version": "0.0.11-beta1",
   "main": "main.js",
   "description": "MavensMate desktop app",
-  "author": "Joseph Ferraro <@joeferraro>",
+  "author": "Joseph Ferraro <jferraro@mavens.com> (https://github.com/joeferraro)",
   "dependencies": {
     "bluebird": "2.9.34",
     "jquery": "2.1.4",
