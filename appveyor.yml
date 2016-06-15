@@ -3,8 +3,8 @@ environment:
   matrix:
   - nodejs_version: "4"
 
-  GH_TOKEN:
-      secure: fgdyR4RJFw8VwtvcppTAV/efp7o+VPHg2Sg/Caa5vDmLEcB98p8fN5bK7LPZSjkb
+  # GH_TOKEN:
+  #     secure: fgdyR4RJFw8VwtvcppTAV/efp7o+VPHg2Sg/Caa5vDmLEcB98p8fN5bK7LPZSjkb
 
 platform:
   - x86
@@ -42,27 +42,18 @@ test_script:
   - node --version && npm --version
   - if %platform% == x64 set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
   - set PATH=C:\Program Files\MSBuild\14.0\Bin;%PATH%
+  - npm install
   - cd app
   - npm install
-  - if exist C:\projects\MavensMate-app\app\node_modules\nslog rd /s /q C:\projects\MavensMate-app\app\node_modules\nslog
-  - .\node_modules\.bin\electron-rebuild -w sqlite3 -p
-  - npm install joeferraro/electron-builder -g
-  - npm install electron-packager -g
-  - npm run pack:win-%platform%
-  - dir ..\dist\win
-  - dir ..\dist\win\win-%platform%
-  - cd ..\dist\win\win-%platform%
-  - 7z a -tzip "MavensMate-app-v%VERSION%-win-%platform%-setup.zip" "MavensMate Setup.exe"
-  - dir
-  - cd ..\..\..\
-  - dir
+  - cd ..
+  - npm run dist
 
-before_deploy:
-  - ECHO deploying
+# before_deploy:
+#   - ECHO deploying
 
-artifacts:
-  - path: dist\win\win-$(platform)\*.zip
-    name: setupzip
+# artifacts:
+#   - path: dist\win\win-$(platform)\*.zip
+#     name: setupzip
 
 # on_finish:
 #   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
@@ -75,14 +66,14 @@ cache:
   - C:\projects\npm-cache -> C:\projects\MavensMate-app\app\package.json
   - C:\projects\MavensMate-app\app\node_modules -> C:\projects\MavensMate-app\app\package.json
 
-deploy:
-   # Deploy to GitHub Releases
-  - provider: GitHub
-    auth_token:
-      secure: EoSbqljBDKZ9pBkSSRG0MwLt+ooqW0+ZJGThjggCoOaTQzCeLzgnnzZFz/G46q8I
-    artifact: setupzip
-    draft: false
-    prerelease: false
-    on:
-      branch: master                # release from master branch only
-      appveyor_repo_tag: true       # deploy on tag push only
+# deploy:
+#    # Deploy to GitHub Releases
+#   - provider: GitHub
+#     auth_token:
+#       secure: EoSbqljBDKZ9pBkSSRG0MwLt+ooqW0+ZJGThjggCoOaTQzCeLzgnnzZFz/G46q8I
+#     artifact: setupzip
+#     draft: false
+#     prerelease: false
+#     on:
+#       branch: master                # release from master branch only
+#       appveyor_repo_tag: true       # deploy on tag push only
