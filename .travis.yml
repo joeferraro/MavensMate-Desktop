@@ -2,7 +2,7 @@ sudo: required
 dist: trusty
 language: node_js
 node_js:
-  - '4.1.2'
+  - '4'
 os:
 - linux
 - osx
@@ -11,6 +11,7 @@ cache:
     - node_modules
     - app/node_modules
     - $HOME/.electron
+before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 script:
 - echo Building MavensMate-app ...
 - ./.travis-build.sh

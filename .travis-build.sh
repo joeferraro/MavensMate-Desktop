@@ -19,7 +19,6 @@ elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     echo running osx build
 fi
 
-npm install npm -g
 # next two lines required for proper build
 npm install -g node-gyp-install
 node-gyp-install
