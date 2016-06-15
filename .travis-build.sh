@@ -14,6 +14,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
     sudo apt-get -y install gnome-keyring
     sudo apt-get -y install libgnome-keyring-dev
     sudo apt-get -y install --no-install-recommends -y icnsutils graphicsmagick xz-utils
+    sudo apt-get -y install node-gyp
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
     echo running osx build
 fi
@@ -33,6 +34,7 @@ ls
 
 #if OS is linux or is not set
 if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
+    ./node_modules/.bin/electron-rebuild --module-dir app/node_modules
     npm run dist
 
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
