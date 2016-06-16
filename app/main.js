@@ -355,29 +355,6 @@ var openUrlInNewTab = function(url) {
     });
 };
 
-var checkForUpdates = function() {
-  return new Promise(function(resolve, reject) {
-    console.log('checking for updates ...');
-    var options = {
-      repo: 'joeferraro/mavensmate-app',
-      currentVersion: app.getVersion()
-    };
-    var updateChecker = new GitHubReleases(options);
-    updateChecker.check()
-      .then(function(updateCheckResult) {
-        console.log('update check result: ', updateCheckResult);
-        if (updateCheckResult && updateCheckResult.needsUpdate) {
-          mainWindow.webContents.send('needsUpdate', updateCheckResult);
-        }
-        resolve();
-      })
-      .catch(function(err) {
-        console.error(err);
-        reject(err);
-      });
-  });
-};
-
 // when the last tab is closed, we close the entire browser window
 ipc.on('last-tab-closed', function() {
   mainWindow.close();
