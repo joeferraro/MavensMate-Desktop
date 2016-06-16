@@ -24,6 +24,9 @@
           "type": "file"
         }
       ]
+    },
+    "windows": {
+      "loadingGif": "./build/squirrel/loading.gif"
     }
   },
   "devDependencies": {
