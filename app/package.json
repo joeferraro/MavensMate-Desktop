@@ -1,15 +1,17 @@
 {
   "name": "mavensmate-app",
-  "version": "0.0.11-beta1",
+  "version": "0.0.11-beta.1",
   "main": "main.js",
   "description": "MavensMate desktop app",
   "author": "Joseph Ferraro <jferraro@mavens.com> (https://github.com/joeferraro)",
   "dependencies": {
+    "auto-launch": "^2.0.1",
     "bluebird": "2.9.34",
     "electron-squirrel-startup": "^1.0.0",
     "jquery": "2.1.4",
     "lodash": "^4.13.1",
     "mavensmate": "0.0.47",
+    "nslog": "^3.0.0",
     "semver": "5.0.1",
     "watchjs": "0.0.0"
   }

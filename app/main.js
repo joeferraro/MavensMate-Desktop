@@ -4,6 +4,7 @@ if (require('electron-squirrel-startup')) return;
 
 var electron        = require('electron');
 var app             = electron.app;
+var Tray            = electron.Tray;
 var Promise         = require('bluebird');
 var path            = require('path');
 var Menu            = electron.Menu;
@@ -12,8 +13,20 @@ var shell           = electron.shell;
 var mavensmate      = require('mavensmate');
 var ipc             = electron.ipcMain;
 var AppUpdater      = require('./app-updater');
+var AutoLaunch      = require('auto-launch');
+
 var mainWindow = null;
 var mavensMateServer = null;
+var mavensMateConfig = null;
+var mavensMateLogger = null;
+var trayIcon;
+var isStartAtLaunch = false;
+var installPrereleases = false;
+
+var appLauncher = new AutoLaunch({
+    name: 'MavensMate',
+    isHidden: true
+});
 
 // attaches menu to application (edit, view, window, help, etc)
 var attachAppMenu = function() {
@@ -25,7 +38,7 @@ var attachAppMenu = function() {
           label: 'MavensMate',
           submenu: [
             {
-              label: 'MavensMate-app v'+require('./package.json').version
+              label: 'MavensMate v'+app.getVersion()
             },
             {
               type: 'separator'
@@ -151,7 +164,7 @@ var attachAppMenu = function() {
               }
             },
             {
-              label: 'Toggle Mavensmate-App Developer Tools',
+              label: 'Toggle Mavensmate Developer Tools',
               accelerator: (function() {
                 if (process.platform === 'darwin')
                   return 'Alt+Command+I';
@@ -170,7 +183,7 @@ var attachAppMenu = function() {
           label: 'Help',
           submenu: [
             {
-              label: 'MavensMate-app v'+require('./package.json').version
+              label: 'MavensMate v'+app.getVersion()
             },
             {
               label: 'Check for Updates',
@@ -224,7 +237,7 @@ var attachAppMenu = function() {
               }
             },
             {
-              label: 'Toggle Mavensmate-App Developer Tools',
+              label: 'Toggle Mavensmate Developer Tools',
               accelerator: (function() {
                 if (process.platform === 'darwin')
                   return 'Alt+Command+I';
@@ -243,7 +256,7 @@ var attachAppMenu = function() {
           label: 'Help',
           submenu: [
             {
-              label: 'MavensMate-app v'+require('./package.json').version
+              label: 'MavensMate v'+app.getVersion()
             },
             {
               label: 'Check for Updates',
@@ -298,11 +311,14 @@ var attachMainWindow = function(restartServer, url) {
               port: 56248,
               windowOpener: openUrlInNewTab
             })
-            .then(function(server) {
-              mavensMateServer = server;
-              console.log('sending openTab to mainwindow ...');
+            .then(function(res) {
+              mavensMateServer = res.server;
+              mavensMateConfig = res.config;
+              mavensMateLogger = res.logger;
+              console.log(mavensMateConfig.get('mm_workspace'));
+              console.log('opening start url ...');
               mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
-              new AppUpdater(mainWindow);
+              new AppUpdater(mainWindow, mavensMateConfig);
               resolve();
             })
             .catch(function(err) {
@@ -332,6 +348,69 @@ var attachMainWindow = function(restartServer, url) {
     } catch(e) {
       reject(e);
     }
+  });
+};
+
+var toggleStartAtLaunch = function() {
+  appLauncher.isEnabled()
+    .then(function(enabled) {
+      if (isStartAtLaunch) {
+        return appLauncher.disable();
+      } else {
+        return appLauncher.enable();
+      }
+    })
+    .then(function(res){
+      isStartAtLaunch = !isStartAtLaunch;
+    })
+    .catch(function(err) {
+      console.log('could not toggleStartAtLaunch', err);
+    });
+};
+
+var attachTray = function() {
+  return new Promise(function(resolve, reject) {
+    appLauncher.isEnabled()
+      .then(function(enabled) {
+        if (enabled) {
+          isStartAtLaunch = enabled;
+        }
+        trayIcon = new Tray(path.join(__dirname, 'resources', 'tray', 'osx', 'icon.png'));
+        trayIcon.setPressedImage(path.join(__dirname, 'resources', 'tray', 'osx', 'icon-white.png'));
+        var contextMenu = Menu.buildFromTemplate([
+          {
+            label: 'MavensMate v'+app.getVersion(),
+            type: 'normal'
+          },
+          {
+            label: 'Start on Launch',
+            type: 'checkbox',
+            click: function() { toggleStartAtLaunch() },
+            checked: isStartAtLaunch
+          },
+          {
+            label: 'Install Prereleases',
+            type: 'checkbox',
+            click: function() {
+              mavensMateConfig.set('mm_install_prereleases', !mavensMateConfig.get('mm_install_prereleases', false));
+              mavensMateConfig.save();
+            },
+            checked: mavensMateConfig.get('mm_install_prereleases', false)
+          },
+          {
+            label: 'Quit MavensMate',
+            type: 'normal',
+            click: function() { app.quit(); }
+          }
+        ]);
+        trayIcon.setToolTip('MavensMate');
+        trayIcon.setContextMenu(contextMenu);
+        resolve();
+      })
+      .catch(function(err) {
+        console.log('could not attach tray', err);
+        reject(err);
+      });
   });
 };
 
@@ -375,7 +454,10 @@ app.on('window-all-closed', function() {
 app.on('ready', function() {
   attachAppMenu();
   attachMainWindow()
+    .then(function() {
+      return attachTray();
+    })
     .catch(function(err) {
-      console.error('Error attaching main window...', err);
+      console.error('Error starting MavensMate: ', err);
     });
 });
