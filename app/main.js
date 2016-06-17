@@ -450,15 +450,6 @@ ipc.on('last-tab-closed', function() {
   mainWindow.close();
 });
 
-// Quit when all windows are closed on platforms other than OSX, as per platform guidelines
-app.on('window-all-closed', function() {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // will check for updates against github releases and pass the result to setup
