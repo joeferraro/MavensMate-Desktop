@@ -7,7 +7,7 @@
   "build": {
     "appId": "com.mavens.mavensmate",
     "app-category-type": "public.app-category.developer-tools",
-    "asar": true,
+    "asar": false,
     "productName": "MavensMate",
     "linux": {},
     "osx": {
