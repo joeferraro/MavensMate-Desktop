@@ -25,7 +25,8 @@ var installPrereleases = false;
 
 var appLauncher = new AutoLaunch({
     name: 'MavensMate',
-    isHidden: true
+    isHidden: true,
+    path: app.getAppPath()
 });
 
 // attaches menu to application (edit, view, window, help, etc)
