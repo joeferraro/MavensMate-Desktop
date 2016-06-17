@@ -392,10 +392,10 @@ var attachTray = function() {
             label: 'Install Prereleases',
             type: 'checkbox',
             click: function() {
-              mavensMateConfig.set('mm_install_prereleases', !mavensMateConfig.get('mm_install_prereleases', false));
+              mavensMateConfig.set('mm_beta_channel', !mavensMateConfig.get('mm_beta_channel', false));
               mavensMateConfig.save();
             },
-            checked: mavensMateConfig.get('mm_install_prereleases', false)
+            checked: mavensMateConfig.get('mm_beta_channel', false)
           },
           {
             label: 'Quit MavensMate',

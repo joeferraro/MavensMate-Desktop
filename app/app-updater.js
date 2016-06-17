@@ -7,7 +7,7 @@ var nslog         = require('nslog');
 
 const UPDATE_SERVER_HOST = 'mavensmate-app-auto-updater.herokuapp.com'
 
-function AppUpdater(window) {
+function AppUpdater(window, config) {
   var self = this;
   if (util.isDev()) {
       return;
@@ -19,6 +19,7 @@ function AppUpdater(window) {
   this.window = window;
 
   var version = app.getVersion();
+  var channel = config.get('mm_beta_channel', false) ? 'beta' : 'stable';
 
   autoUpdater.addListener('update-available', function (event) {
     console.log('A new update is available');
@@ -41,7 +42,7 @@ function AppUpdater(window) {
     nslog('Update not available');
   });
 
-  autoUpdater.setFeedURL('https://' + UPDATE_SERVER_HOST + '/update/' + os.platform() + '_' + os.arch() + '/' + version);
+  autoUpdater.setFeedURL('https://' + UPDATE_SERVER_HOST + '/update/' + os.platform() + '_' + os.arch() + '/' + version + '/' + channel);
   autoUpdater.checkForUpdates();
 }
 
