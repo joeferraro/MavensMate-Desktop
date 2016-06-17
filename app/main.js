@@ -23,10 +23,20 @@ var trayIcon;
 var isStartAtLaunch = false;
 var installPrereleases = false;
 
+var getStartupPath = function() {
+  if (process.platform === 'darwin') {
+    return path.join(app.getAppPath(), '..', '..', '..');
+  } else if (process.platform === 'win32') {
+    return app.getAppPath();
+  } else {
+    return app.getAppPath();
+  }
+};
+
 var appLauncher = new AutoLaunch({
     name: 'MavensMate',
     isHidden: true,
-    path: app.getAppPath()
+    path: getStartupPath()
 });
 
 // attaches menu to application (edit, view, window, help, etc)
