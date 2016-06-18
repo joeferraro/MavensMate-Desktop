@@ -386,8 +386,14 @@ var attachTray = function() {
         if (enabled) {
           isStartAtLaunch = enabled;
         }
-        trayIcon = new Tray(path.join(__dirname, 'resources', 'tray', 'osx', 'icon.png'));
-        trayIcon.setPressedImage(path.join(__dirname, 'resources', 'tray', 'osx', 'icon-white.png'));
+        if (process.platform === 'darwin') {
+          trayIcon = new Tray(path.join(__dirname, 'resources', 'tray', 'osx', 'icon.png'));
+          trayIcon.setPressedImage(path.join(__dirname, 'resources', 'tray', 'osx', 'icon-white.png'));
+        } else if (process.platform === 'win32') {
+          trayIcon = new Tray(path.join(__dirname, 'resources', 'tray', 'osx', 'icon-white.png'));
+        } else {
+          trayIcon = new Tray(path.join(__dirname, 'resources', 'tray', 'osx', 'icon.png'));
+        }
         var contextMenu = Menu.buildFromTemplate([
           {
             label: 'MavensMate v'+app.getVersion(),
