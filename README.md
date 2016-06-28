@@ -1,5 +1,15 @@
 # MavensMate-app
 
+## Development Suspended
+
+MavensMate users, 
+
+I have temporarily suspended development & support for MavensMate to focus on spending time with my newborn daughter. If you are experiencing an issue with MavensMate, I encourage you to use the Force.com IDE, Developer Console, or one of the many other 3rd party tools for building Salesforce applications until development resumes.
+
+Thanks very much for your support.
+
+-Joe
+
 ## What is MavensMate-app?
 
 MavensMate-app is a cross-platform desktop wrapper for the [MavensMate](https://github.com/joeferraro/MavensMate) server. All MavensMate plugins (Sublime Text, Atom, etc.) require MavensMate-app to be installed and running in order to function properly.
