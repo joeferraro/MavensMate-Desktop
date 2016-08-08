@@ -406,7 +406,7 @@ var attachTray = function() {
             checked: isStartAtLaunch
           },
           {
-            label: 'Install Prereleases',
+            label: 'Install Beta Releases',
             type: 'checkbox',
             click: function() {
               mavensMateConfig.set('mm_beta_channel', !mavensMateConfig.get('mm_beta_channel', false));
