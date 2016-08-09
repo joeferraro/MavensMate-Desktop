@@ -2,7 +2,7 @@ var remote = require('electron').remote,
   ipc = require('electron').ipcRenderer,
   path = remote.require('path'),
   shell = require('electron').shell,
-  lodash = require('lodash'),
+  _ = require('lodash'),
   $ = require('jquery');
 
 var WatchJS = require('watchjs')
