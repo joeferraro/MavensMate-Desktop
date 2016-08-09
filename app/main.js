@@ -225,6 +225,11 @@ var attachAppMenu = function() {
                   focusedWindow.close();
               }
             },
+            {
+              label: 'Quit',
+              accelerator: 'Ctrl+Q',
+              click: function() { app.quit(); }
+            },
           ]
         },
         {
