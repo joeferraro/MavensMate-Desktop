@@ -42,12 +42,12 @@ function AppUpdater(window, config) {
       console.log('updater checking stable channel');
       nslog('updater checking stable channel');
       channel = 'stable';
-      autoUpdater.setFeedURL('https://' + UPDATE_SERVER_HOST + '/update/'+ channel + '/' + os.platform() + '_' + os.arch() + '?version=' + version);
+      autoUpdater.setFeedURL('https://' + UPDATE_SERVER_HOST + '/update/channel/'+ channel + '/' + os.platform() + '_' + os.arch() + '/' + version);
       autoUpdater.checkForUpdates();
     }
   });
 
-  autoUpdater.setFeedURL('https://' + UPDATE_SERVER_HOST + '/update/' + channel + '/' + os.platform() + '_' + os.arch() + '?version=' + version);
+  autoUpdater.setFeedURL('https://' + UPDATE_SERVER_HOST + '/update/channel/' + channel + '/' + os.platform() + '_' + os.arch() + '/' + version);
   autoUpdater.checkForUpdates();
 }
 
