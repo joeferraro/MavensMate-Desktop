@@ -2,6 +2,7 @@
   "scripts": {
     "postinstall": "install-app-deps",
     "dist": "build",
+    "dist:win": "build --win --ia32",
     "release": "build"
   },
   "build": {

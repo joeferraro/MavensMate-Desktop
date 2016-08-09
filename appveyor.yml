@@ -3,12 +3,8 @@ environment:
   matrix:
   - nodejs_version: "4"
 
-  # GH_TOKEN:
-  #     secure: fgdyR4RJFw8VwtvcppTAV/efp7o+VPHg2Sg/Caa5vDmLEcB98p8fN5bK7LPZSjkb
-
 platform:
   - x86
-  - x64
 
 cache:
   - node_modules
@@ -29,4 +25,4 @@ install:
 build_script:
   - node --version
   - npm --version
-  - npm run dist
+  - npm run dist:win
