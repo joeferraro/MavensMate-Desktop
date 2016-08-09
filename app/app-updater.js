@@ -7,7 +7,7 @@ var nslog         = require('nslog');
 
 const UPDATE_SERVER_HOST = 'mavensmate-app-auto-updater.herokuapp.com'
 
-function AppUpdater(window, config) {
+function AppUpdater(window) {
   var self = this;
   if (util.isDev()) {
       return;
@@ -19,38 +19,29 @@ function AppUpdater(window, config) {
   this.window = window;
 
   var version = app.getVersion();
-  var channel = config.get('mm_beta_channel', false) ? 'beta' : 'stable';
 
   autoUpdater.addListener('update-available', function (event) {
     console.log('A new update is available');
-    nslog('An update is available from channel: '+channel);
+    nslog('An update is available');
   });
   autoUpdater.addListener('update-downloaded', function (event, releaseNotes, releaseName, releaseDate, updateURL) {
     self._notify('A new update is ready to install. Version ' + releaseName + ' is downloaded and will be automatically installed on quit.', updateURL);
-    nslog('Update from channel '+channel+' is ready to install on quit: '+updateURL);
+    nslog('Update is ready to install on quit: '+updateURL);
   });
   autoUpdater.addListener('error', function (error) {
     console.log(error);
-    nslog('Error updating from channel '+channel+': '+error.message);
+    nslog('Error updating: '+error.message);
   });
   autoUpdater.addListener('checking-for-update', function (event) {
-    console.log('checking-for-update in channel: '+channel);
-    nslog('Checking for update in channel: '+channel);
+    console.log('checking-for-update');
+    nslog('Checking for update');
   });
   autoUpdater.addListener('update-not-available', function () {
-    console.log('update-not-available for channel: '+channel);
-    nslog('Update not available for channel: '+channel);
-    // if beta user, autoupdater checks beta channel first, if an update isn't available in the beta channel, we look for an update in the stable channel
-    if (channel === 'beta') {
-      console.log('updater checking stable channel');
-      nslog('updater checking stable channel');
-      channel = 'stable';
-      autoUpdater.setFeedURL('https://' + UPDATE_SERVER_HOST + '/update/channel/'+ channel + '/' + os.platform() + '_' + os.arch() + '/' + version);
-      autoUpdater.checkForUpdates();
-    }
+    console.log('update-not-available');
+    nslog('Update not available');
   });
 
-  autoUpdater.setFeedURL('https://' + UPDATE_SERVER_HOST + '/update/channel/' + channel + '/' + os.platform() + '_' + os.arch() + '/' + version);
+  autoUpdater.setFeedURL('https://' + UPDATE_SERVER_HOST + '/update/' + os.platform() + '_' + os.arch() + '/' + version);
   autoUpdater.checkForUpdates();
 }
 
