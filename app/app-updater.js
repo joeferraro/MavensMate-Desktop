@@ -1,6 +1,7 @@
 var electron      = require('electron');
 var app           = electron.app;
 var autoUpdater   = electron.autoUpdater;
+var ipcMain       = electron.ipcMain;
 var os            = require('os');
 var util          = require('./util');
 var nslog         = require('nslog');
@@ -23,7 +24,7 @@ function AppUpdater(window, config) {
     nslog('An update is available from channel: '+channel);
   });
   autoUpdater.addListener('update-downloaded', function (event, releaseNotes, releaseName, releaseDate, updateURL) {
-    self._notify('A new update is ready to install. Version ' + releaseName + ' is downloaded and will be automatically installed on quit.', updateURL);
+    self._notify('<a id="notes" href="#">Version '+releaseName+'</a> is ready to install. <a id="install" href="#">Restart MavensMate</a> to upgrade.', updateURL);
     nslog('Update from channel '+channel+' is ready to install on quit: '+updateURL);
   });
   autoUpdater.addListener('error', function (error) {
@@ -45,6 +46,10 @@ function AppUpdater(window, config) {
       autoUpdater.setFeedURL('https://' + UPDATE_SERVER_HOST + '/update/channel/'+ channel + '/' + os.platform() + '_' + os.arch() + '/' + version);
       autoUpdater.checkForUpdates();
     }
+  });
+
+  ipcMain.on('quit-and-install', function() {
+    autoUpdater.quitAndInstall();
   });
 
   autoUpdater.setFeedURL('https://' + UPDATE_SERVER_HOST + '/update/channel/' + channel + '/' + os.platform() + '_' + os.arch() + '/' + version);

@@ -241,17 +241,16 @@ webview.active {
   text-align: center;
 }
 
-#update span a {
+#update span {
   color: #fff;
   font-weight: 500;
   text-align: center;
   line-height: 0.7em;
-  text-decoration: none;
-  cursor: pointer;
 }
 
-#update span a:hover {
-  text-decoration: underline;
+#update span a {
+  color: #fff;
+  cursor: pointer;
 }
 
 #update-close {

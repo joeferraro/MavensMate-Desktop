@@ -9,7 +9,7 @@
 	<body>
 		<!-- update banner -->
 		<div id="update">
-			<span><a></a><div id="update-close" class="octicon octicon-x close-icon"></div></span>
+			<span><div id="update-close" class="octicon octicon-x close-icon"></div></span>
 		</div>
 		<!-- "browser" tabs -->
 		<ul id="tabs" class="list-inline tab-bar inset-panel">
@@ -26,8 +26,6 @@
 			var shell = require('electron').shell;
 
 			window.$ = window.jQuery = require('./resources/jquery.min.js');
-
-			// function reload() { remote.getCurrentWindow().webContents.reloadIgnoringCache(); return false; }
 
 			function windowDevTools() { remote.getCurrentWindow().openDevTools(); return false; }
 
@@ -75,8 +73,11 @@
 			}
 
 			function addUpdateNotifier(message, url) {
-				$("#update span a").html(message);
-				$("#update span a").on('click', function() {
+				$("#update span").prepend(message);
+				$("#update span a#install").on('click', function() {
+					ipc.send('quit-and-install');
+				});
+				$("#update span a#notes").on('click', function() {
 					shell.openExternal(url);
 				});
 				$("#update").show();
