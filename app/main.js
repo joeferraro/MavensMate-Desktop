@@ -410,15 +410,15 @@ var attachTray = function() {
             click: function() { toggleStartAtLaunch() },
             checked: isStartAtLaunch
           },
-          // {
-          //   label: 'Install Beta Releases',
-          //   type: 'checkbox',
-          //   click: function() {
-          //     mavensMateConfig.set('mm_beta_channel', !mavensMateConfig.get('mm_beta_channel', false));
-          //     mavensMateConfig.save();
-          //   },
-          //   checked: mavensMateConfig.get('mm_beta_channel', false)
-          // },
+          {
+            label: 'Install Beta Releases',
+            type: 'checkbox',
+            click: function() {
+              mavensMateConfig.set('mm_beta_channel', !mavensMateConfig.get('mm_beta_channel', false));
+              mavensMateConfig.save();
+            },
+            checked: mavensMateConfig.get('mm_beta_channel', false)
+          },
           {
             label: 'Quit MavensMate',
             type: 'normal',
