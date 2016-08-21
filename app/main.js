@@ -16,12 +16,14 @@ var AppUpdater      = require('./app-updater');
 var AutoLaunch      = require('auto-launch');
 
 var mainWindow = null;
+var mavensMateApp = null;
 var mavensMateServer = null;
 var mavensMateConfig = null;
 var mavensMateLogger = null;
 var trayIcon;
 var isStartAtLaunch = false;
 var installPrereleases = false;
+var openUrlInNewTab = null;
 
 var getStartupPath = function() {
   if (process.platform === 'darwin') {
@@ -131,7 +133,7 @@ var attachAppMenu = function() {
               accelerator: 'Command+N',
               click: function() {
                 if (!mainWindow) {
-                  attachMainWindow(false, 'http://localhost:56248/app/home/index');
+                  attachMainWindow(false, 'http://localhost:56248/app/home');
                 }
               }
             },
@@ -302,6 +304,27 @@ var attachMainWindow = function(restartServer, url) {
     try {
       console.log('attaching main application window');
 
+      // adds tab to the main window (typically called from the core via windowOpener function passed to client)
+      openUrlInNewTab = function(url) {
+        console.log('OPENING URL IN NEW TABBBB', url);
+        var waitFor = !mainWindow ? attachMainWindow() : Promise.resolve();
+
+        waitFor
+          .then(function() {
+            if (url.indexOf('localhost') >= 0) {
+              // opens mavensmate ui in mavensmate-app chrome
+              mainWindow.webContents.send('openTab', url);
+              mainWindow.show();
+            } else {
+              // open external url in local browser
+              shell.openExternal(url);
+            }
+          })
+          .catch(function(err) {
+            console.error('COuld not open url in new tab ...', err);
+          });
+      };
+
       // Create the browser window.
       mainWindow = new BrowserWindow({
         width: 1000,
@@ -315,9 +338,12 @@ var attachMainWindow = function(restartServer, url) {
       mainWindow.loadURL('file://' + __dirname + '/index.html');
 
       mainWindow.webContents.on('did-finish-load', function() {
-        if (mavensMateServer && restartServer && mavensMateServer.stop) { // happens when app is restarted
+        if (mavensmate.stop && restartServer) { // happens when app is restarted
           mavensMateServer.stop();
           mavensMateServer = null;
+          mavensMateApp = null;
+          mavensMateConfig = null;
+          mavensMateLogger = null;
         }
         if (!mavensMateServer) {
           // we start the mm server, bc app was just started or was reloaded (typically during dev)
@@ -325,21 +351,22 @@ var attachMainWindow = function(restartServer, url) {
             .startServer({
               name: 'mavensmate-app',
               port: 56248,
-              windowOpener: openUrlInNewTab
+              openWindowFn: openUrlInNewTab
             })
             .then(function(res) {
+              mavensMateApp = res.app;
               mavensMateServer = res.server;
               mavensMateConfig = res.config;
               mavensMateLogger = res.logger;
               console.log(mavensMateConfig.get('mm_workspace'));
               console.log('opening start url ...');
-              mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
+              mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home');
               new AppUpdater(mainWindow, mavensMateConfig);
               resolve();
             })
             .catch(function(err) {
               console.error(err);
-              mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home/index');
+              mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home');
               resolve();
             });
         } else {
@@ -434,26 +461,6 @@ var attachTray = function() {
         reject(err);
       });
   });
-};
-
-// adds tab to the main window (typically called from the core via windowOpener function passed to client)
-var openUrlInNewTab = function(url) {
-  var waitFor = !mainWindow ? attachMainWindow() : Promise.resolve();
-
-  waitFor
-    .then(function() {
-      if (url.indexOf('localhost') >= 0) {
-        // opens mavensmate ui in mavensmate-app chrome
-        mainWindow.webContents.send('openTab', url);
-        mainWindow.show();
-      } else {
-        // open external url in local browser
-        shell.openExternal(url);
-      }
-    })
-    .catch(function(err) {
-      console.error('COuld not open url in new tab ...', err);
-    });
 };
 
 // when the last tab is closed, we close the entire browser window

@@ -41,6 +41,9 @@
 
 			$(function() {
 				$(document).on("keydown", function(e) {
+					console.log(e.metaKey);
+					console.log(e.altKey);
+					console.log(e.which);
 					if (e.metaKey && e.altKey && e.which === 73) {
 					  // cmd + option + k to open electron dev tools
 					  windowDevTools();
@@ -54,6 +57,14 @@
 						// ctrl + w to close tab
 						e.preventDefault();
 						closeTab(app.tab.selectedTab.id);
+					} else if (e.metaKey && e.which === 219) {
+						// ctrl + [ to go back
+						var webview = document.getElementById(VIEW_ID_PREFIX + app.tab.selectedTab.id);
+						webview.goBack();
+					} else if (e.metaKey && e.which === 221) {
+						// ctrl + ] to go forward
+						var webview = document.getElementById(VIEW_ID_PREFIX + app.tab.selectedTab.id);
+						webview.goForward();
 					}
 				});
 
