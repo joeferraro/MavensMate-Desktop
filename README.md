@@ -1,30 +1,13 @@
-# MavensMate-app
+# MavensMate Desktop
 
-## Development Suspended
-
-MavensMate users, 
-
-I have temporarily suspended development & support for MavensMate to focus on spending time with my newborn daughter. If you are experiencing an issue with MavensMate, I encourage you to use the Force.com IDE, Developer Console, or one of the many other 3rd party tools for building Salesforce applications until development resumes.
-
-Thanks very much for your support.
-
--Joe
-
-## What is MavensMate-app?
-
-MavensMate-app is a cross-platform desktop wrapper for the [MavensMate](https://github.com/joeferraro/MavensMate) server. All MavensMate plugins (Sublime Text, Atom, etc.) require MavensMate-app to be installed and running in order to function properly.
-
-##### OS X / Linux
-[![Build Status](https://travis-ci.org/joeferraro/MavensMate-app.svg)](https://travis-ci.org/joeferraro/MavensMate-app)
-
-##### Windows
-[![Build status](https://ci.appveyor.com/api/projects/status/u0i8yx97wuwylp88?svg=true)](https://ci.appveyor.com/project/joeferraro/mavensmate-app)
-
-<img width="1100" alt="9_27_15__11_46_pm" src="https://cloud.githubusercontent.com/assets/54157/10146854/e8e3695c-65f8-11e5-8a41-d1b3f77b7a14.png">
+| Platform | Status |
+| --- | --- |
+OS X / Linux | [![Build Status](https://travis-ci.org/joeferraro/MavensMate-app.svg)](https://travis-ci.org/joeferraro/MavensMate-Desktop) |
+Windows | [![Build status](https://ci.appveyor.com/api/projects/status/u0i8yx97wuwylp88?svg=true)](https://ci.appveyor.com/project/joeferraro/MavensMate-Desktop) |
 
 ## Installation
 
-Download and run from the [releases page](https://github.com/joeferraro/mavensmate-app/releases)
+Download and run from the [releases page](https://github.com/joeferraro/MavensMate-Desktop/releases)
 
 ## Settings
 
