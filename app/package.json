@@ -19,7 +19,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "jquery": "2.1.4",
     "lodash": "^4.13.1",
-    "mavensmate": "1.0.0-beta.9",
+    "mavensmate": "1.0.0-beta.12",
     "nslog": "^3.0.0",
     "semver": "5.0.1",
     "watchjs": "0.0.0"
