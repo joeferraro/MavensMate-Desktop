@@ -200,7 +200,7 @@ var attachAppMenu = function() {
             },
             {
               label: 'Check for Updates',
-              click: function() { require('electron').shell.openExternal('https://github.com/joeferraro/MavensMate-app/releases') }
+              click: function() { require('electron').shell.openExternal('https://github.com/joeferraro/MavensMate-Desktop/releases') }
             },
             {
               label: 'Learn More',
@@ -278,7 +278,7 @@ var attachAppMenu = function() {
             },
             {
               label: 'Check for Updates',
-              click: function() { require('electron').shell.openExternal('https://github.com/joeferraro/MavensMate-app/releases') }
+              click: function() { require('electron').shell.openExternal('https://github.com/joeferraro/MavensMate-Desktop/releases') }
             },
             {
               label: 'Learn More',

@@ -24,7 +24,7 @@ function AppUpdater(window, config) {
     nslog('An update is available from channel: '+channel);
   });
   autoUpdater.addListener('update-downloaded', function (event, releaseNotes, releaseName, releaseDate, updateURL) {
-    self._notify('<a id="notes" href="#">Version '+releaseName+'</a> is ready to install. <a id="install" href="#">Restart MavensMate</a> to upgrade.', 'https://github.com/joeferraro/MavensMate-app/releases');
+    self._notify('<a id="notes" href="#">Version '+releaseName+'</a> is ready to install. <a id="install" href="#">Restart MavensMate</a> to upgrade.', 'https://github.com/joeferraro/MavensMate-Desktop/releases');
     nslog('Update from channel '+channel+' is ready to install on quit: '+updateURL);
   });
   autoUpdater.addListener('error', function (error) {

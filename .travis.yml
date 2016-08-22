@@ -19,7 +19,7 @@ cache:
     - $HOME/.electron
 before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 script:
-- echo Building MavensMate-app ...
+- echo Building MavensMate Desktop ...
 - ./.travis-build.sh
 env:
   global:
