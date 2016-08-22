@@ -20,7 +20,6 @@
 
 		</div>
 
-
 		<script type="text/javascript">
 			var ipc = require('electron').ipcRenderer;
 			var shell = require('electron').shell;
@@ -40,6 +39,7 @@
 			}
 
 			$(function() {
+				// bind keyboard shortcuts
 				$(document).on("keydown", function(e) {
 					console.log(e.metaKey);
 					console.log(e.altKey);
@@ -83,7 +83,7 @@
 				event.stopPropagation();
 			}
 
-			function addUpdateNotifier(message, url) {
+			function addUpdateQuitAndInstallNotifier(message, url) {
 				$("#update span").prepend(message);
 				$("#update span a#install").on('click', function() {
 					ipc.send('quit-and-install');
@@ -94,11 +94,22 @@
 				$("#update").show();
 			}
 
+			function addUpdateDownloadNotifier(message, url) {
+				$("#update span").prepend(message);
+				$("#update span a#download").on('click', function() {
+					shell.openExternal(url);
+				});
+				$("#update").show();
+			}
+
 			ipc.on('openTab', function(evt, url) {
 				openTab(url);
 			});
-			ipc.on('needsUpdate', function(evt, message, url) {
-				addUpdateNotifier(message, url);
+			ipc.on('needsUpdateQuitAndInstall', function(evt, message, url) {
+				addUpdateQuitAndInstallNotifier(message, url);
+			});
+			ipc.on('needsUpdateDownload', function(evt, message, url) {
+				addUpdateDownloadNotifier(message, url);
 			});
 			ipc.on('webviewDevTools', function() {
 				webviewDevTools();

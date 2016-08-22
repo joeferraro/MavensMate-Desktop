@@ -24,8 +24,12 @@ function AppUpdater(window, config) {
     nslog('An update is available from channel: '+channel);
   });
   autoUpdater.addListener('update-downloaded', function (event, releaseNotes, releaseName, releaseDate, updateURL) {
-    self._notify('<a id="notes" href="#">Version '+releaseName+'</a> is ready to install. <a id="install" href="#">Restart MavensMate</a> to upgrade.', 'https://github.com/joeferraro/MavensMate-Desktop/releases');
-    nslog('Update from channel '+channel+' is ready to install on quit: '+updateURL);
+    if (util.isMac()) {
+      self._notify('<a id="notes" href="#">Version '+releaseName+'</a> is ready to install. <a id="install" href="#">Restart MavensMate</a> to upgrade.', 'https://github.com/joeferraro/MavensMate-Desktop/releases');
+      nslog('Update from channel '+channel+' is ready to install on quit: '+updateURL);
+    } else if (util.isLinux() || util.isWindows()) {
+      self._notify('A new version (v+'+releaseName+') of MavensMate is <a href="#download">ready for download</a>.', 'https://github.com/joeferraro/MavensMate-Desktop/releases');
+    }
   });
   autoUpdater.addListener('error', function (error) {
     console.log(error);
@@ -57,7 +61,11 @@ function AppUpdater(window, config) {
 }
 
 AppUpdater.prototype._notify = function(message, url) {
-  this.window.webContents.send('needsUpdate', message, url);
+  if (util.isLinux() || util.isWindows()) {
+    this.window.webContents.send('needsUpdateDownload', message, url);
+  } else if (util.isMac()) {
+    this.window.webContents.send('needsUpdateQuitAndInstall', message, url);
+  }
 }
 
 module.exports = AppUpdater;
