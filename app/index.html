@@ -52,6 +52,7 @@
 					  webviewDevTools();
 					} else if (e.metaKey && e.which === 82) {
 						// ctrl + r to reload page
+						e.preventDefault();
 						webviewReload();
 					} else if (e.metaKey && e.which === 87) {
 						// ctrl + w to close tab
