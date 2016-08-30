@@ -14,14 +14,14 @@
     "url": "https://github.com/joeferraro/MavensMate-Desktop.git"
   },
   "dependencies": {
-    "auto-launch": "^3.0.0",
+    "auto-launch": "3.0.0",
     "bluebird": "2.9.34",
-    "electron-squirrel-startup": "^1.0.0",
-    "es6-promise": "^3.2.1",
+    "electron-squirrel-startup": "1.0.0",
+    "es6-promise": "3.2.1",
     "jquery": "2.1.4",
-    "lodash": "^4.13.1",
-    "mavensmate": "1.0.0-beta.16",
-    "nslog": "^3.0.0",
+    "lodash": "4.13.1",
+    "mavensmate": "1.0.0-beta.17",
+    "nslog": "3.0.0",
     "semver": "5.0.1",
     "watchjs": "0.0.0"
   }
