@@ -1,12 +1,13 @@
 var _                   = require('lodash');
 var swig                = require('swig');
 var MavensMateWebView   = require('../webview');
+var path                = require('path');
 
 function Launcher(id) {
   this._webviews = [];
   this._id = id || 'app-launcher-modal';
-  this._template = swig.compileFile('./lib/launcher/index.tpl.html');
-  this._body = swig.compileFile('./lib/launcher/body.tpl.html');
+  this._template = swig.compileFile(path.join(__dirname, 'index.tpl.html'));
+  this._body = swig.compileFile(path.join(__dirname, 'body.tpl.html'));
 }
 
 Launcher.prototype.attach = function() {

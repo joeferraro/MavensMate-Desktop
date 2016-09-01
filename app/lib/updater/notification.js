@@ -1,11 +1,12 @@
 var ipc     = require('electron').ipcRenderer;
 var shell   = require('electron').shell;
 var swig    = require('swig');
+var path    = require('path');
 
 var Notification = function() {
   var self = this;
-  self._template = swig.compileFile('./lib/updater/notification.tpl.html');
-  self._message = swig.compileFile('./lib/updater/message.tpl.html');
+  self._template = swig.compileFile(path.join(__dirname, 'notification.tpl.html'));
+  self._message = swig.compileFile(path.join(__dirname, 'message.tpl.html'));
 
   ipc.on('update-available', function(evt, releaseName, actionRequired) {
     self.show(releaseName, actionRequired);
