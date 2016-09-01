@@ -11,6 +11,7 @@
 		<script type="text/javascript">
 			var ipc 					= require('electron').ipcRenderer;
 			var shell   			= require('electron').shell;
+			var remote 				= require('electron').remote;
 			var notification 	= require('./lib/updater/notification');
 			var launcher 			= require('./lib/launcher');
 			var keyBindings 	= require('./lib/key-bindings')(launcher);
@@ -23,9 +24,13 @@
 				launcher.show();
 			});
 
-			ipc.on('open-web-view-dev-tools', function() {
+			ipc.on('toggle-server-developer-tools', function() {
 				var webview = document.querySelector('webview:not(.hide)');
 				webview.openDevTools();
+			});
+
+			ipc.on('toggle-desktop-developer-tools', function() {
+				remote.getCurrentWindow().openDevTools();
 			});
 		</script>
 	</head>

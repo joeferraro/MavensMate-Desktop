@@ -160,7 +160,7 @@ var attachAppMenu = function() {
           label: 'Advanced',
           submenu: [
             {
-              label: 'Toggle Core Developer Tools',
+              label: 'Toggle MavensMate Server Developer Tools',
               accelerator: (function() {
                 if (process.platform === 'darwin')
                   return 'Alt+Command+K';
@@ -169,15 +169,12 @@ var attachAppMenu = function() {
               })(),
               click: function(item, focusedWindow) {
                 if (focusedWindow) {
-                  console.log(item);
-                  console.log(focusedWindow);
-                  // focusedWindow.toggleDevTools();
-                  focusedWindow.webContents.send('webviewDevTools');
+                  focusedWindow.webContents.send('toggle-server-developer-tools');
                 }
               }
             },
             {
-              label: 'Toggle Mavensmate Developer Tools',
+              label: 'Toggle MavensMate Desktop Developer Tools',
               accelerator: (function() {
                 if (process.platform === 'darwin')
                   return 'Alt+Command+I';
@@ -186,7 +183,7 @@ var attachAppMenu = function() {
               })(),
               click: function(item, focusedWindow) {
                 if (focusedWindow) {
-                  focusedWindow.toggleDevTools();
+                  focusedWindow.webContents.send('toggle-desktop-developer-tools');
                 }
               }
             }
@@ -238,7 +235,7 @@ var attachAppMenu = function() {
           label: 'Advanced',
           submenu: [
             {
-              label: 'Toggle Core Developer Tools',
+              label: 'Toggle MavensMate Server Developer Tools',
               accelerator: (function() {
                 if (process.platform === 'darwin')
                   return 'Alt+Command+K';
@@ -247,15 +244,12 @@ var attachAppMenu = function() {
               })(),
               click: function(item, focusedWindow) {
                 if (focusedWindow) {
-                  console.log(item);
-                  console.log(focusedWindow);
-                  // focusedWindow.toggleDevTools();
-                  focusedWindow.webContents.send('webviewDevTools');
+                  focusedWindow.webContents.send('toggle-server-developer-tools');
                 }
               }
             },
             {
-              label: 'Toggle Mavensmate Developer Tools',
+              label: 'Toggle MavensMate Desktop Developer Tools',
               accelerator: (function() {
                 if (process.platform === 'darwin')
                   return 'Alt+Command+I';
@@ -264,7 +258,7 @@ var attachAppMenu = function() {
               })(),
               click: function(item, focusedWindow) {
                 if (focusedWindow) {
-                  focusedWindow.toggleDevTools();
+                  focusedWindow.webContents.send('toggle-desktop-developer-tools');
                 }
               }
             }
@@ -281,12 +275,12 @@ var attachAppMenu = function() {
               click: function() { require('electron').shell.openExternal('https://github.com/joeferraro/MavensMate-Desktop/releases') }
             },
             {
-              label: 'Learn More',
-              click: function() { require('electron').shell.openExternal('http://mavensmate.com') }
-            },
-            {
               label: 'Submit a GitHub Issue',
               click: function() { require('electron').shell.openExternal('https://github.com/joeferraro/MavensMate/issues') }
+            },
+            {
+              label: 'Learn More',
+              click: function() { require('electron').shell.openExternal('http://mavensmate.com') }
             }
           ]
         }
@@ -321,7 +315,7 @@ var attachMainWindow = function(restartServer, url) {
             }
           })
           .catch(function(err) {
-            console.error('COuld not open url in new tab ...', err);
+            console.error('COuld not open url in new view ...', err);
           });
       };
 
@@ -464,11 +458,6 @@ var attachTray = function() {
       });
   });
 };
-
-// when the last tab is closed, we close the entire browser window
-ipc.on('last-tab-closed', function() {
-  mainWindow.close();
-});
 
 // mavensmate server can send messages to this process
 // in this case, we take a click event on an icon in mavensmate server and
