@@ -14,9 +14,6 @@ var Notification = function() {
   $(function() {
     $('body').notification();
     document.body.innerHTML += self._template();
-    setTimeout(function() {
-      self.show('foo', 'download');
-    }, 3000);
   });
 }
 
