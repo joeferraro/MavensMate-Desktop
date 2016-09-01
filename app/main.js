@@ -312,7 +312,7 @@ var attachMainWindow = function(restartServer, url) {
         waitFor
           .then(function() {
             if (url.indexOf('localhost') >= 0) {
-              // opens mavensmate ui in mavensmate-app chrome
+              // opens mavensmate ui in mavensmate-desktop chrome
               mainWindow.webContents.send('new-web-view', url);
               mainWindow.show();
             } else {
@@ -349,10 +349,10 @@ var attachMainWindow = function(restartServer, url) {
           // we start the mm server, bc app was just started or was reloaded (typically during dev)
           mavensmate
             .startServer({
-              name: 'mavensmate-app',
+              name: 'mavensmate-desktop',
               port: 56248,
               openWindowFn: openUrlInNewTab,
-              isDesktop: true,
+              mode: 'desktop',
               ipc: require('electron').ipcRenderer
             })
             .then(function(res) {
