@@ -1,0 +1,128 @@
+html,
+body,
+#views {
+  height: 100%;
+}
+
+#views {
+  display: flex;
+  flex-direction: column;
+}
+
+webview {
+  width:100%;
+  height:100%;
+}
+
+webview.hide {
+  flex: 0 1;
+  width: 0px;
+  height: 0px;
+}
+
+#update {
+  height:30px;
+  padding:5px;
+  background-color: #3a7dda;
+  display: none;
+  text-align: center;
+}
+
+#update span {
+  color: #fff;
+  font-weight: 500;
+  text-align: center;
+  line-height: 0.7em;
+}
+
+#update span a {
+  color: #fff;
+  cursor: pointer;
+}
+
+#update-close {
+  color: #fff;
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  cursor:pointer;
+}
+
+a.view-manager-box {
+  display: block;
+  height:100px;
+  padding:0px;
+}
+
+a.view-manager-box.active {
+  border-color: rgb(21, 137, 238);
+}
+
+a.view-manager-box:hover {
+  border-color: rgb(21, 137, 238);
+  text-decoration: none !important;
+}
+
+.uiBlock {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+.uiBlock, .uiBlock .bBody {
+    overflow: hidden;
+    vertical-align: top;
+}
+
+div.view-manager-tile {
+  position: relative;
+}
+
+a.view-manager-box .view-manager-icon {
+  height: 98px;
+  width: 96px;
+  min-width: 96px;
+  background: white;
+  position: relative;
+  border-radius: .25rem;
+  float:left;
+}
+
+a.view-manager-box div.view-manager-icon > span {
+  margin-top: 25%;
+}
+
+a.view-manager-box .slds-section__title {
+  color: #0070d2;
+}
+
+a.view-manager-tile-close {
+  position: absolute;
+  top:10px;
+  right:20px;
+  display: none;
+}
+
+div.view-manager-tile:hover a.view-manager-tile-close {
+  display: block;
+}
+
+a.view-manager-box .view-manager-body {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-top: 1rem;
+  text-align: left;
+  height: 96px;
+  -o-text-overflow: ellipsis;
+  position: relative;
+  float: left;
+  width: auto;
+}
+
+div.view-manager-body > div.slds-section__title {
+  padding-top: 1.3rem;
+}

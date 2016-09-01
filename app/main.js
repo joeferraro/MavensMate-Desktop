@@ -12,7 +12,7 @@ var BrowserWindow   = electron.BrowserWindow;
 var shell           = electron.shell;
 var mavensmate      = require('mavensmate');
 var ipc             = electron.ipcMain;
-var AppUpdater      = require('./app-updater');
+var AppUpdater      = require('./lib/updater');
 var AutoLaunch      = require('auto-launch');
 
 var mainWindow = null;
@@ -306,14 +306,14 @@ var attachMainWindow = function(restartServer, url) {
 
       // adds tab to the main window (typically called from the core via windowOpener function passed to client)
       openUrlInNewTab = function(url) {
-        console.log('OPENING URL IN NEW TABBBB', url);
+        console.log('openUrlInNewTab', url);
         var waitFor = !mainWindow ? attachMainWindow() : Promise.resolve();
 
         waitFor
           .then(function() {
             if (url.indexOf('localhost') >= 0) {
               // opens mavensmate ui in mavensmate-app chrome
-              mainWindow.webContents.send('openTab', url);
+              mainWindow.webContents.send('new-web-view', url);
               mainWindow.show();
             } else {
               // open external url in local browser
@@ -351,7 +351,9 @@ var attachMainWindow = function(restartServer, url) {
             .startServer({
               name: 'mavensmate-app',
               port: 56248,
-              openWindowFn: openUrlInNewTab
+              openWindowFn: openUrlInNewTab,
+              isDesktop: true,
+              ipc: require('electron').ipcRenderer
             })
             .then(function(res) {
               mavensMateApp = res.app;
@@ -360,19 +362,19 @@ var attachMainWindow = function(restartServer, url) {
               mavensMateLogger = res.logger;
               console.log(mavensMateConfig.get('mm_workspace'));
               console.log('opening start url ...');
-              mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home');
+              mainWindow.webContents.send('new-web-view', 'http://localhost:56248/app/home');
               new AppUpdater(mainWindow, mavensMateConfig);
               resolve();
             })
             .catch(function(err) {
               console.error(err);
-              mainWindow.webContents.send('openTab', 'http://localhost:56248/app/home');
+              mainWindow.webContents.send('new-web-view', 'http://localhost:56248/app/home');
               resolve();
             });
         } else {
           // app window was closed, now it's being opened again
           if (url) {
-            mainWindow.webContents.send('openTab', url);
+            mainWindow.webContents.send('new-web-view', url);
           }
           resolve();
         }
@@ -466,6 +468,13 @@ var attachTray = function() {
 // when the last tab is closed, we close the entire browser window
 ipc.on('last-tab-closed', function() {
   mainWindow.close();
+});
+
+// mavensmate server can send messages to this process
+// in this case, we take a click event on an icon in mavensmate server and
+// display an app launcher in our UI, because we manage the webviews
+ipc.on('open-app-launcher', function() {
+  mainWindow.webContents.send('open-app-launcher');
 });
 
 // This method will be called when Electron has finished

@@ -2,120 +2,34 @@
 <html>
 	<head>
 		<title>MavensMate</title>
-		<link rel="stylesheet" href="resources/octicons/octicons.css">
-		<link rel="stylesheet" href="resources/style.css">
-		<script type="text/javascript" src="frame.js"></script>
+		<link rel="stylesheet" href="resources/styles/mavensmate.css">
+		<link rel="stylesheet" href="resources/lds/assets/styles/salesforce-lightning-design-system.css">
+		<script src="resources/jquery.min.js" type="text/javascript"></script>
+		<script src="resources/lds/assets/js/jquery.aljs-init.min.js" type="text/javascript"></script>
+		<script src="resources/lds/assets/js/jquery.aljs-modal.min.js" type="text/javascript"></script>
+		<script src="resources/lds/assets/js/jquery.aljs-notification.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var ipc 					= require('electron').ipcRenderer;
+			var shell   			= require('electron').shell;
+			var notification 	= require('./lib/updater/notification');
+			var launcher 			= require('./lib/launcher');
+			var keyBindings 	= require('./lib/key-bindings')(launcher);
+
+			ipc.on('new-web-view', function(evt, url) {
+				launcher.addView(url);
+			});
+
+			ipc.on('open-app-launcher', function(evt) {
+				launcher.show();
+			});
+
+			ipc.on('open-web-view-dev-tools', function() {
+				var webview = document.querySelector('webview:not(.hide)');
+				webview.openDevTools();
+			});
+		</script>
 	</head>
 	<body>
-		<!-- update banner -->
-		<div id="update">
-			<span><div id="update-close" class="octicon octicon-x close-icon"></div></span>
-		</div>
-		<!-- "browser" tabs -->
-		<ul id="tabs" class="list-inline tab-bar inset-panel">
-
-		</ul>
-		<!-- "browser" tab view -->
-		<div id="views">
-
-		</div>
-
-		<script type="text/javascript">
-			var ipc = require('electron').ipcRenderer;
-			var shell = require('electron').shell;
-
-			window.$ = window.jQuery = require('./resources/jquery.min.js');
-
-			function windowDevTools() { remote.getCurrentWindow().openDevTools(); return false; }
-
-			function webviewDevTools() {
-				document.getElementById(VIEW_ID_PREFIX + app.tab.selectedTab.id).openDevTools();
-				return false;
-			}
-
-			function webviewReload() {
-				var webview = document.getElementById(VIEW_ID_PREFIX + app.tab.selectedTab.id);
-				webview.reload();
-			}
-
-			$(function() {
-				// bind keyboard shortcuts
-				$(document).on("keydown", function(e) {
-					console.log(e.metaKey);
-					console.log(e.altKey);
-					console.log(e.which);
-					if (e.metaKey && e.altKey && e.which === 73) {
-					  // cmd + option + k to open electron dev tools
-					  windowDevTools();
-					} else if (e.metaKey && e.altKey && e.which === 75) {
-						// cmd + option + i to open core dev tools
-					  webviewDevTools();
-					} else if (e.metaKey && e.which === 82) {
-						// ctrl + r to reload page
-						e.preventDefault();
-						webviewReload();
-					} else if (e.metaKey && e.which === 87) {
-						// ctrl + w to close tab
-						e.preventDefault();
-						closeTab(app.tab.selectedTab.id);
-					} else if (e.metaKey && e.which === 219) {
-						// ctrl + [ to go back
-						var webview = document.getElementById(VIEW_ID_PREFIX + app.tab.selectedTab.id);
-						webview.goBack();
-					} else if (e.metaKey && e.which === 221) {
-						// ctrl + ] to go forward
-						var webview = document.getElementById(VIEW_ID_PREFIX + app.tab.selectedTab.id);
-						webview.goForward();
-					}
-				});
-
-				$("#update-close").on("click", function() {
-					$("#update").hide();
-				});
-			});
-
-			function openTab(url) {
-				console.log('from the ui, adding url: ', url);
-				app.addTab({ url: url });
-			}
-
-			function closeTab(id) {
-				app.closeTab(id);
-				event.stopPropagation();
-			}
-
-			function addUpdateQuitAndInstallNotifier(message, url) {
-				$("#update span").prepend(message);
-				$("#update span a#install").on('click', function() {
-					ipc.send('quit-and-install');
-				});
-				$("#update span a#notes").on('click', function() {
-					shell.openExternal(url);
-				});
-				$("#update").show();
-			}
-
-			function addUpdateDownloadNotifier(message, url) {
-				$("#update span").prepend(message);
-				$("#update span a#download").on('click', function() {
-					shell.openExternal(url);
-				});
-				$("#update").show();
-			}
-
-			ipc.on('openTab', function(evt, url) {
-				openTab(url);
-			});
-			ipc.on('needsUpdateQuitAndInstall', function(evt, message, url) {
-				addUpdateQuitAndInstallNotifier(message, url);
-			});
-			ipc.on('needsUpdateDownload', function(evt, message, url) {
-				addUpdateDownloadNotifier(message, url);
-			});
-			ipc.on('webviewDevTools', function() {
-				webviewDevTools();
-			});
-
-		</script>
+		<div id="views"></div>
 	</body>
 </html>

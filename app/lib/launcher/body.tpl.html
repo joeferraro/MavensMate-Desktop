@@ -1,0 +1,133 @@
+<div class="container">
+  <div class="app-launcher">
+    {% if Object.keys(projects).length > 0 %}
+      {% for pid, views in projects %}
+        <div class="slds-text-heading--medium slds-m-bottom--medium">{{ projectIdToNameMap[pid] }}</div>
+        <div class="slds-grid slds-wrap slds-grid--pull-padded">
+
+          <div class="view-manager-tile slds-col--padded slds-size--1-of-3 slds-medium-size--1-of-3 slds-large-size--1-of-5 slds-p-bottom--large">
+
+            <a class="view-manager-box slds-box slds-box--small slds-theme--shade slds-text-align--center" onclick="launcher.addView('http://localhost:56248/app/project/{{pid}}?pid={{pid}}')" href="javascript:void(0);">
+
+              <div class="uiBlock">
+                <div class="view-manager-icon">
+                  <span class="slds-button slds-button--icon">
+                    <svg aria-hidden="true" class="slds-button__icon slds-icon--large">
+                      <use xlink:href="resources/lds/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+                    </svg>
+                    <span class="slds-assistive-text"></span>
+                  </span>
+                </div>
+                <div class="view-manager-body">
+                  <div class="slds-section__title slds-truncate">
+                    Add View
+                  </div>
+                </div>
+              </div>
+
+            </a>
+          </div>
+
+
+          {% for obj in views %}
+            <div class="view-manager-tile slds-col--padded slds-size--1-of-3 slds-medium-size--1-of-3 slds-large-size--1-of-5 slds-p-bottom--large">
+
+              <a class="view-manager-box slds-box slds-box--small slds-theme--shade slds-text-align--center {% if !obj.classList.contains('hide') %}active{% endif %}" onclick="launcher.showView('{{obj.getAttribute('id')}}')" href="javascript:void(0);">
+
+                <div class="uiBlock">
+                  <div class="view-manager-icon">
+                    <span class="slds-icon_container {{ obj.getAttribute('data-slds-icon-class-name') }}">
+                      <svg aria-hidden="true" class="slds-icon slds-icon--large">
+                        <use xlink:href="resources/lds/assets/icons/{{obj.getAttribute('data-slds-sprite')}}/svg/symbols.svg#{{obj.getAttribute('data-slds-icon-name')}}"></use>
+                      </svg>
+                      <span class="slds-assistive-text"></span>
+                    </span>
+                  </div>
+                  <div class="view-manager-body">
+                    <div class="slds-section__title slds-truncate">
+                      {{ obj.getAttribute('data-title')}}
+                    </div>
+                  </div>
+                </div>
+
+              </a>
+              <a class="view-manager-tile-close slds-button slds-button--icon" href="javascript:void(0);" onclick="launcher.destroyView('{{obj.getAttribute('id')}}')">
+                <svg aria-hidden="true" class="slds-button__icon slds-button__icon--large">
+                  <use xlink:href="resources/lds/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                </svg>
+                <span class="slds-assistive-text">Settings</span>
+              </a>
+            </div>
+          {% endfor %}
+
+
+        </div>
+
+
+      {% endfor %}
+    {% endif %}
+
+    {% if Object.keys(projects).length > 0 %}
+      <div class="slds-text-heading--medium slds-m-bottom--medium">Other Views</div>
+    {% endif %}
+
+      <div class="slds-grid slds-wrap slds-grid--pull-padded">
+
+      <div class="view-manager-tile slds-col--padded slds-size--1-of-3 slds-medium-size--1-of-3 slds-large-size--1-of-5 slds-p-bottom--large">
+
+        <a class="view-manager-box slds-box slds-box--small slds-theme--shade slds-text-align--center" onclick="launcher.addView('http://localhost:56248/app/home')" href="javascript:void(0);">
+
+          <div class="uiBlock">
+            <div class="view-manager-icon">
+              <span class="slds-button slds-button--icon">
+                <svg aria-hidden="true" class="slds-button__icon slds-icon--large">
+                  <use xlink:href="resources/lds/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+                </svg>
+                <span class="slds-assistive-text"></span>
+              </span>
+            </div>
+            <div class="view-manager-body">
+              <div class="slds-section__title slds-truncate">
+                Add View
+              </div>
+            </div>
+          </div>
+
+        </a>
+      </div>
+      {% for obj in uncategorized %}
+        <div class="view-manager-tile slds-col--padded slds-size--1-of-3 slds-medium-size--1-of-3 slds-large-size--1-of-5 slds-p-bottom--large">
+
+          <a class="view-manager-box slds-box slds-box--small slds-theme--shade slds-text-align--center {% if !obj.classList.contains('hide') %}active{% endif %}" onclick="launcher.showView('{{obj.getAttribute('id')}}')" href="javascript:void(0);">
+
+            <div class="uiBlock">
+              <div class="view-manager-icon">
+                <span class="slds-icon_container {{ obj.getAttribute('data-slds-icon-class-name') }}">
+                  <svg aria-hidden="true" class="slds-icon slds-icon--large">
+                    <use xlink:href="resources/lds/assets/icons/{{obj.getAttribute('data-slds-sprite')}}/svg/symbols.svg#{{obj.getAttribute('data-slds-icon-name')}}"></use>
+                  </svg>
+                  <span class="slds-assistive-text"></span>
+                </span>
+              </div>
+              <div class="view-manager-body">
+                <div class="slds-section__title slds-truncate">
+                  {{ obj.getAttribute('data-title')}}
+                </div>
+              </div>
+            </div>
+
+          </a>
+          <a class="view-manager-tile-close slds-button slds-button--icon" href="javascript:void(0);" onclick="launcher.destroyView('{{obj.getAttribute('id')}}')">
+            <svg aria-hidden="true" class="slds-button__icon slds-button__icon--large">
+              <use xlink:href="resources/lds/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Settings</span>
+          </a>
+        </div>
+      {% endfor %}
+
+
+
+      </div>
+  </div>
+</div>
