@@ -20,7 +20,7 @@
     "es6-promise": "3.2.1",
     "jquery": "2.1.4",
     "lodash": "4.13.1",
-    "mavensmate": "1.0.0-beta.17",
+    "mavensmate": "1.0.0-beta.18",
     "node-uuid": "^1.4.7",
     "nslog": "3.0.0",
     "semver": "5.0.1"
