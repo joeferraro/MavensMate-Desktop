@@ -36,9 +36,9 @@ var getStartupPath = function() {
 };
 
 var appLauncher = new AutoLaunch({
-    name: 'MavensMate',
-    isHidden: true,
-    path: getStartupPath()
+  name: 'MavensMate',
+  isHidden: true,
+  path: getStartupPath()
 });
 
 // attaches menu to application (edit, view, window, help, etc)
@@ -328,10 +328,10 @@ var attachMainWindow = function(restartServer, url) {
         icon: path.join(__dirname, 'resources', 'icon.png')
       });
 
-      // and load the index.html of the app.
       mainWindow.loadURL('file://' + __dirname + '/index.html');
 
       mainWindow.webContents.on('did-finish-load', function() {
+
         if (mavensmate.stop && restartServer) { // happens when app is restarted
           mavensMateServer.stop();
           mavensMateServer = null;
@@ -339,43 +339,35 @@ var attachMainWindow = function(restartServer, url) {
           mavensMateConfig = null;
           mavensMateLogger = null;
         }
-        if (!mavensMateServer) {
-          // we start the mm server, bc app was just started or was reloaded (typically during dev)
-          mavensmate
-            .startServer({
-              name: 'mavensmate-desktop',
-              port: 56248,
-              openWindowFn: openUrlInNewTab,
-              mode: 'desktop',
-              ipc: require('electron').ipcRenderer
-            })
-            .then(function(res) {
-              mavensMateApp = res.app;
-              mavensMateServer = res.server;
-              mavensMateConfig = res.config;
-              mavensMateLogger = res.logger;
-              console.log(mavensMateConfig.get('mm_workspace'));
-              console.log('opening start url ...');
-              mainWindow.webContents.send('new-web-view', 'http://localhost:56248/app/home');
-              new AppUpdater(mainWindow, mavensMateConfig);
-              resolve();
-            })
-            .catch(function(err) {
-              console.error(err);
-              mainWindow.webContents.send('new-web-view', 'http://localhost:56248/app/home');
-              resolve();
-            });
-        } else {
-          // app window was closed, now it's being opened again
-          if (url) {
-            mainWindow.webContents.send('new-web-view', url);
-          }
-          resolve();
-        }
-      });
 
-      // Open the devtools.
-      // mainWindow.openDevTools();
+        if (mavensMateServer) {
+          mainWindow.webContents.send('new-web-view', url);
+          return resolve();
+        }
+
+        // we start the mm server, bc app was just started or was reloaded (typically during dev)
+        mavensmate
+          .startServer({
+            name: 'mavensmate-desktop',
+            port: 56248,
+            openWindowFn: openUrlInNewTab,
+            mode: 'desktop',
+            ipc: require('electron').ipcRenderer
+          })
+          .then(function(res) {
+            mavensMateApp = res.app;
+            mavensMateServer = res.server;
+            mavensMateConfig = res.config;
+            mavensMateLogger = res.logger;
+            mainWindow.webContents.send('new-web-view', 'http://localhost:56248/app/home');
+            new AppUpdater(mainWindow, mavensMateConfig);
+            resolve();
+          })
+          .catch(function(err) {
+            reject(err);
+          });
+
+      });
 
       // Emitted when the window is closed.
       mainWindow.on('closed', function() {
@@ -472,10 +464,16 @@ ipc.on('open-app-launcher', function() {
 app.on('ready', function() {
   attachAppMenu();
   attachMainWindow()
-    .then(function() {
-      return attachTray();
-    })
+    .then(attachTray)
     .catch(function(err) {
       console.error('Error starting MavensMate: ', err);
+      mainWindow.loadURL('file://' + __dirname + '/error.html');
+      mainWindow.webContents.on('did-finish-load', function() {
+        if (err.message.indexOf('56248') >= 0) {
+          mainWindow.webContents.send('error-msg', 'Another MavensMate Desktop instance running. Quit any other running instances of MavensMate Desktop to continue.');
+        } else {
+          mainWindow.webContents.send('error-msg', err.message);
+        }
+      });
     });
 });
