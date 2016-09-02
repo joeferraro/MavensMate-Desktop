@@ -4,6 +4,7 @@ var uuid            = require('node-uuid');
 function WebView(launcher) {
   this.launcher = launcher;
   this.id = uuid.v1();
+  this.loadingTimeout;
 }
 
 /**
@@ -39,6 +40,22 @@ WebView.prototype.attach = function(url) {
       }
     }
     self.launcher.rerender();
+  });
+
+  newWebViewNode.addEventListener('did-start-loading', function() {
+    if (!$(this).hasClass('hide')) {
+      if (self.loadingTimeout) { clearTimeout(self.loadingTimeout); }
+      self.loadingTimeout = setTimeout(function() {
+        $('#global-loading').show();
+      }, 1000);
+    }
+  });
+
+  newWebViewNode.addEventListener('did-stop-loading', function() {
+    if (!$(this).hasClass('hide')) {
+      if (self.loadingTimeout) { clearTimeout(self.loadingTimeout); }
+      $('#global-loading').hide();
+    }
   });
 
   newWebViewNode.addEventListener('new-window', function(e) {

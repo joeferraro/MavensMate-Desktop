@@ -126,3 +126,7 @@ a.view-manager-box .view-manager-body {
 div.view-manager-body > div.slds-section__title {
   padding-top: 1.3rem;
 }
+
+div#global-loading {
+  display: none;
+}
