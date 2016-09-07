@@ -13,6 +13,14 @@
       ipc.on('error-msg', function(evt, msg) {
         $('#error-modal p').html(msg);
       });
+
+      $(function() {
+        $(document).on('keydown', function(e) {
+          if (e.which === 27) {
+            ipc.send('error:continue');
+          }
+        });
+      });
     </script>
   </head>
   <body>

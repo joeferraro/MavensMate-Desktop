@@ -458,6 +458,15 @@ ipc.on('open-app-launcher', function() {
   mainWindow.webContents.send('open-app-launcher');
 });
 
+// used in development when we want to run the dev server inside electron
+// press escape on the error screen to proceed
+ipc.on('error:continue', function() {
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
+  mainWindow.webContents.on('did-finish-load', function() {
+    mainWindow.webContents.send('new-web-view', 'http://localhost:56248/app/home');
+  });
+});
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // will check for updates against github releases and pass the result to setup
