@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MavensMate</title>
+    <link rel="stylesheet" href="build/styles/mavensmate.css">
+    <link rel="stylesheet" href="resources/lds/assets/styles/salesforce-lightning-design-system.css">
+    <script src="resources/jquery.min.js" type="text/javascript"></script>
+    <script src="resources/lds/assets/js/jquery.aljs-init.min.js" type="text/javascript"></script>
+    <script src="resources/lds/assets/js/jquery.aljs-modal.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var ipc = require('electron').ipcRenderer;
+      $('#error-modal').modal('show');
+      ipc.on('error-msg', function(evt, msg) {
+        $('#error-modal p').html(msg);
+      });
+
+      $(function() {
+        $(document).on('keydown', function(e) {
+          if (e.which === 27) {
+            ipc.send('error:continue');
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div>
+      <div id="error-modal" aria-hidden="false" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" role="alertdialog" class="slds-modal slds-modal--prompt slds-fade-in-open">
+        <div class="slds-modal__container slds-modal--prompt" role="document" id="prompt-message-wrapper" tabindex="0">
+          <div class="slds-modal__header slds-theme--error slds-theme--alert-texture">
+            <h2 class="slds-text-heading--medium" id="prompt-heading-id">Error starting MavensMate</h2>
+          </div>
+          <div class="slds-modal__content slds-p-around--medium">
+            <div>
+              <p></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </div>
+  </body>
+</html>

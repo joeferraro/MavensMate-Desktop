@@ -1,6 +1,9 @@
 html,
 body,
-#views {
+#views,
+#app,
+#root,
+div#root > div {
   height: 100%;
 }
 
@@ -129,4 +132,8 @@ div.view-manager-body > div.slds-section__title {
 
 div#global-loading {
   display: none;
+}
+
+.modal-header-align-left {
+  text-align: left;
 }

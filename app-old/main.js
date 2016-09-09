@@ -1,18 +1,16 @@
-/* eslint strict: 0 */
 'use strict';
+
+if (require('electron-squirrel-startup')) return;
 
 var electron        = require('electron');
 var app             = electron.app;
-
-if (require('electron-squirrel-startup')) app.quit();
-
 var Tray            = electron.Tray;
 var Promise         = require('bluebird');
 var path            = require('path');
 var Menu            = electron.Menu;
 var BrowserWindow   = electron.BrowserWindow;
 var shell           = electron.shell;
-var mavensmate      = require('/Users/josephferraro/Development/Github/mavensmate'); //todo
+var mavensmate      = require('mavensmate');
 var ipc             = electron.ipcMain;
 var AppUpdater      = require('./lib/updater');
 var AutoLaunch      = require('auto-launch');
@@ -294,13 +292,6 @@ var attachAppMenu = function() {
   }
 };
 
-
-var onClosed = function() {
-  // dereference the window
-  // for multiple windows store them in an array
-  mainWindow = null;
-}
-
 // attaches the main window
 var attachMainWindow = function(restartServer, url) {
   return new Promise(function(resolve, reject) {
@@ -338,7 +329,7 @@ var attachMainWindow = function(restartServer, url) {
       });
 
       mainWindow.loadURL('file://' + __dirname + '/index.html');
-      mainWindow.on('closed', onClosed);
+
       mainWindow.webContents.on('did-finish-load', function() {
 
         if (mavensmate.stop && restartServer) { // happens when app is restarted
@@ -349,10 +340,10 @@ var attachMainWindow = function(restartServer, url) {
           mavensMateLogger = null;
         }
 
-        // if (mavensMateServer) {
-        //   mainWindow.webContents.send('new-web-view', url);
-        //   return resolve();
-        // }
+        if (mavensMateServer) {
+          mainWindow.webContents.send('new-web-view', url);
+          return resolve();
+        }
 
         // we start the mm server, bc app was just started or was reloaded (typically during dev)
         mavensmate
@@ -373,9 +364,7 @@ var attachMainWindow = function(restartServer, url) {
             resolve();
           })
           .catch(function(err) {
-            // reject(err); todo: reject, show error page
-            mainWindow.webContents.send('new-web-view', 'http://localhost:56248/app/home');
-            resolve();
+            reject(err);
           });
 
       });
@@ -465,9 +454,8 @@ var attachTray = function() {
 // mavensmate server can send messages to this process
 // in this case, we take a click event on an icon in mavensmate server and
 // display an app launcher in our UI, because we manage the webviews
-ipc.on('show-view-manager', function() {
-  console.log('showing view manager!');
-  mainWindow.webContents.send('show-view-manager');
+ipc.on('open-app-launcher', function() {
+  mainWindow.webContents.send('open-app-launcher');
 });
 
 // used in development when we want to run the dev server inside electron
@@ -479,19 +467,13 @@ ipc.on('error:continue', function() {
   });
 });
 
-app.on('activate-with-no-open-windows', () => {
-  if (!mainWindow) {
-    mainWindow = attachMainWindow();
-  }
-});
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // will check for updates against github releases and pass the result to setup
 app.on('ready', function() {
   attachAppMenu();
   attachMainWindow()
-    // .then(attachTray)
+    .then(attachTray)
     .catch(function(err) {
       console.error('Error starting MavensMate: ', err);
       mainWindow.loadURL('file://' + __dirname + '/error.html');
