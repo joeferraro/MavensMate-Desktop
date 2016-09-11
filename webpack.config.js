@@ -3,11 +3,11 @@ const webpack = require('webpack');
 module.exports = {
   devtool: 'source-map',
   entry: {
-    app: ['webpack/hot/dev-server', './src/react/main.js']
+    app: ['webpack/hot/dev-server', './src/app/app.js']
   },
   output: {
     publicPath: 'http://localhost:8080/build',
-    filename: 'bundle.js'
+    filename: 'app.js'
   },
   devServer: {
     hot: true,

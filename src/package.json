@@ -1,0 +1,27 @@
+{
+  "name": "MavensMate-Desktop",
+  "version": "0.0.11-beta.1",
+  "main": "main.js",
+  "description": "MavensMate desktop app",
+  "author": {
+    "name": "Joe Ferraro",
+    "email": "ferraro.joseph@gmail.com",
+    "url": "https://github.com/joeferraro"
+  },
+  "license": "GPLv3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joeferraro/MavensMate-Desktop.git"
+  },
+  "dependencies": {
+    "auto-launch": "3.0.0",
+    "bluebird": "2.9.34",
+    "electron-squirrel-startup": "1.0.0",
+    "es6-promise": "3.2.1",
+    "jquery": "2.1.4",
+    "lodash": "4.13.1",
+    "mavensmate": "1.0.0-beta.25",
+    "node-uuid": "^1.4.7",
+    "nslog": "3.0.0"
+  }
+}
