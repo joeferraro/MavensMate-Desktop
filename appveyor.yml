@@ -21,6 +21,7 @@ install:
   - ps: Install-Product node $env:nodejs_version $env:platform
   - git reset --hard HEAD
   - npm install npm -g
+  - npm install webpack -g
   - npm run build:win
   - npm install
   - npm prune
