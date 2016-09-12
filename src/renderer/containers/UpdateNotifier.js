@@ -37,7 +37,7 @@ class UpdateNotifier extends Component {
         <div className="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
           <button className="slds-button slds-notify__close slds-button--icon-inverse" onClick={() => this._close()}>
             <svg aria-hidden={true} className="slds-button__icon">
-              <use xlinkHref="styles/lds/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+              <use xlinkHref="#utility-sprite-close"></use>
             </svg>
             <span className="slds-assistive-text">Close</span>
           </button>
