@@ -3,7 +3,8 @@ body,
 #views,
 #app,
 #root,
-div#root > div {
+div#root > div,
+div#root > div > div {
   height: 100%;
 }
 

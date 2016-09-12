@@ -1,4 +1,6 @@
-
+.DS_Store
+app/*
+!app/package.json
 node_modules/
 dist/
 *.log

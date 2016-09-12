@@ -45,4 +45,9 @@ module.exports = {
     root: path.join(__dirname, 'node_modules')
   },
   devtool: 'source-map',
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    })
+  ]
 };

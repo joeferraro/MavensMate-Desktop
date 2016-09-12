@@ -1,5 +1,5 @@
 import {
-  SHOW_LOADING, HIDE_LOADING, ADD_VIEW, SHOW_VIEW,
+  SHOW_LOADING, HIDE_LOADING, ADD_VIEW, SHOW_VIEW, SHOW_ERROR,
   SHOW_UPDATE_NOTIFIER, HIDE_UPDATE_NOTIFIER, DESTROY_VIEW,
   UPDATE_VIEW, SHOW_VIEW_MANAGER, HIDE_VIEW_MANAGER
 } from '../actions/actions';
@@ -17,6 +17,10 @@ const initialState = {
     show: false,
     action: '',
     releaseName: ''
+  },
+  mainProcess: {
+    error: false,
+    msg: ''
   }
 };
 
@@ -93,6 +97,13 @@ function app(state = initialState, action) {
       return Object.assign({}, state, {
         viewManager: {
           show: false
+        }
+      })
+    case SHOW_ERROR:
+      return Object.assign({}, state, {
+        mainProcess: {
+          error: true,
+          msg: action.msg
         }
       })
     case ADD_VIEW:

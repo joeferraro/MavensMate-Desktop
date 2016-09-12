@@ -12,6 +12,7 @@ export const SHOW_LOADING = 'SHOW_LOADING'
 export const HIDE_LOADING = 'HIDE_LOADING'
 export const SHOW_UPDATE_NOTIFIER = 'SHOW_UPDATE_NOTIFIER'
 export const HIDE_UPDATE_NOTIFIER = 'HIDE_UPDATE_NOTIFIER'
+export const SHOW_ERROR = 'SHOW_ERROR'
 
 /*
  * action creators
@@ -55,4 +56,8 @@ export function showUpdateNotifier(releaseName, action) {
 
 export function hideUpdateNotifier() {
   return { type: HIDE_UPDATE_NOTIFIER }
+}
+
+export function showError(msg) {
+  return { type: SHOW_ERROR, msg }
 }

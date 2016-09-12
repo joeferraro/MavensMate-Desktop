@@ -268,6 +268,7 @@ var attachMainWindow = function(restartServer, url) {
       });
 
       mainWindow.loadURL('file://' + __dirname + '/index.html');
+      // mainWindow.openDevTools();
       mainWindow.on('closed', onClosed);
       mainWindow.webContents.on('did-finish-load', function() {
 
@@ -280,7 +281,7 @@ var attachMainWindow = function(restartServer, url) {
         }
 
         // if (mavensMateServer) {
-        //   mainWindow.webContents.send('new-web-view', url);
+        //   mainWindow.webContents.send('new-web-view', 'http://localhost:56248/app/home');
         //   return resolve();
         // }
 
@@ -303,9 +304,7 @@ var attachMainWindow = function(restartServer, url) {
             resolve();
           })
           .catch(function(err) {
-            // reject(err); todo: reject, show error page
-            mainWindow.webContents.send('new-web-view', 'http://localhost:56248/app/home');
-            resolve();
+            reject(err);
           });
 
       });
@@ -421,15 +420,15 @@ app.on('activate-with-no-open-windows', () => {
 app.on('ready', function() {
   attachAppMenu();
   attachMainWindow()
-    // .then(attachTray)
+    .then(attachTray)
     .catch(function(err) {
       console.error('Error starting MavensMate: ', err);
-      mainWindow.loadURL('file://' + __dirname + '/error.html');
+      mainWindow.loadURL('file://' + __dirname + '/index.html');
       mainWindow.webContents.on('did-finish-load', function() {
         if (err.message.indexOf('56248') >= 0) {
-          mainWindow.webContents.send('error-msg', 'Another MavensMate Desktop instance running. Quit any other running instances of MavensMate Desktop to continue.');
+          mainWindow.webContents.send('main-process-error', 'Another MavensMate Desktop instance running. Quit any other running instances of MavensMate Desktop to continue.');
         } else {
-          mainWindow.webContents.send('error-msg', err.message);
+          mainWindow.webContents.send('main-process-error', err.message);
         }
       });
     });

@@ -10,12 +10,9 @@
       (function() {
         console.log(process.env)
         var script = document.createElement('script');
-        // script.src = (process.env.HOT) ? 'http://localhost:8080/build/app.js' : '../dist/bundle.js'; //todo: prod?
-        // script.src = 'http://localhost:8080/build/app.js';
-        script.src = './app.bundle.js';
+        script.src = (process.env.NODE_ENV === 'dev') ? 'http://localhost:8080/build/app.js' : './app.bundle.js';
         document.write(script.outerHTML);
       }());
     </script>
-    <!-- <script src="app.js"></script> -->
   </body>
 </html>

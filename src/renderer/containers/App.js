@@ -7,6 +7,7 @@ import Views from './Views';
 import ViewManager from './ViewManager';
 import Loading from './Loading';
 import UpdateNotifier from './UpdateNotifier';
+import ErrorMsg from './Error';
 
 class App extends Component {
   componentDidMount() {
@@ -31,7 +32,20 @@ class App extends Component {
       dispatch(actions.showUpdateNotifier(releaseName, action));
     });
 
-    // dispatch(actions.showUpdateNotifier('0.0.12', 'quit'));
+    ipc.on('toggle-server-developer-tools', function() {
+      var webview = document.querySelector('webview:not(.hide)');
+      webview.openDevTools();
+    });
+
+    ipc.on('toggle-desktop-developer-tools', function() {
+      remote.getCurrentWindow().openDevTools();
+    });
+
+    ipc.on('main-process-error', function(evt, msg) {
+      dispatch(actions.showError(msg));
+    });
+
+    // dispatch(actions.showUpdateNotifier('0.0.12', 'quit')); for testing only
 
     window.addEventListener('keydown', _handleKeyDown, false);
 
@@ -79,12 +93,26 @@ class App extends Component {
   render() {
     const { dispatch } = this.props;
     return (
-      <div>
-        <Views {...bindActionCreators(actions, dispatch)}/>
-        <ViewManager {...bindActionCreators(actions, dispatch)}/>
-        <Loading {...bindActionCreators(actions, dispatch)}/>
-        <UpdateNotifier {...bindActionCreators(actions, dispatch)}/>
-      </div>
+        <div>
+          {
+            this.props.mainProcess.error
+
+            ?
+
+            <div>
+              <ErrorMsg {...bindActionCreators(actions, dispatch)}/>
+            </div>
+
+            :
+
+            <div>
+              <Views {...bindActionCreators(actions, dispatch)}/>
+              <ViewManager {...bindActionCreators(actions, dispatch)}/>
+              <Loading {...bindActionCreators(actions, dispatch)}/>
+              <UpdateNotifier {...bindActionCreators(actions, dispatch)}/>
+            </div>
+          }
+        </div>
     );
   }
 }
