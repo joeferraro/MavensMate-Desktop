@@ -21,6 +21,7 @@ install:
   - ps: Install-Product node $env:nodejs_version $env:platform
   - git reset --hard HEAD
   - npm install npm -g
+  - npm run build
   - npm install
   - npm prune
 

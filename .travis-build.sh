@@ -27,12 +27,12 @@ node-gyp-install
 node -v
 npm -v
 
+npm run build #builds renderer to app/
 npm install
 cd app
 npm install
 cd ..
 ./node_modules/.bin/electron-rebuild --module-dir app/node_modules
-npm run build #builds renderer to app/
 ls
 
 #if OS is linux or is not set

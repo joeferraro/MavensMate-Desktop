@@ -1,6 +1,5 @@
 .DS_Store
-app/*
-!app/package.json
+app/
 node_modules/
 dist/
 *.log
