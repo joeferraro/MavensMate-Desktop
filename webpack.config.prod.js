@@ -3,10 +3,10 @@ const nodeExternals = require('webpack-node-externals');
 const path = require('path');
 
 module.exports = {
-  entry: './src/electron/main.js',
+  entry: path.resolve(__dirname, 'src/renderer/app.js'),
   output: {
-    path: './app',
-    publicPath: './app',
+    path: path.resolve(__dirname, 'app'),
+    publicPath: path.resolve(__dirname, 'app'),
     filename: 'app.bundle.js'
   },
   target: 'electron',
@@ -29,10 +29,15 @@ module.exports = {
       { test: /\.js$/, loader: 'babel', exclude: /node_modules/ },
       { test: /\.css$/, loader: 'style!css', exclude: /node_modules/ },
       { test: /\.scss$/, loader: 'style!css!sass', exclude: /node_modules/ },
-      { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' },
+      { test: /\.(png|jpg|gif)$/, loader: 'url-loader?limit=8192' },
       {
-        test   : /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-        loader : 'file-loader'
+        test: /\.(ttf|eot|woff(2)?)(\?[a-z0-9=&.]+)?$/,
+        loader : 'file-loader',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.svg$/,
+        loader: 'url-loader?limit=1'
       }
     ]
   },

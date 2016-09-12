@@ -1,9 +1,10 @@
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
   devtool: 'source-map',
   entry: {
-    app: ['webpack/hot/dev-server', './src/app/app.js']
+    app: ['webpack/hot/dev-server', path.resolve(__dirname, 'src/renderer/app.js')]
   },
   output: {
     publicPath: 'http://localhost:8080/build',
@@ -11,7 +12,7 @@ module.exports = {
   },
   devServer: {
     hot: true,
-    contentBase: './src/electron',
+    contentBase: path.resolve(__dirname, 'src/main'),
     publicPath: 'http://localhost:8080/build'
   },
   module: {
@@ -21,14 +22,20 @@ module.exports = {
       { test: /\.scss$/, loader: 'style!css!sass', exclude: /node_modules/ },
       { test: /\.(png|jpg|gif)$/, loader: 'url-loader?limit=8192' },
       {
-        test: /\.(svg)$/,
-        loader: 'url?limit=1000000'
+        test: /\.(ttf|eot|woff(2)?)(\?[a-z0-9=&.]+)?$/,
+        loader : 'file-loader',
+        exclude: /node_modules/
       },
       {
-        test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
-        loader : 'file-loader'
+        test: /\.svg$/,
+        loader: 'url-loader?limit=1'
       }
     ]
   },
-  plugins: [ new webpack.HotModuleReplacementPlugin() ]
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"dev"'
+    })
+  ]
 };

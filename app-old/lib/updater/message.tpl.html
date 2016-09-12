@@ -1,5 +1,0 @@
-{% if actionRequired === 'download' %}
-  <span>A new version (v{{releaseName}}) of MavensMate is <a href="#" onclick="shell.openExternal('https://github.com/joeferraro/MavensMate-Desktop/releases');">ready for download</a>.</span>
-{% elseif actionRequired === 'quit' %}
-  <span><a id="notes" href="#" onclick="shell.openExternal('https://github.com/joeferraro/MavensMate-Desktop/releases');">Version {{releaseName}}</a> is ready to install. <a id="install" href="#" onclick="ipc.send('quit-and-install')">Restart MavensMate</a> to upgrade.</span>
-{% endif %}
