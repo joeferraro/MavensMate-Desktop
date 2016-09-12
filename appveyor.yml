@@ -22,7 +22,7 @@ install:
   - git reset --hard HEAD
   - npm install npm -g
   - npm install
-  - npm run build:app
+  - npm run build:win:app
   - npm install
   - npm run build:win
   - npm prune
