@@ -6,7 +6,7 @@
     "release": "build",
     "start": "NODE_ENV=dev electron src/main",
     "dev": "NODE_ENV=dev node_modules/.bin/webpack-dev-server",
-    "build:win": "set NODE_ENV=production node bin\\build.js && webpack -p --config webpack.config.prod.js",
+    "build:win": "set NODE_ENV=production node bin\\build.js & webpack -p --config webpack.config.prod.js",
     "build": "NODE_ENV=production node bin/build.js && webpack -p --config webpack.config.prod.js"
   },
   "main": "src/electron/main.js",
