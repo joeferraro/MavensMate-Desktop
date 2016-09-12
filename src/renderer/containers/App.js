@@ -65,8 +65,12 @@ class App extends Component {
         dispatch(actions.showViewManager());
       } else if (e.metaKey && e.which === 82) {
         // ctrl + r to reload page
-        // var webview = document.querySelector('webview:not(.hide)');
-        // webview.reload();
+        // if (this.props.views.length === 0) {
+        //   dispatch(actions.addView('http://localhost:56248/app/home'));
+        // } else {
+        //   var webview = document.querySelector('webview:not(.hide)');
+        //   webview.reload();
+        // }
         // e.preventDefault();
       } else if (e.metaKey && e.which === 219) {
         // ctrl + [ to go back

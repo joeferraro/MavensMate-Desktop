@@ -1,4 +1,8 @@
-export default function template(app) {
+var electron        = require('electron');
+var app             = electron.app;
+var ipc             = electron.ipcMain;
+
+module.exports = function(attachWindow) {
   return [
     {
       label: 'MavensMate',
@@ -85,9 +89,7 @@ export default function template(app) {
           label: 'New Window',
           accelerator: 'Command+N',
           click: function() {
-            if (!mainWindow) {
-              attachMainWindow(false, 'http://localhost:56248/app/home');
-            }
+            attachWindow();
           }
         },
         {
@@ -163,4 +165,4 @@ export default function template(app) {
       ]
     }
   ];
-}
+};

@@ -1,4 +1,8 @@
-export default function template(app) {
+var electron        = require('electron');
+var app             = electron.app;
+var ipc             = electron.ipcMain;
+
+module.exports = function(attachWindow) {
   return [
     {
       label: '&File',
