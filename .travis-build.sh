@@ -28,11 +28,10 @@ node -v
 npm -v
 
 npm install
-npm run build:app
-npm install
+npm run stage
+npm install # to install app dependencies (done automagically)
 npm run build
 
-cd ..
 ./node_modules/.bin/electron-rebuild --module-dir app/node_modules
 ls
 
