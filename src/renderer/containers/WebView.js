@@ -1,31 +1,36 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import ElectronWebView from 'react-electron-webview';
+import ElectronWebView from '../vendor/react-electron-webview';
 import * as actions from '../actions/actions';
+import BrowserBar from './BrowserBar';
 
 class WebView extends Component {
 
   constructor(props) {
     super(props);
+    this._webview = null;
+    this._browserBar = null;
+    this._url = null;
     this._onIpcMessage = this._onIpcMessage.bind(this);
     this._onNewWindow = this._onNewWindow.bind(this);
     this._didStartLoading = this._didStartLoading.bind(this);
     this._didStopLoading = this._didStopLoading.bind(this);
-    this._didFinishLoad = this._didFinishLoad.bind(this);
+    this._showBrowserBar = this._showBrowserBar.bind(this);
+    this._didNavigate = this._didNavigate.bind(this);
     this._loadingTimeout;
   }
 
   componentDidMount() {
-    console.log('component mounted!!!');
-    var element = ReactDOM.findDOMNode(this);
+    var element = ReactDOM.findDOMNode(this._webview);
     element.setAttribute('nodeintegration', '');
     element.setAttribute('id', this.props.view.id);
   }
 
   componentDidUpdate() {
-    var element = ReactDOM.findDOMNode(this);
+    var element = ReactDOM.findDOMNode(this._webview);
     element.setAttribute('nodeintegration', '');
+    element.setAttribute('id', this.props.view.id);
   }
 
   _isHidden(v) {
@@ -33,7 +38,6 @@ class WebView extends Component {
   }
 
   _didStartLoading() {
-    console.log('webview start loading');
     if (this.props.view.show) {
       if (this._loadingTimeout) { clearTimeout(this._loadingTimeout); }
       this._loadingTimeout =
@@ -47,10 +51,6 @@ class WebView extends Component {
       if (this._loadingTimeout) { clearTimeout(this._loadingTimeout); }
       this.props.dispatch(actions.hideLoading());
     }
-  }
-
-  _didFinishLoad() {
-    console.log('webview finish load');
   }
 
   _onIpcMessage(evt) {
@@ -88,18 +88,37 @@ class WebView extends Component {
     }
   }
 
+  _showBrowserBar() {
+    if (this._url && this._url.indexOf('https://') !== -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  _didNavigate(evt) {
+    this._url = evt.url;
+  }
+
   render() {
     const view = this.props.view;
     return (
-      <ElectronWebView
-        className={this._isHidden(view)}
-        didFinishLoad={this._didFinishLoad}
-        didStartLoading={this._didStartLoading}
-        didStopLoading={this._didStopLoading}
-        newWindow={this._onNewWindow}
-        ipcMessage={this._onIpcMessage}
-        nodeintegration={true}
-        key={view.id} src={view.url}/>
+      <div className={"web-view-wrapper "+(this._isHidden(view))}>
+        <BrowserBar
+          ref={(c) => this._browserBar = c}
+          show={this._showBrowserBar()}/>
+        <ElectronWebView
+          className={this._isHidden(view)}
+          didFinishLoad={this._didFinishLoad}
+          didStartLoading={this._didStartLoading}
+          didStopLoading={this._didStopLoading}
+          didNavigate={this._didNavigate}
+          newWindow={this._onNewWindow}
+          ipcMessage={this._onIpcMessage}
+          nodeintegration={true}
+          ref={(c) => this._webview = c}
+          key={view.id} src={view.url}/>
+      </div>
     );
   }
 }

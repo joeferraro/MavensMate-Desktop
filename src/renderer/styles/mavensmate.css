@@ -8,6 +8,10 @@ div#root > div > div {
   height: 100%;
 }
 
+div.web-view-wrapper {
+  height:100%;
+}
+
 #views {
   display: flex;
   flex-direction: column;
@@ -18,10 +22,15 @@ webview {
   height:100%;
 }
 
-webview.hide {
+webview.hide,
+web-view-wrapper.hide {
   flex: 0 1;
   width: 0px;
   height: 0px;
+}
+
+web-view-wrapper:not(.hide) {
+  padding-top:30px;
 }
 
 #update {
@@ -167,4 +176,12 @@ div.desktop-update-notifier {
 
 div.desktop-update-notifier.show {
   display: block;
+}
+
+div.app-wrapper.app-wrapper-padded-top {
+  padding-top:30px;
+}
+
+div.browser-bar > div {
+  height:30px;
 }
