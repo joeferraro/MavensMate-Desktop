@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import WebView from 'react-electron-webview';
 import * as actions from '../actions/actions';
 import Views from './Views';
 import ViewManager from './ViewManager';

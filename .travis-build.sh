@@ -27,7 +27,8 @@ node-gyp-install
 node -v
 npm -v
 
-npm install
+npm install rimraf -g
+npm install fs-extra -g
 npm run stage
 npm install # to install app dependencies (done automagically)
 npm run build

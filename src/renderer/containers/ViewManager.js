@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import WebView from 'react-electron-webview';
 import * as actions from '../actions/actions';
 import InlineSVG from 'svg-inline-react';
 
