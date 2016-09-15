@@ -83,6 +83,58 @@ module.exports = function(attachWindow) {
       ]
     },
     {
+      label: 'View',
+      submenu: [
+        {
+          label: 'Reload',
+          accelerator: 'CmdOrCtrl+R',
+          click (item, focusedWindow) {
+            if (focusedWindow) focusedWindow.reload()
+          }
+        },
+        {
+          type: 'separator'
+        },
+        {
+          label: 'Actual Size',
+          accelerator: 'CmdOrCtrl+0',
+          click (item, focusedWindow) {
+            if (focusedWindow) focusedWindow.webContents.setZoomLevel(0)
+          }
+        },
+        {
+          label: 'Zoom In',
+          accelerator: 'CmdOrCtrl+Plus',
+          click (item, focusedWindow) {
+            if (focusedWindow) {
+              const {webContents} = focusedWindow
+              webContents.getZoomLevel((zoomLevel) => {
+                webContents.setZoomLevel(zoomLevel + 0.5)
+              })
+            }
+          }
+        },
+        {
+          label: 'Zoom Out',
+          accelerator: 'CmdOrCtrl+-',
+          click (item, focusedWindow) {
+            if (focusedWindow) {
+              const {webContents} = focusedWindow
+              webContents.getZoomLevel((zoomLevel) => {
+                webContents.setZoomLevel(zoomLevel - 0.5)
+              })
+            }
+          }
+        },
+        {
+          type: 'separator'
+        },
+        {
+          role: 'togglefullscreen'
+        }
+      ]
+    },
+    {
       label: 'Window',
       submenu: [
         {
