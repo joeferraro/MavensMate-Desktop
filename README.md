@@ -11,7 +11,7 @@ Download and run from the [releases page](https://github.com/joeferraro/MavensMa
 
 ## Issues
 
-All issues are managed in the [central MavensMate project](https://github.com/joeferraro/MavensMate/issues)
+All issues are managed by the [central MavensMate project](https://github.com/joeferraro/MavensMate)
 
 ## Plugins
 
