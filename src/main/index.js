@@ -49,6 +49,7 @@ var startServer = function() {
         port: 56248,
         openWindowFn: openUrlInNewTab,
         mode: 'desktop',
+        desktopVersion: require('./package.json').version,
         ipc: require('electron').ipcRenderer
       })
       .then(function(res) {
