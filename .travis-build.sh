@@ -29,7 +29,6 @@ npm -v
 
 npm install rimraf -g
 npm install fs-extra -g
-npm install modclean -g
 npm run stage
 npm install # to install app dependencies (done automagically)
 npm run build

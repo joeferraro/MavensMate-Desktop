@@ -23,7 +23,6 @@ install:
   - npm install npm -g
   - npm install rimraf -g
   - npm install fs-extra -g
-  - npm install modclean -g
   - npm run stage:win
   - npm install
   - npm run build:win
