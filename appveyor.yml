@@ -27,11 +27,7 @@ install:
   - npm run stage:win
   - npm install
   - npm run build:win
-  - npm prune --production
-  - cd app
-  - npm prune --production
-  - modclean -d -r
-  - cd ..
+  - modclean -p app\node_modules -d -r
 
 build_script:
   - node --version

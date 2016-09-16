@@ -33,13 +33,11 @@ npm install modclean -g
 npm run stage
 npm install # to install app dependencies (done automagically)
 npm run build
-cd app
-npm prune --production
-modclean -d -r
-cd ..
 
 ./node_modules/.bin/electron-rebuild --module-dir app/node_modules
 ls
+
+modclean -p app/node_modules -d -r
 
 #if OS is linux or is not set
 if [ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]; then
