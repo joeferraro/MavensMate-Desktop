@@ -1,6 +1,6 @@
 {
   "name": "MavensMate-Desktop",
-  "version": "0.0.11-beta.4",
+  "version": "0.0.11-beta.5",
   "main": "index.js",
   "description": "MavensMate desktop app",
   "author": {
@@ -18,9 +18,7 @@
     "bluebird": "2.9.34",
     "electron-squirrel-startup": "1.0.0",
     "es6-promise": "3.2.1",
-    "jquery": "2.1.4",
-    "lodash": "4.13.1",
-    "mavensmate": "1.0.0-beta.29",
+    "mavensmate": "1.0.0-beta.30",
     "node-uuid": "^1.4.7",
     "nslog": "3.0.0",
     "react": "0.14.3",
