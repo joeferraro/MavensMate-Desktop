@@ -29,9 +29,14 @@ npm -v
 
 npm install rimraf -g
 npm install fs-extra -g
+npm install modclean -g
 npm run stage
 npm install # to install app dependencies (done automagically)
 npm run build
+cd app
+npm prune --production
+modclean -d -r
+cd ..
 
 ./node_modules/.bin/electron-rebuild --module-dir app/node_modules
 ls

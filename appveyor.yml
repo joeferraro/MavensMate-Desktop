@@ -23,10 +23,15 @@ install:
   - npm install npm -g
   - npm install rimraf -g
   - npm install fs-extra -g
+  - npm install modclean -g
   - npm run stage:win
   - npm install
   - npm run build:win
-  - npm prune
+  - npm prune --production
+  - cd app
+  - npm prune --production
+  - modclean -d -r
+  - cd ..
 
 build_script:
   - node --version
