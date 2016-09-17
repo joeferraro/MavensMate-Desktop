@@ -164,6 +164,8 @@ var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
   if (mainWindow) {
     if (mainWindow.isMinimized()) mainWindow.restore();
     mainWindow.focus();
+  } else {
+    attachMainWindow();
   }
 });
 
