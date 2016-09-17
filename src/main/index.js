@@ -89,44 +89,40 @@ var attachMainWindow = function() {
         return resolve();
       }
 
-      // Create the browser window.
-      mainWindow = new BrowserWindow({
-        width: 1000,
-        height: 750,
-        minWidth: 850,
-        minHeight: 670,
-        icon: path.join(__dirname, '..', 'resources', 'icon.png')
-      });
+      var serverPromise = !server ? startServer() : Promise.resolve();
+      serverPromise
+        .then(function() {
 
-      mainWindow.loadURL('file://' + __dirname + '/index.html');
+          // Create the browser window.
+          mainWindow = new BrowserWindow({
+            width: 1000,
+            height: 750,
+            minWidth: 850,
+            minHeight: 670,
+            skipTaskbar: serverConfig.get('mm_windows_skip_taskbar'),
+            icon: path.join(__dirname, '..', 'resources', 'icon.png')
+          });
 
-      // mainWindow.openDevTools();
+          mainWindow.loadURL('file://' + __dirname + '/index.html');
 
-      mainWindow.webContents.on('did-finish-load', function() {
+          // mainWindow.openDevTools();
 
-        if (!server) {
-          startServer()
-            .then(function() {
-              mainWindow.webContents.send('new-web-view', 'http://localhost:56248/app/home');
-              resolve();
-            })
-            .catch(function(err) {
-              reject(err);
-            });
-        } else {
-          mainWindow.webContents.send('new-web-view', 'http://localhost:56248/app/home');
-          resolve();
-        }
+          mainWindow.webContents.on('did-finish-load', function() {
+            mainWindow.webContents.send('new-web-view', 'http://localhost:56248/app/home');
+            resolve();
+          });
 
-      });
-
-      // Emitted when the window is closed.
-      mainWindow.on('closed', function() {
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
-        mainWindow = null;
-      });
+          // Emitted when the window is closed.
+          mainWindow.on('closed', function() {
+            // Dereference the window object, usually you would store windows
+            // in an array if your app supports multi windows, this is the time
+            // when you should delete the corresponding element.
+            mainWindow = null;
+          });
+        })
+        .catch(function(err) {
+          reject(err);
+        });
 
     } catch(err) {
       reject(err);
@@ -155,10 +151,22 @@ ipc.on('new-window', function() {
   attachMainWindow();
 });
 
+// enable background mode
 app.on('window-all-closed', () => {
   // don't quit app when all windows are closed, we want users to be able to run windowless
 });
 
+// when dock/taskbar is clicked, show window (macos)
+app.on('activate', (evt, hasVisibleWindows) => {
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    mainWindow.focus();
+  } else {
+    attachMainWindow();
+  }
+});
+
+// enforce a single version of the app
 var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
   // Someone tried to run a second instance, we should focus our window.
   if (mainWindow) {
@@ -179,8 +187,12 @@ if (shouldQuit) {
 app.on('ready', function() {
   attachMainWindow()
     .then(function() {
+      if (process.platform === 'darwin') {
+        var hideFromDock = serverConfig.get('mm_macos_hide_from_dock', false);
+        if (hideFromDock) app.dock.hide();
+      }
       menu = appMenu.init(attachMainWindow);
-      trayIcon = appTray.init(serverConfig);
+      trayIcon = appTray.init(serverConfig, attachMainWindow);
       appUpdater = new AppUpdater(mainWindow, serverConfig);
     })
     .catch(function(err) {
