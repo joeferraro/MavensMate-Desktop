@@ -86,6 +86,10 @@ var attachMainWindow = function() {
 
       if (mainWindow) {
         // currently we only support a single window
+        if (mainWindow.isMinimized())
+          mainWindow.restore();
+        mainWindow.show();
+        mainWindow.focus();
         return resolve();
       }
 
