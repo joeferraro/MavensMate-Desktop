@@ -14,6 +14,7 @@ module.exports = {
       }
       var menu = Menu.buildFromTemplate(template);
       Menu.setApplicationMenu(menu);
+      return menu;
     }
   }
 };

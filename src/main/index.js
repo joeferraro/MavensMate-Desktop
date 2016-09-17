@@ -20,6 +20,8 @@ var mainWindow = null;
 var server = null;
 var serverConfig = null;
 var appUpdater = null;
+var menu = null;
+var trayIcon = null;
 
 var openUrlInNewTab = function(url) {
   console.log('openUrlInNewTab', url);
@@ -154,8 +156,20 @@ ipc.on('new-window', function() {
 });
 
 app.on('window-all-closed', () => {
-  // don't quit app
+  // don't quit app when all windows are closed, we want users to be able to run windowless
 });
+
+var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
+  // Someone tried to run a second instance, we should focus our window.
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    mainWindow.focus();
+  }
+});
+
+if (shouldQuit) {
+  app.quit();
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -163,8 +177,8 @@ app.on('window-all-closed', () => {
 app.on('ready', function() {
   attachMainWindow()
     .then(function() {
-      appMenu.init(attachMainWindow);
-      appTray.init(serverConfig);
+      menu = appMenu.init(attachMainWindow);
+      trayIcon = appTray.init(serverConfig);
       appUpdater = new AppUpdater(mainWindow, serverConfig);
     })
     .catch(function(err) {

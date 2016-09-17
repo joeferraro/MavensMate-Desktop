@@ -64,6 +64,7 @@ AppUpdater.prototype._notify = function(releaseName) {
   } else if (util.isMac()) {
     this.window.webContents.send('show-update-notifier', releaseName, 'quit');
   }
+  app.dock.bounce('informational');
 }
 
 module.exports = AppUpdater;
