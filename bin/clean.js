@@ -6,6 +6,7 @@ var MC = new modclean.ModClean({
     cwd: path.resolve(process.cwd(), 'app/node_modules'),
     // Only delete patterns.safe patterns along with html and png files
     patterns: [
+        "build",
         "readme*",
         ".npmignore",
         "*license*",
