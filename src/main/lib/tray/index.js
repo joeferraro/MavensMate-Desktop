@@ -6,7 +6,7 @@ var Menu            = electron.Menu;
 
 var toggleOpenAtLogin = function() {
   app.setLoginItemSettings({
-    openAtLogin: app.getLoginItemSettings().openAtLogin ? false : true;
+    openAtLogin: app.getLoginItemSettings().openAtLogin ? false : true
   });
 };
 
