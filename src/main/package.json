@@ -1,6 +1,6 @@
 {
   "name": "MavensMate-Desktop",
-  "version": "0.0.11-beta.5",
+  "version": "0.0.11-beta.6",
   "main": "index.js",
   "description": "MavensMate desktop app",
   "author": {
@@ -16,8 +16,8 @@
   "dependencies": {
     "bluebird": "2.9.34",
     "electron-squirrel-startup": "1.0.0",
-    "mavensmate": "1.0.0-beta.30",
-    "node-uuid": "^1.4.7",
+    "mavensmate": "1.0.0-beta.31",
+    "node-uuid": "1.4.7",
     "nslog": "3.0.0",
     "react": "0.14.3",
     "react-addons-update": "^15.3.1",
@@ -28,6 +28,6 @@
     "redux-devtools-dock-monitor": "1.0.0-beta-3",
     "redux-devtools-log-monitor": "1.0.0-beta-3",
     "redux-thunk": "1.0.0",
-    "svg-inline-react": "^1.0.2"
+    "svg-inline-react": "1.0.2"
   }
 }
