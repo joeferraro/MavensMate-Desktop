@@ -60,9 +60,13 @@ function AppUpdater(window, config) {
 
 AppUpdater.prototype._notify = function(releaseName) {
   if (util.isLinux() || util.isWindows()) {
-    this.window.webContents.send('show-update-notifier', releaseName, 'download');
+    if (this.window) {
+      this.window.webContents.send('show-update-notifier', releaseName, 'download');
+    }
   } else if (util.isMac()) {
-    this.window.webContents.send('show-update-notifier', releaseName, 'quit');
+    if (this.window) {
+      this.window.webContents.send('show-update-notifier', releaseName, 'quit');
+    }
   }
   app.dock.bounce('informational');
 }
