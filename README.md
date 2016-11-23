@@ -17,6 +17,6 @@ All issues are managed by the [central MavensMate project](https://github.com/jo
 
 - [MavensMate for Sublime Text](https://github.com/joeferraro/MavensMate-SublimeText)
 - [MavensMate for Atom](https://github.com/joeferraro/MavensMate-Atom)
-- [MavensMate for Visual Studio Code (coming soon)](https://github.com/joeferraro/MavensMate-VisualStudioCode)
+- [MavensMate for Visual Studio Code](https://github.com/joeferraro/MavensMate-VisualStudioCode)
 
 
